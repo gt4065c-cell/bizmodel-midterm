@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>비즈니스모델과의사결정론 — 모의 평가</title>
+<title>모의 평가 — 비즈니스모델과의사결정론</title>
 <meta name="description" content="중간 평가 대비 모의 연습. 답안을 쓰고, 채점 기준표로 직접 채점해 봅니다.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230E1E38'/><path d='M28 52l14 14 30-32' stroke='%23F5F2EC' stroke-width='9' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
@@ -34,7 +34,19 @@ li{margin:.25em 0}
   border-bottom:1px solid var(--line);}
 .top-in{max-width:860px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
 .brand{font-weight:800;color:var(--ink);font-size:15px;letter-spacing:-.02em;white-space:nowrap}
+.brand span{display:block}
 .brand small{display:block;font-weight:600;font-size:11.5px;color:var(--muted);letter-spacing:0}
+.langwrap{position:relative}
+.tlink.lang{border:1.5px solid var(--line);border-radius:9px;padding:5px 11px;background:#fff}
+.tlink.lang:after{content:"";display:inline-block;margin-left:6px;border:4px solid transparent;
+  border-top-color:var(--teal);transform:translateY(2px)}
+.langlist{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#fff;
+  border:1px solid var(--line);border-radius:11px;box-shadow:var(--sh);overflow:hidden;min-width:124px;z-index:60}
+.langwrap.open .langlist{display:block}
+.langopt{display:block;width:100%;text-align:left;background:none;border:0;padding:10px 14px;
+  font-size:14px;font-weight:600;color:var(--ink2);cursor:pointer;white-space:nowrap}
+.langopt:hover{background:var(--paper)}
+.langopt.cur{color:var(--teal);font-weight:800;background:#F2F8FA}
 .top-sp{flex:1}
 .tlink{background:none;border:0;color:var(--teal);font-weight:700;font-size:13.5px;cursor:pointer;
   padding:6px 10px;border-radius:9px}
@@ -274,11 +286,12 @@ h2.sect:after{content:"";flex:1;height:1px;background:var(--line)}
 
 <div class="top">
   <div class="top-in">
-    <div class="brand">모의 평가 <small>비즈니스모델과의사결정론</small></div>
+    <div class="brand"><span data-t="brand.t">모의 평가</span><small data-t="brand.s">비즈니스모델과의사결정론</small></div>
     <div class="top-sp"></div>
-    <button class="tlink" id="topHome">홈</button>
+    <div class="langwrap" id="langWrap"><button class="tlink lang" id="langBtn">한국어</button><div class="langlist" id="langList"></div></div>
+    <button class="tlink" id="topHome" data-t="nav.home" style="display:none">홈</button>
     <span class="savetag" id="saveTag"></span>
-    <button class="tlink" id="btnPrin">채점 원칙</button>
+    <button class="tlink" id="btnPrin" data-t="nav.prin">채점 원칙</button>
   </div>
 </div>
 
@@ -286,23 +299,23 @@ h2.sect:after{content:"";flex:1;height:1px;background:var(--line)}
 <section class="screen on" id="scAuth">
   <div class="auth">
     <div class="auth-card">
-      <h1>중간 평가 모의 연습</h1>
-      <p class="auth-sub">실제 시험과 같은 문제를 풀고, 교수자가 쓰는 채점 기준표로 직접 채점해 봅니다.</p>
-      <div class="tabs"><button id="tabLogin" class="act">로그인</button><button id="tabJoin">회원가입</button></div>
+      <h1 data-t="auth.h1">중간 평가 모의 연습</h1>
+      <p class="auth-sub" data-t="auth.sub"></p>
+      <div class="tabs"><button id="tabLogin" class="act" data-t="auth.login">로그인</button><button id="tabJoin" data-t="auth.join">회원가입</button></div>
       <div id="joinFields" style="display:none">
-        <div class="field"><label>이름</label><input id="inName" type="text" placeholder="홍길동" autocomplete="name"></div>
-        <div class="field"><label>학번</label><input id="inSno" type="text" placeholder="20231234" inputmode="numeric" autocomplete="off"></div>
+        <div class="field"><label data-t="auth.name"></label><input id="inName" type="text" data-tph="auth.nameph" autocomplete="name"></div>
+        <div class="field"><label data-t="auth.sno"></label><input id="inSno" type="text" data-tph="auth.snoph" inputmode="numeric" autocomplete="off"></div>
       </div>
-      <div class="field"><label>이메일</label><input id="inEmail" type="email" placeholder="you@wsu.ac.kr" autocomplete="email"></div>
-      <div class="field"><label>비밀번호</label><input id="inPw" type="password" placeholder="6자 이상" autocomplete="current-password"></div>
+      <div class="field"><label data-t="auth.email"></label><input id="inEmail" type="email" placeholder="you@wsu.ac.kr" autocomplete="email"></div>
+      <div class="field"><label data-t="auth.pw"></label><input id="inPw" type="password" data-tph="auth.pwph" autocomplete="current-password"></div>
       <button class="btn primary block" id="btnEmail">로그인</button>
       <div class="msg" id="authMsg"></div>
-      <div class="divider">또는</div>
+      <div class="divider"><span data-t="auth.or"></span></div>
       <button class="btn g" id="btnGoogle">
         <svg class="gicon" viewBox="0 0 48 48"><path fill="#4285F4" d="M45 24.5c0-1.6-.1-2.8-.4-4H24v7.6h12c-.2 2-1.5 5-4.4 7l-.1.3 6.4 5 .4.1c4.1-3.8 6.7-9.4 6.7-16"/><path fill="#34A853" d="M24 46c5.8 0 10.7-1.9 14.3-5.2l-6.8-5.3c-1.8 1.3-4.3 2.2-7.5 2.2-5.7 0-10.6-3.8-12.3-9l-.3.1-6.6 5.1-.1.3C8.3 41.1 15.6 46 24 46"/><path fill="#FBBC05" d="M11.7 28.7c-.5-1.3-.7-2.8-.7-4.2s.3-2.9.7-4.2v-.4l-6.8-5.2-.2.1A22 22 0 0 0 2 24.5c0 3.5.9 6.9 2.7 9.8z"/><path fill="#EA4335" d="M24 11.1c4 0 6.8 1.7 8.3 3.2l6.1-5.9C34.7 4.9 29.8 3 24 3 15.6 3 8.3 7.9 4.7 14.7l7 5.4c1.7-5.1 6.6-9 12.3-9"/></svg>
-        구글 계정으로 계속하기
+        <span data-t="auth.google"></span>
       </button>
-      <p class="fine">학번은 결과를 교수자가 확인할 때 쓰입니다. 작성한 답안은 본인만 볼 수 있습니다.</p>
+      <p class="fine" data-t="auth.fine"></p>
     </div>
   </div>
 </section>
@@ -311,11 +324,11 @@ h2.sect:after{content:"";flex:1;height:1px;background:var(--line)}
 <section class="screen" id="scProfile">
   <div class="auth">
     <div class="auth-card">
-      <h1>이름과 학번만 알려주세요</h1>
-      <p class="auth-sub">결과를 확인할 때 필요합니다. 한 번만 입력하면 됩니다.</p>
-      <div class="field"><label>이름</label><input id="pfName" type="text" placeholder="홍길동"></div>
-      <div class="field"><label>학번</label><input id="pfSno" type="text" placeholder="20231234" inputmode="numeric"></div>
-      <button class="btn primary block" id="btnProfile">시작하기</button>
+      <h1 data-t="pf.h1"></h1>
+      <p class="auth-sub" data-t="pf.sub"></p>
+      <div class="field"><label data-t="auth.name"></label><input id="pfName" type="text" data-tph="auth.nameph"></div>
+      <div class="field"><label data-t="auth.sno"></label><input id="pfSno" type="text" data-tph="auth.snoph" inputmode="numeric"></div>
+      <button class="btn primary block" id="btnProfile" data-t="pf.btn"></button>
       <div class="msg" id="pfMsg"></div>
     </div>
   </div>
@@ -323,7 +336,7 @@ h2.sect:after{content:"";flex:1;height:1px;background:var(--line)}
 
 <!-- ===== 로딩 ===== -->
 <section class="screen" id="scLoad">
-  <div class="loadbox"><div class="spin"></div>기록을 불러오는 중입니다…</div>
+  <div class="loadbox"><div class="spin"></div><span data-t="load.t"></span></div>
 </section>
 
 <!-- ===== 홈 ===== -->
@@ -340,23 +353,23 @@ h2.sect:after{content:"";flex:1;height:1px;background:var(--line)}
     </div>
 
     <div class="howto">
-      <h3>한 문항을 푸는 순서</h3>
+      <h3 data-t="home.howto"></h3>
       <div class="steps3">
-        <div class="st3"><b>1단계</b><span>답안을 쓰고 제출하면 형식부터 기계적으로 점검합니다</span></div>
-        <div class="st3"><b>2단계</b><span>교수자가 쓰는 기준표를 보고 내 답안을 직접 채점합니다</span></div>
-        <div class="st3"><b>3단계</b><span>점수가 인정되는 답과 깎이는 답을 비교해 봅니다</span></div>
+        <div class="st3"><b data-t="home.s1l"></b><span data-t="home.s1"></span></div>
+        <div class="st3"><b data-t="home.s2l"></b><span data-t="home.s2"></span></div>
+        <div class="st3"><b data-t="home.s3l"></b><span data-t="home.s3"></span></div>
       </div>
-      <p class="fine">실제 시험은 이 여섯 문항 중 다섯 문항이 100점 만점으로 출제됩니다. 답안은 자동으로 보관되므로 중간에 나갔다 와도 이어서 쓸 수 있습니다.</p>
+      <p class="fine" data-t="home.fine"></p>
     </div>
 
     <div class="actions" style="margin-top:0">
-      <button class="btn primary" id="btnStart">이어서 풀기</button>
-      <button class="btn ghost" id="btnReport" style="display:none">전체 결과 보기</button>
-      <button class="btn ghost" id="profLink" style="display:none">제출 현황</button>
-      <button class="btn ghost btnOut">로그아웃</button>
+      <button class="btn primary" id="btnStart" data-t="home.start"></button>
+      <button class="btn ghost" id="btnReport" data-t="home.report" style="display:none"></button>
+      <button class="btn ghost" id="profLink" data-t="home.prof" style="display:none"></button>
+      <button class="btn ghost btnOut" data-t="home.logout"></button>
     </div>
 
-    <h2 class="sect">문항</h2>
+    <h2 class="sect"><span data-t="home.sect"></span></h2>
     <div id="qGrid"></div>
   </div>
 </section>
@@ -375,35 +388,35 @@ h2.sect:after{content:"";flex:1;height:1px;background:var(--line)}
 <section class="screen" id="scReport">
   <div class="wrap">
     <div class="hero" style="margin-top:22px">
-      <h1>전체 결과</h1>
+      <h1 data-t="rp.h1"></h1>
       <div class="hsub" id="rpSub"></div>
       <div class="hstats">
-        <div class="hstat"><div class="v" id="rpTotal">—</div><div class="l">자가 채점 합계</div></div>
-        <div class="hstat"><div class="v" id="rpPct">—</div><div class="l">득점률</div></div>
+        <div class="hstat"><div class="v" id="rpTotal">—</div><div class="l" data-t="rp.total"></div></div>
+        <div class="hstat"><div class="v" id="rpPct">—</div><div class="l" data-t="rp.pct"></div></div>
       </div>
     </div>
-    <h2 class="sect">문항별 점수</h2>
+    <h2 class="sect"><span data-t="rp.bars"></span></h2>
     <div id="rpBars"></div>
-    <h2 class="sect">보완이 필요한 소문항</h2>
+    <h2 class="sect"><span data-t="rp.weak"></span></h2>
     <div id="rpWeak"></div>
-    <h2 class="sect">채점 원칙 다시 보기</h2>
+    <h2 class="sect"><span data-t="rp.prin"></span></h2>
     <div id="rpPrin"></div>
-    <div class="actions"><button class="btn primary" id="rpHome">홈으로</button><button class="btn ghost btnOut">로그아웃</button></div>
+    <div class="actions"><button class="btn primary" id="rpHome" data-t="ex.tohome"></button><button class="btn ghost btnOut" data-t="home.logout"></button></div>
   </div>
 </section>
 
 <!-- ===== 교수자 ===== -->
 <section class="screen" id="scProf">
   <div class="wrap">
-    <h2 class="sect" style="margin-top:24px">제출 현황</h2>
+    <h2 class="sect" style="margin-top:24px"><span data-t="pv.h"></span></h2>
     <div class="tblwrap" id="pfList"></div>
-    <div class="actions"><button class="btn primary" id="pfHome">홈으로</button></div>
+    <div class="actions"><button class="btn primary" id="pfHome" data-t="ex.tohome"></button></div>
   </div>
 </section>
 
 <div class="modal" id="prinModal">
   <div class="modal-in">
-    <div class="modal-h"><h2>채점의 공통 원칙</h2><button class="xbtn" id="prinClose">&times;</button></div>
+    <div class="modal-h"><h2 data-t="pr.h"></h2><button class="xbtn" id="prinClose">&times;</button></div>
     <div id="prinBody"></div>
   </div>
 </div>
@@ -1109,16 +1122,1222 @@ const PRINCIPLES = [
 
 </script>
 <script>
+/* ===== UI 문구 · 채점 원칙 · 판정 문장 (3개 언어) ===== */
+
+const LANGS = [
+  { id: "ko", label: "한국어" },
+  { id: "en", label: "English" },
+  { id: "zh", label: "中文" }
+];
+
+const UI = {
+ko: {
+  "brand.t": "모의 평가", "brand.s": "비즈니스모델과의사결정론",
+  "nav.home": "홈", "nav.prin": "채점 원칙", "nav.lang": "언어",
+  "auth.h1": "중간 평가 모의 연습",
+  "auth.sub": "실제 시험과 같은 문제를 풀고, 교수자가 쓰는 채점 기준표로 직접 채점해 봅니다.",
+  "auth.login": "로그인", "auth.join": "회원가입",
+  "auth.name": "이름", "auth.nameph": "홍길동",
+  "auth.sno": "학번", "auth.snoph": "20231234",
+  "auth.email": "이메일", "auth.pw": "비밀번호", "auth.pwph": "6자 이상",
+  "auth.joinbtn": "가입하고 시작하기", "auth.or": "또는",
+  "auth.google": "구글 계정으로 계속하기",
+  "auth.fine": "학번은 결과를 교수자가 확인할 때 쓰입니다. 작성한 답안은 본인만 볼 수 있습니다.",
+  "auth.need": "이메일과 비밀번호를 입력해주세요.", "auth.needname": "이름과 학번을 입력해주세요.",
+  "auth.wait": "처리 중…", "auth.loadfail": "기록을 불러오지 못했습니다. 다시 로그인해주세요.",
+  "pf.h1": "이름과 학번만 알려주세요",
+  "pf.sub": "결과를 확인할 때 필요합니다. 한 번만 입력하면 됩니다.",
+  "pf.btn": "시작하기", "pf.need": "이름과 학번을 모두 입력해주세요.",
+  "load.t": "기록을 불러오는 중입니다…",
+  "home.howto": "한 문항을 푸는 순서",
+  "home.s1l": "1단계", "home.s1": "답안을 쓰고 제출하면 형식부터 기계적으로 점검합니다",
+  "home.s2l": "2단계", "home.s2": "교수자가 쓰는 기준표를 보고 내 답안을 직접 채점합니다",
+  "home.s3l": "3단계", "home.s3": "점수가 인정되는 답과 깎이는 답을 비교해 봅니다",
+  "home.fine": "실제 시험은 이 여섯 문항 중 다섯 문항이 100점 만점으로 출제됩니다. 답안은 자동으로 보관되므로 중간에 나갔다 와도 이어서 쓸 수 있습니다.",
+  "home.start": "이어서 풀기", "home.report": "전체 결과 보기",
+  "home.prof": "제출 현황", "home.logout": "로그아웃", "home.sect": "문항",
+  "home.noscore": "아직 채점한 문항이 없습니다",
+  "home.scoresub": "완료한 {n}문항 합계 (문항당 20점)",
+  "home.prog": "{a} / {b} 문항 완료",
+  "card.before": "시작 전", "card.writing": "작성 중 {a}/{b}", "card.done": "{n} / 20점",
+  "stage.0": "답안 작성", "stage.1": "1단계 · 자동 점검",
+  "stage.2": "2단계 · 기준표로 채점", "stage.3": "3단계 · 해설",
+  "ex.sit": "상황", "ex.guide": "권장 분량", "ex.ph": "여기에 답안을 작성하십시오.",
+  "ex.cnt": "{c}자 · {l}줄", "ex.pts": "{n}점",
+  "ex.submit": "답안 제출하고 채점 시작", "ex.tohome": "홈으로",
+  "ex.fine": "제출한 뒤에도 답안은 그대로 보관됩니다. 채점 단계에서 자기 답안을 다시 읽으며 기준에 맞춰 판정하게 됩니다.",
+  "ex.needans": "답안을 먼저 작성해주세요.",
+  "ex.confirm": "아직 비어 있는 소문항이 {n}개 있습니다. 그대로 제출하면 그 항목은 0점으로 채점됩니다. 계속할까요?",
+  "au.notice": "<strong>이것은 점수가 아닙니다.</strong> 채점 기준표의 원칙 1·2·3을 기계적으로 훑은 1차 점검입니다. 실제 점수는 다음 단계에서 기준표를 보고 직접 판정합니다. 사람 채점자도 이 순서로 봅니다 — 형식을 먼저 걸러내고, 그다음 내용을 봅니다.",
+  "au.good": "통과", "au.warn": "주의", "au.bad": "확인",
+  "au.back": "답안 고치기", "au.next": "기준표로 채점하기",
+  "au.short.t": "분량이 매우 짧은 소문항",
+  "au.short.d": "({x}) — 원칙 5: 분량 자체는 감점이 아니지만, 2줄 이하는 대부분 구체성 테스트를 통과하지 못합니다.",
+  "au.ban.t": "0점 처리 문구가 발견됨",
+  "au.ban.d": "“{x}” — 원칙 2에 해당합니다. 뒤에 구체적 내용이 따라붙지 않았다면 그 요소는 0점입니다.",
+  "au.noban.t": "0점 처리 문구 없음", "au.noban.d": "원칙 2의 관용구 목록에 걸리는 표현이 없습니다.",
+  "au.case.t": "수업 사례의 고유명사·수치가 그대로 등장",
+  "au.case.d": "“{x}” — 원칙 3: 그대로 옮겨 썼다면 −2점. 주어진 조직의 규모로 환산했다면 감점 없습니다.",
+  "au.vague.t": "측정 지점이 특정되지 않은 표현",
+  "au.vague.d": "“{x}” — 원칙 1: 측정 지점은 프로세스의 어느 단계인지 특정되어야 합니다.",
+  "au.num1.t": "측정 가능한 수치·단위 발견",
+  "au.num1.d": "조건을 숫자와 단위로 쓴 흔적이 있습니다. 실제 판정은 2단계에서 직접 하십시오.",
+  "au.num0.t": "수치나 단위가 하나도 없음",
+  "au.num0.d": "이 문항은 ‘통과 개수를 셀 수 있는 조건’을 요구합니다. 수치·단위 없이 통과하기 어렵습니다.",
+  "au.act1.t": "주체(직책·부서) 표현 발견", "au.act1.d": "누가 하는지 밝힌 흔적이 있습니다.",
+  "au.act0.t": "주체를 밝힌 표현이 보이지 않음",
+  "au.act0.d": "이 문항은 ‘누가’를 요구합니다. 직책과 소속이 없으면 해당 요소가 감점됩니다.",
+  "au.cond1.t": "조건·범위 표현 발견", "au.cond1.d": "‘이상/이내/경우에는’ 같은 판정 가능한 조건 표현이 있습니다.",
+  "au.cond0.t": "조건·범위 표현이 보이지 않음", "au.cond0.d": "판정 기준이 되려면 범위나 조건이 드러나야 합니다.",
+  "sf.notice": "<strong>자기 답안을 다시 읽으면서</strong> 각 요소마다 해당되는 줄을 고르십시오. 교수자가 쓰는 기준표와 같은 표입니다. 후하게 고르면 실제 시험에서 그만큼 손해를 봅니다 — 애매하면 원칙 8에 따라 낮은 쪽을 고르십시오.",
+  "sf.myans": "내 답안 보기", "sf.noans": "(작성하지 않음)",
+  "sf.key": "변별 기준", "sf.live": "현재 채점 합계",
+  "sf.miss": "아직 고르지 않은 항목 {n}개", "sf.all": "모든 항목을 판정했습니다",
+  "sf.back": "1단계로", "sf.next": "채점 확정하고 해설 보기",
+  "sf.needall": "아직 판정하지 않은 항목이 {n}개 있습니다.",
+  "ex.score": "{a} / {b}점",
+  "xp.result": "문제 {n} 자가 채점 결과", "xp.of": "/ 20점",
+  "xp.intent": "출제 의도", "xp.ok": "점수가 인정되는 답", "xp.no": "0점이거나 깎이는 답",
+  "xp.cmp": "내가 쓴 답안과 비교하기",
+  "xp.regrade": "채점 다시하기", "xp.retry": "답안 고쳐 다시 풀기",
+  "xp.next": "다음 문항으로", "xp.report": "전체 결과 보기",
+  "v.18": "기준표의 요소를 거의 모두 갖췄습니다. 실제 시험에서도 이 수준을 유지하면 됩니다.",
+  "v.14": "방향은 맞습니다. 빠진 요소가 무엇이었는지 아래 해설에서 확인하십시오.",
+  "v.9": "내용은 있으나 구체성이 부족합니다. ‘셀 수 있는가 / 단계가 특정되는가 / 누가 결정하는가’를 다시 보십시오.",
+  "v.4": "원칙 1의 구체성 테스트에서 대부분 걸렸습니다. 해설의 ‘인정되는 답’을 문장 단위로 비교해보십시오.",
+  "v.0": "다시 한 번 풀어보기를 권합니다. 해설을 먼저 읽고 답안을 고쳐 재도전할 수 있습니다.",
+  "rp.h1": "전체 결과", "rp.total": "자가 채점 합계", "rp.pct": "득점률",
+  "rp.sub": "{n}문항 채점 완료", "rp.sub2": " · 남은 {n}문항은 아직 반영되지 않았습니다",
+  "rp.bars": "문항별 점수", "rp.weak": "보완이 필요한 소문항",
+  "rp.noweak": "60% 미만으로 떨어진 소문항이 없습니다.",
+  "rp.prin": "채점 원칙 다시 보기", "rp.unscored": "미채점",
+  "pr.h": "채점의 공통 원칙", "pr.n": "원칙 {n}",
+  "pv.h": "제출 현황", "pv.load": "불러오는 중…", "pv.none": "아직 제출된 기록이 없습니다.",
+  "pv.fail": "기록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.",
+  "pv.n": "{n}명 응시", "pv.avg": "문제 {n} 평균",
+  "pv.sno": "학번", "pv.name": "이름", "pv.done": "완료", "pv.sum": "합계",
+  "pv.last": "최종 활동", "pv.lang": "언어",
+  "pv.persons": "{n}명",
+  "save.ing": "저장 중…", "save.ok": "저장됨 · {t}", "save.fail": "저장 실패 — 연결을 확인해주세요",
+  "err.email": "이메일 형식이 올바르지 않습니다.",
+  "err.nouser": "가입되지 않은 이메일입니다. 먼저 회원가입을 해주세요.",
+  "err.pw": "이메일 또는 비밀번호가 맞지 않습니다.",
+  "err.dup": "이미 가입된 이메일입니다. 로그인을 눌러주세요.",
+  "err.weak": "비밀번호는 6자 이상이어야 합니다.",
+  "err.popup": "구글 로그인 창이 닫혔습니다.",
+  "err.blocked": "팝업이 차단되었습니다. 주소창의 팝업 차단을 해제해주세요.",
+  "err.net": "네트워크 연결을 확인해주세요.",
+  "err.many": "시도가 많았습니다. 잠시 후 다시 해주세요.",
+  "err.etc": "잠시 후 다시 시도해주세요.",
+  "cp.cond": "수업에서 다룬 기업의 고유 수치나 고유명사를 그대로 옮겨 썼다 (원칙 3)",
+  "q.label": "문제 {n}"
+},
+
+en: {
+  "brand.t": "Practice Exam", "brand.s": "Business Models & Decision Theory",
+  "nav.home": "Home", "nav.prin": "Grading rules", "nav.lang": "Language",
+  "auth.h1": "Midterm practice run",
+  "auth.sub": "Answer the same kind of questions as the real exam, then grade yourself with the rubric your instructor uses.",
+  "auth.login": "Sign in", "auth.join": "Sign up",
+  "auth.name": "Name", "auth.nameph": "Your name",
+  "auth.sno": "Student ID", "auth.snoph": "20231234",
+  "auth.email": "Email", "auth.pw": "Password", "auth.pwph": "6 characters or more",
+  "auth.joinbtn": "Sign up and start", "auth.or": "or",
+  "auth.google": "Continue with Google",
+  "auth.fine": "Your student ID is used so your instructor can identify your results. Only you can read what you write.",
+  "auth.need": "Please enter your email and password.", "auth.needname": "Please enter your name and student ID.",
+  "auth.wait": "Working…", "auth.loadfail": "Could not load your record. Please sign in again.",
+  "pf.h1": "Just your name and student ID",
+  "pf.sub": "Needed to identify your results. You only enter this once.",
+  "pf.btn": "Start", "pf.need": "Please enter both your name and student ID.",
+  "load.t": "Loading your record…",
+  "home.howto": "How one question works",
+  "home.s1l": "Step 1", "home.s1": "Submit your answer and the form is checked mechanically first",
+  "home.s2l": "Step 2", "home.s2": "Grade your own answer using the rubric your instructor uses",
+  "home.s3l": "Step 3", "home.s3": "Compare answers that earn points against answers that lose them",
+  "home.fine": "The real exam uses five of these six questions for 100 points. Your answers are kept automatically, so you can leave and pick up where you left off.",
+  "home.start": "Continue", "home.report": "See full results",
+  "home.prof": "Submissions", "home.logout": "Sign out", "home.sect": "Questions",
+  "home.noscore": "No question graded yet",
+  "home.scoresub": "Total of {n} completed question(s) · 20 points each",
+  "home.prog": "{a} of {b} questions done",
+  "card.before": "Not started", "card.writing": "Writing {a}/{b}", "card.done": "{n} / 20",
+  "stage.0": "Write", "stage.1": "Step 1 · Auto check",
+  "stage.2": "Step 2 · Grade with rubric", "stage.3": "Step 3 · Explanation",
+  "ex.sit": "Situation", "ex.guide": "Suggested length", "ex.ph": "Write your answer here.",
+  "ex.cnt": "{c} chars · {l} lines", "ex.pts": "{n} pts",
+  "ex.submit": "Submit and start grading", "ex.tohome": "Home",
+  "ex.fine": "Your answer is kept after you submit. In the grading steps you reread your own answer and judge it against the criteria.",
+  "ex.needans": "Please write an answer first.",
+  "ex.confirm": "{n} part(s) are still empty. If you submit now, those parts are graded as 0. Continue?",
+  "au.notice": "<strong>This is not a score.</strong> It is a first pass that mechanically applies rules 1, 2 and 3 of the rubric. Your actual score comes in the next step, where you judge your answer against the rubric yourself. A human grader works in this order too — form first, then content.",
+  "au.good": "Pass", "au.warn": "Caution", "au.bad": "Check",
+  "au.back": "Edit answer", "au.next": "Grade with the rubric",
+  "au.short.t": "Very short part(s)",
+  "au.short.d": "({x}) — Rule 5: length alone is not penalised, but two lines or fewer almost never passes the specificity test.",
+  "au.ban.t": "Zero-score phrase found",
+  "au.ban.d": "“{x}” — This falls under rule 2. Unless something concrete follows it, that element scores 0.",
+  "au.noban.t": "No zero-score phrases", "au.noban.d": "Nothing in your answer matches the rule 2 list of empty phrases.",
+  "au.case.t": "Case-company names or figures appear verbatim",
+  "au.case.d": "“{x}” — Rule 3: copying them costs −2. Converting them to the given organisation's scale costs nothing.",
+  "au.vague.t": "Measurement point is not pinned down",
+  "au.vague.d": "“{x}” — Rule 1: a measurement point must name which step of the process it sits at.",
+  "au.num1.t": "Measurable figures and units found",
+  "au.num1.d": "You wrote conditions with numbers and units. Judge them properly in step 2.",
+  "au.num0.t": "No figures or units at all",
+  "au.num0.d": "This question asks for conditions whose passing items can be counted. That is hard to do without figures and units.",
+  "au.act1.t": "An actor (role or unit) is named", "au.act1.d": "You said who does it.",
+  "au.act0.t": "No actor is named",
+  "au.act0.d": "This question asks who. Without a role and the unit it belongs to, that element loses points.",
+  "au.cond1.t": "Conditions or thresholds found", "au.cond1.d": "Phrases like “at least”, “within”, “if” make a criterion judgeable.",
+  "au.cond0.t": "No conditions or thresholds found", "au.cond0.d": "To work as a criterion, a range or condition has to be visible.",
+  "sf.notice": "<strong>Reread your own answer</strong> and pick the line that applies for each element. This is the same table your instructor grades with. Being generous here only costs you in the real exam — when torn, rule 8 says pick the lower line.",
+  "sf.myans": "Show my answer", "sf.noans": "(not written)",
+  "sf.key": "What separates answers here", "sf.live": "Running total",
+  "sf.miss": "{n} element(s) not judged yet", "sf.all": "Every element judged",
+  "sf.back": "Back to step 1", "sf.next": "Confirm and see the explanation",
+  "sf.needall": "{n} element(s) are still unjudged.",
+  "ex.score": "{a} / {b}",
+  "xp.result": "Question {n} — your own grade", "xp.of": "/ 20",
+  "xp.intent": "What this question tests", "xp.ok": "Answers that earn points", "xp.no": "Answers that score 0 or lose points",
+  "xp.cmp": "Compare with what I wrote",
+  "xp.regrade": "Grade again", "xp.retry": "Edit answer and retry",
+  "xp.next": "Next question", "xp.report": "See full results",
+  "v.18": "You have nearly every element the rubric asks for. Keep this level in the real exam.",
+  "v.14": "The direction is right. Check the explanation below for which elements were missing.",
+  "v.9": "There is substance but not enough specificity. Revisit: can it be counted / is the step named / who decides.",
+  "v.4": "Most elements failed the specificity test in rule 1. Compare the “answers that earn points” sentence by sentence.",
+  "v.0": "Worth another attempt. Read the explanation first, then edit your answer and try again.",
+  "rp.h1": "Full results", "rp.total": "Self-graded total", "rp.pct": "Percentage",
+  "rp.sub": "{n} question(s) graded", "rp.sub2": " · the remaining {n} are not counted yet",
+  "rp.bars": "Score by question", "rp.weak": "Parts to work on",
+  "rp.noweak": "No part fell below 60%.",
+  "rp.prin": "The grading rules again", "rp.unscored": "not graded",
+  "pr.h": "The common grading rules", "pr.n": "Rule {n}",
+  "pv.h": "Submissions", "pv.load": "Loading…", "pv.none": "No submissions yet.",
+  "pv.fail": "Could not load the records. Please try again shortly.",
+  "pv.n": "{n} student(s)", "pv.avg": "Q{n} average",
+  "pv.sno": "Student ID", "pv.name": "Name", "pv.done": "Done", "pv.sum": "Total",
+  "pv.last": "Last activity", "pv.lang": "Language",
+  "pv.persons": "{n}",
+  "save.ing": "Saving…", "save.ok": "Saved · {t}", "save.fail": "Not saved — check your connection",
+  "err.email": "That email address is not valid.",
+  "err.nouser": "No account with that email. Please sign up first.",
+  "err.pw": "Email or password is incorrect.",
+  "err.dup": "That email is already registered. Please sign in instead.",
+  "err.weak": "Password must be at least 6 characters.",
+  "err.popup": "The Google sign-in window was closed.",
+  "err.blocked": "The popup was blocked. Please allow popups for this site.",
+  "err.net": "Please check your network connection.",
+  "err.many": "Too many attempts. Please wait a moment.",
+  "err.etc": "Please try again shortly.",
+  "cp.cond": "I copied a case company's figures or proper nouns verbatim (rule 3)",
+  "q.label": "Question {n}"
+},
+
+zh: {
+  "brand.t": "模拟测验", "brand.s": "商业模式与决策论",
+  "nav.home": "首页", "nav.prin": "评分原则", "nav.lang": "语言",
+  "auth.h1": "期中考试模拟练习",
+  "auth.sub": "做与真实考试同类的题目，并用任课教师使用的评分标准表亲自评分。",
+  "auth.login": "登录", "auth.join": "注册",
+  "auth.name": "姓名", "auth.nameph": "请输入姓名",
+  "auth.sno": "学号", "auth.snoph": "20231234",
+  "auth.email": "邮箱", "auth.pw": "密码", "auth.pwph": "6位以上",
+  "auth.joinbtn": "注册并开始", "auth.or": "或",
+  "auth.google": "使用谷歌账号继续",
+  "auth.fine": "学号用于教师确认成绩。你写的答案只有本人可以看到。",
+  "auth.need": "请输入邮箱和密码。", "auth.needname": "请输入姓名和学号。",
+  "auth.wait": "处理中…", "auth.loadfail": "未能载入记录，请重新登录。",
+  "pf.h1": "请告诉我们姓名和学号",
+  "pf.sub": "确认成绩时需要，只需填写一次。",
+  "pf.btn": "开始", "pf.need": "请将姓名和学号都填写完整。",
+  "load.t": "正在载入记录…",
+  "home.howto": "一道题的作答流程",
+  "home.s1l": "第1步", "home.s1": "提交答案后，先对形式做机械检查",
+  "home.s2l": "第2步", "home.s2": "对照教师使用的标准表，亲自给自己的答案评分",
+  "home.s3l": "第3步", "home.s3": "比较能得分的答案与会被扣分的答案",
+  "home.fine": "真实考试从这六道题中选五道，满分100分。答案会自动保存，中途离开也可以接着写。",
+  "home.start": "继续作答", "home.report": "查看总成绩",
+  "home.prof": "提交情况", "home.logout": "退出登录", "home.sect": "题目",
+  "home.noscore": "还没有评分过的题目",
+  "home.scoresub": "已完成 {n} 道题合计（每题20分）",
+  "home.prog": "已完成 {a} / {b} 道题",
+  "card.before": "未开始", "card.writing": "作答中 {a}/{b}", "card.done": "{n} / 20分",
+  "stage.0": "作答", "stage.1": "第1步 · 自动检查",
+  "stage.2": "第2步 · 对照标准表评分", "stage.3": "第3步 · 解析",
+  "ex.sit": "情境", "ex.guide": "建议篇幅", "ex.ph": "请在此处作答。",
+  "ex.cnt": "{c}字 · {l}行", "ex.pts": "{n}分",
+  "ex.submit": "提交答案并开始评分", "ex.tohome": "返回首页",
+  "ex.fine": "提交后答案仍会保留。在评分环节，你需要重读自己的答案，并按标准逐项判定。",
+  "ex.needans": "请先作答。",
+  "ex.confirm": "还有 {n} 个小题是空的。若直接提交，这些小题将按0分计。要继续吗？",
+  "au.notice": "<strong>这不是分数。</strong>这是按评分标准表的原则1·2·3做的一次机械初检。真正的分数在下一步由你对照标准表亲自判定。人工阅卷也是这个顺序——先筛形式，再看内容。",
+  "au.good": "通过", "au.warn": "注意", "au.bad": "待查",
+  "au.back": "修改答案", "au.next": "对照标准表评分",
+  "au.short.t": "篇幅过短的小题",
+  "au.short.d": "（{x}）— 原则5：篇幅本身不扣分，但两行以内几乎都通不过具体性测试。",
+  "au.ban.t": "出现了零分套话",
+  "au.ban.d": "“{x}” — 属于原则2。若后面没有跟上具体内容，该要素计0分。",
+  "au.noban.t": "没有零分套话", "au.noban.d": "答案中没有命中原则2套话清单的表述。",
+  "au.case.t": "课堂案例的专有名词或数字被原样照搬",
+  "au.case.d": "“{x}” — 原则3：原样照搬扣2分。若换算成题中组织的规模则不扣分。",
+  "au.vague.t": "测量点没有具体指明",
+  "au.vague.d": "“{x}” — 原则1：测量点必须指明位于流程的哪一个环节。",
+  "au.num1.t": "发现可测量的数字与单位",
+  "au.num1.d": "你用数字和单位写了条件。具体判定请在第2步亲自完成。",
+  "au.num0.t": "完全没有数字或单位",
+  "au.num0.d": "本题要求“能数出通过个数的条件”。没有数字和单位很难通过。",
+  "au.act1.t": "出现了主体（职务·部门）", "au.act1.d": "你写明了由谁来做。",
+  "au.act0.t": "没有写明主体",
+  "au.act0.d": "本题要求回答“由谁”。没有职务和所属部门，该要素会被扣分。",
+  "au.cond1.t": "出现了条件或范围", "au.cond1.d": "“以上/以内/如果”这类表述能让标准变得可判定。",
+  "au.cond0.t": "没有条件或范围的表述", "au.cond0.d": "要成为判定标准，必须显示出范围或条件。",
+  "sf.notice": "<strong>请重读自己的答案</strong>，为每个要素选择适用的那一行。这与教师使用的标准表完全相同。评得过宽，吃亏的是真实考试——拿不准时，按原则8选较低的一行。",
+  "sf.myans": "查看我的答案", "sf.noans": "（未作答）",
+  "sf.key": "本题的区分标准", "sf.live": "当前评分合计",
+  "sf.miss": "还有 {n} 项未判定", "sf.all": "所有项目均已判定",
+  "sf.back": "回到第1步", "sf.next": "确认评分并查看解析",
+  "sf.needall": "还有 {n} 项尚未判定。",
+  "ex.score": "{a} / {b}分",
+  "xp.result": "第 {n} 题 自评结果", "xp.of": "/ 20分",
+  "xp.intent": "命题意图", "xp.ok": "能得分的答案", "xp.no": "计0分或被扣分的答案",
+  "xp.cmp": "与我写的答案对比",
+  "xp.regrade": "重新评分", "xp.retry": "修改答案重做",
+  "xp.next": "下一题", "xp.report": "查看总成绩",
+  "v.18": "标准表要求的要素几乎都具备了。真实考试保持这个水平即可。",
+  "v.14": "方向正确。请在下面的解析中确认缺了哪些要素。",
+  "v.9": "有内容但具体性不足。请重新检视：能不能数出来／环节是否指明／由谁决定。",
+  "v.4": "多数要素卡在原则1的具体性测试上。请逐句对照解析中“能得分的答案”。",
+  "v.0": "建议再做一次。可以先读解析，再修改答案重新挑战。",
+  "rp.h1": "总成绩", "rp.total": "自评合计", "rp.pct": "得分率",
+  "rp.sub": "已评 {n} 道题", "rp.sub2": " · 剩余 {n} 道题尚未计入",
+  "rp.bars": "各题得分", "rp.weak": "需要补强的小题",
+  "rp.noweak": "没有低于60%的小题。",
+  "rp.prin": "再看一遍评分原则", "rp.unscored": "未评分",
+  "pr.h": "评分的共通原则", "pr.n": "原则 {n}",
+  "pv.h": "提交情况", "pv.load": "载入中…", "pv.none": "还没有提交记录。",
+  "pv.fail": "未能载入记录，请稍后再试。",
+  "pv.n": "{n}人应试", "pv.avg": "第{n}题平均",
+  "pv.sno": "学号", "pv.name": "姓名", "pv.done": "完成", "pv.sum": "合计",
+  "pv.last": "最近活动", "pv.lang": "语言",
+  "pv.persons": "{n}人",
+  "save.ing": "保存中…", "save.ok": "已保存 · {t}", "save.fail": "保存失败 — 请检查网络连接",
+  "err.email": "邮箱格式不正确。",
+  "err.nouser": "该邮箱尚未注册，请先注册。",
+  "err.pw": "邮箱或密码不正确。",
+  "err.dup": "该邮箱已注册，请直接登录。",
+  "err.weak": "密码需为6位以上。",
+  "err.popup": "谷歌登录窗口已关闭。",
+  "err.blocked": "弹出窗口被拦截，请在地址栏允许弹出窗口。",
+  "err.net": "请检查网络连接。",
+  "err.many": "尝试次数过多，请稍后再试。",
+  "err.etc": "请稍后再试。",
+  "cp.cond": "原样照搬了课堂案例企业的数字或专有名词（原则3）",
+  "q.label": "第 {n} 题"
+}
+};
+
+/* 채점 원칙 — 3개 언어 */
+const PRIN_TR = {
+ko: PRINCIPLES.map(p => ({ n: p.n, t: p.t, d: p.d })),
+en: [
+  { n: 1, t: "Apply the specificity test first", d: "A criterion must let you count how many items pass. An indicator must say what is counted and in what unit. A measurement point must name a step. A role must separate what the person can decide alone from what they cannot. If it fails, the element scores 0 no matter how sensible it sounds." },
+  { n: 2, t: "Some phrases score 0 on their own", d: "“Improve communication”, “tidy up the system”, “raise efficiency”, “manage actively”, “share company-wide”, “consult the relevant departments”, “keep improving”, “start with what matters”, “take responsibility”, “change the culture”. Only what concretely follows such a phrase is graded." },
+  { n: 3, t: "Copying the case companies is penalised", d: "Lifting a case company's figures or proper nouns verbatim costs −2. Naming a concept or framework costs nothing. Converting a figure to the given organisation's scale costs nothing." },
+  { n: 4, t: "Contradictions score 0 on both sides", d: "If two scorable statements contradict, the grader does not pick the favourable one. A conditional statement (“if A then …, if B then …”) is not a contradiction." },
+  { n: 5, t: "Length earns and costs nothing", d: "But two lines or fewer almost never passes rule 1." },
+  { n: 6, t: "Extra items beyond the number asked are not graded", d: "Asked for three and wrote four? Only the first three count, even if a better answer sits further down." },
+  { n: 7, t: "Near-identical answers count as one", d: "“Cost over 100M”, “cost over 200M”, “high-cost work” is one criterion, not three." },
+  { n: 8, t: "Scores are whole points only", d: "When torn: ① does it pass the specificity test → ② are all required parts present → ③ does it fit the situation logically → ④ still torn, take the lower score." }
+],
+zh: [
+  { n: 1, t: "先做具体性测试", d: "标准要能数出通过的个数；指标要说明数什么、单位是什么；测量点要指明流程的哪一环节；角色权限要区分可以独自决定与不可以决定的范围。通不过的要素，内容再像样也计0分。" },
+  { n: 2, t: "有些表述本身就是0分", d: "“加强沟通”“完善体系”“提高效率”“积极管理”“全公司共享”“与相关部门协商”“持续改进”“从重要的做起”“增强责任感”“改变文化”。只有后面跟上的具体内容才计分。" },
+  { n: 3, t: "照搬课堂案例要扣分", d: "原样照搬案例企业的数字或专有名词扣2分。写出概念或框架名称本身不扣分。换算成题中组织的规模也不扣分。" },
+  { n: 4, t: "自相矛盾的两处都计0分", d: "若两处可计分的陈述互相矛盾，阅卷者不会替你挑有利的一处。条件式陈述（“若A则…，若B则…”）不算矛盾。" },
+  { n: 5, t: "篇幅既不加分也不扣分", d: "但两行以内几乎都通不过原则1。" },
+  { n: 6, t: "超出要求个数的部分不评分", d: "要求写三个却写了四个，只看前三个，即使后面有更好的答案也不计。" },
+  { n: 7, t: "实质相同的答案算作一个", d: "“费用1亿以上”“费用2亿以上”“费用大的业务”算一个，不是三个。" },
+  { n: 8, t: "只给整数分", d: "拿不准时：①是否通过具体性测试 →②要求的要素是否齐全 →③是否与情境逻辑相符 →④仍然两难，取较低分。" }
+]
+};
+
+/* 언어별 자동 점검 패턴 */
+const PAT = {
+ko: {
+  ban: BAN_PHRASES,
+  num: NUM_UNIT, actor: ACTOR, cond: CONDITION, vague: VAGUE_POINT
+},
+en: {
+  ban: ["improve communication", "strengthen communication", "better communication",
+    "tidy up the system", "organize the system", "improve the system", "fix the system",
+    "raise efficiency", "increase efficiency", "improve efficiency", "be more efficient",
+    "manage actively", "actively manage", "proactively manage",
+    "share company-wide", "share across the company", "share with everyone",
+    "consult the relevant department", "coordinate with relevant department", "work with the relevant team",
+    "continuously improve", "continuous improvement", "keep improving",
+    "start with what matters", "prioritize important", "take responsibility",
+    "change the culture", "raise awareness", "provide training", "educate the staff"],
+  num: /\d[\d,.]*\s*(%|percent|points?|pts?|cases?|tickets?|days?|business\s?days?|hrs?|hours?|minutes?|mins?|items?|people|persons?|staff|weeks?|months?|years?|times?|won|krw|usd|dollars?|million|billion|m\b|bn\b)/i,
+  actor: /\b(who|manager|director|head of|supervisor|officer|team lead|lead|coordinator|owner|desk|department|unit|office|committee|board|staff member)\b/i,
+  cond: /\b(or more|or above|or higher|at least|at most|no less than|more than|less than|under|over|within|exceeds?|if |when |unless|threshold|condition)\b/i,
+  vague: /\b(entire process|whole process|end to end|at all times|continuously|throughout|as needed|everywhere|all stages)\b/i
+},
+zh: {
+  ban: ["加强沟通", "强化沟通", "改善沟通", "完善体系", "整顿体系", "健全体系",
+    "提高效率", "提升效率", "增进效率", "积极管理", "主动管理",
+    "全公司共享", "全员共享", "全面共享", "与相关部门协商", "与有关部门沟通",
+    "持续改进", "不断改进", "持续完善", "从重要的开始", "优先处理重要",
+    "增强责任感", "提高责任心", "改变文化", "提高认识", "提升意识",
+    "加强培训", "加强教育", "完善制度", "改善系统"],
+  num: /\d[\d,.]*\s*(%|分|件|元|万|亿|韩元|天|日|小时|分钟|个|名|人|工作日|周|个月|年|次|倍|度)/,
+  actor: /(谁|由谁|负责人|主管|科长|部长|处长|院长|店主|理事会|运营组|推进组|管理者|专员|专职|窗口|部门|科室|委员会)/,
+  cond: /(以上|以下|超过|不足|以内|之内|不少于|不多于|如果|若|当|一旦|条件|门槛)/,
+  vague: /(全过程|整个过程|全流程|随时|经常|平时|需要时|所有环节|各个环节)/
+}
+};
+
+</script>
+<script>
+/* ===== 문항 내용 — English ===== */
+const TR_EN = {
+/* ---------- Q1 ---------- */
+"q1.title": "Where do you draw the line",
+"q1.org": "Hangyeol Logistics",
+"q1.scope": "Week 2 — Identifying the processes that matter",
+"q1.intent": "Whether you can turn a selection rule into a measurable condition, and whether you can defend against what that rule leaves out.",
+"q1.sit.0": "Hangyeol Logistics is a mid-sized logistics firm with 740 employees and ₩210bn in annual revenue. For the first time in its history it has decided to introduce company-wide process management.",
+"q1.sit.1": "At the kickoff workshop, the task lists submitted by every department added up to 1,240 items. The project lead argues: “We have to manage all of it, so let's register and document all 1,240 as formal processes.” The project team is four people including the lead, and management has given them ten months.",
+"q1.a.prompt": "Give two reasons why registering all 1,240 items is likely to fail. Do not stop at “there is too much work” — say what actually happens as a result.",
+"q1.a.guide": "2 reasons · 3–5 lines each",
+"q1.a.e0.n": "Reason ①",
+"q1.a.e0.o0": "Both ‘why it fails’ and ‘what happens as a result’ are present",
+"q1.a.e0.o1": "Only one of the two is present",
+"q1.a.e0.o2": "A zero-score phrase, or “there is too much work” with no consequence stated",
+"q1.a.e1.n": "Reason ②",
+"q1.a.e1.o0": "Both ‘why it fails’ and ‘what happens as a result’ are present",
+"q1.a.e1.o1": "Only one of the two is present",
+"q1.a.e1.o2": "A zero-score phrase, or “there is too much work” with no consequence stated",
+"q1.a.ok.0": "Cannot be sustained — four people cannot document and keep updating 1,240 items in ten months → half-finished documents pile up and the whole system loses credibility",
+"q1.a.ok.1": "Never used — the volume means nobody looks anything up → registering becomes the goal and never turns into improvement",
+"q1.a.ok.2": "Priority disappears — critical and trivial work sit at the same weight → improvement resources get scattered",
+"q1.a.ok.3": "Cannot be kept current — when reality changes you cannot revise all of it → documents drift from reality and actively mislead",
+"q1.a.no.0": "“There is too much work and not enough time”",
+"q1.a.no.1": "“It is inefficient”",
+"q1.a.no.2": "“The system needs to be tidied up”",
+"q1.b.prompt": "Design three entry criteria that filter which items Hangyeol Logistics registers as formal processes. Each criterion must have both: ① a measurable condition that decides pass or fail, and ② what you look at to confirm it (the source or method of judgement).",
+"q1.b.guide": "3 criteria · 2–4 lines each",
+"q1.b.e0.n": "Criterion ① — measurable condition",
+"q1.b.e0.o0": "Applied to the list of 1,240, you could count how many pass",
+"q1.b.e0.o1": "You could not count (“work that happens often”, “important work”)",
+"q1.b.e1.n": "Criterion ① — source or method",
+"q1.b.e1.o0": "States what you look at to confirm it",
+"q1.b.e1.o1": "Absent",
+"q1.b.e2.n": "Criterion ② — measurable condition",
+"q1.b.e2.o0": "You could count how many pass",
+"q1.b.e2.o1": "You could not count",
+"q1.b.e3.n": "Criterion ② — source or method",
+"q1.b.e3.o0": "States what you look at to confirm it",
+"q1.b.e3.o1": "Absent",
+"q1.b.e4.n": "Criterion ③ — measurable condition",
+"q1.b.e4.o0": "You could count how many pass",
+"q1.b.e4.o1": "You could not count",
+"q1.b.e5.n": "Criterion ③ — source or method",
+"q1.b.e5.o0": "States what you look at to confirm it",
+"q1.b.e5.o1": "Absent",
+"q1.b.p0": "All three criteria are effectively the same axis (e.g. all about cost) — rule 7 counts them as one",
+"q1.b.ok.0": "Handles 500 or more transactions a year — confirmed from the ERP transaction log",
+"q1.b.ok.1": "Costs ₩100m or more a year — confirmed from last year's closing figures by account",
+"q1.b.ok.2": "Produces a document the law requires to be retained — confirmed against the legal team's retention list",
+"q1.b.ok.3": "If it stops, customer delivery halts within 24 hours — confirmed against the customer SLA contract",
+"q1.b.ok.4": "Involves three or more departments — confirmed from the departmental duty chart",
+"q1.b.no.0": "“Work that happens often”",
+"q1.b.no.1": "“Work that costs a lot”",
+"q1.b.no.2": "“Work related to regulation”",
+"q1.b.no.3": "“Important work”",
+"q1.c.prompt": "Apply your criteria to the 1,240 items and some work will drop out that earns no money and faces no regulation, yet the core business cannot run without it. What would you add to the criteria to stop that work from being excluded? State the clause you would add and explain why it works.",
+"q1.c.guide": "1 clause + explanation · 4–8 lines",
+"q1.c.e0.n": "The added clause",
+"q1.c.e0.o0": "Uses an axis other than cost or regulation, and its link to core work can actually be judged",
+"q1.c.e0.o1": "A clause is offered but cannot be judged (“include important support work” etc.)",
+"q1.c.e0.o2": "No clause — only restates the problem",
+"q1.c.e1.n": "Why it works",
+"q1.c.e1.o0": "Explains with an example of the work the clause rescues",
+"q1.c.e1.o1": "Explains the effect only in the abstract",
+"q1.c.e1.o2": "No explanation",
+"q1.c.ok.0": "Work that stops whenever a core process (order intake, dispatch, settlement) stops",
+"q1.c.ok.1": "Work that is a precondition for a core process — the core work cannot start until this finishes",
+"q1.c.ok.2": "Work whose stoppage adds ○ hours or more to a core process's cycle time",
+"q1.c.ok.3": "Combine the four conditions so that meeting any one of them is enough to pass",
+"q1.c.no.0": "Saying ‘combine them with OR’ without any clause content",
+"q1.c.no.1": "“Include important work too”",
+
+/* ---------- Q2 ---------- */
+"q2.title": "Eighty indicators down to how many",
+"q2.org": "OnMarket",
+"q2.scope": "Week 3 — Designing process performance indicators",
+"q2.intent": "Whether you understand that goals and success factors come before picking indicators, and whether you can get down to measurement points and calculation conditions.",
+"q2.sit.0": "OnMarket is a fresh-grocery overnight delivery startup. Its data team designed 80 KPIs for the picking and packing process at the fulfilment centre and built a dashboard.",
+"q2.sit.1": "Three months after launch, floor managers barely open it. Those who do say “there are so many numbers I don't know what to look at.”",
+"q2.sit.2": "The company's two stated strategic goals are: ‘99.5% of orders delivered before 7am the next day’ and ‘zero customer complaints about freshness’.",
+"q2.a.prompt": "The data team wants to start by cutting the 80 down. But something has to come before cutting indicators. What is it, and why must it come first?",
+"q2.a.guide": "3–6 lines",
+"q2.a.e0.n": "What comes first",
+"q2.a.e0.o0": "Clearly names at least one of: the goal, the critical success factors, the purpose of measuring, or mapping the process",
+"q2.a.e0.o1": "Right direction but vague (“think about the purpose”)",
+"q2.a.e0.o2": "“Keep only the important indicators”, “ask the floor” — no sense of what comes before what",
+"q2.a.e1.n": "Why it must come first",
+"q2.a.e1.o0": "Explains what goes wrong if you skip it",
+"q2.a.e1.o1": "Right direction but states no consequence",
+"q2.a.e1.o2": "No explanation",
+"q2.a.ok.0": "First set the goal this process has to achieve",
+"q2.a.ok.1": "Start from company strategy and derive this process's critical success factors first",
+"q2.a.ok.2": "First decide the purpose of measuring — what are we measuring for",
+"q2.a.ok.3": "First map the process so you know what happens where",
+"q2.a.ok.4": "Why: without a goal, plausible-looking indicators creep back in and you are at 80 again / there is no basis for deciding what to drop",
+"q2.a.no.0": "“Keep only the important ones”",
+"q2.a.no.1": "“Gather opinions from the floor” (with no sense of sequence)",
+"q2.b.prompt": "Starting from the strategic goals above, derive two critical success factors (CSFs) for this process. Then give two indicators per CSF, four in total. For each indicator you must also state at which point in the process it is measured.",
+"q2.b.guide": "2 CSFs + 4 indicators + 4 measurement points",
+"q2.b.e0.n": "The two CSFs",
+"q2.b.e0.o0": "Both are derived from the strategic goals and are axes you can draw indicators from",
+"q2.b.e0.o1": "Only one is",
+"q2.b.e0.o2": "The strategic goal was copied across verbatim (“99.5% on-time” is a goal, not a CSF)",
+"q2.b.e1.n": "The four indicators",
+"q2.b.e1.o0": "All four make clear what is counted or measured, and in what unit",
+"q2.b.e1.o1": "Three do", "q2.b.e1.o2": "Two do", "q2.b.e1.o3": "One does", "q2.b.e1.o4": "None",
+"q2.b.e2.n": "The four measurement points",
+"q2.b.e2.o0": "All four name a specific step in the process",
+"q2.b.e2.o1": "Three do", "q2.b.e2.o2": "Two do", "q2.b.e2.o3": "One does",
+"q2.b.e2.o4": "“Entire process”, “at all times” — no step is named",
+"q2.b.p0": "An indicator does not connect to its own CSF (a freshness indicator under a time CSF, etc.)",
+"q2.b.ok.0": "CSF ‘meeting the clock’ → minutes to complete picking / measured at the picking-complete scan",
+"q2.b.ok.1": "CSF ‘meeting the clock’ → % loaded before the cut-off / measured at the vehicle loading scan",
+"q2.b.ok.2": "CSF ‘freshness quality’ → cold-pack defects per day / measured at the packing inspection step",
+"q2.b.ok.3": "CSF ‘freshness quality’ → % of temperature excursions / measured at the temperature log just before dispatch",
+"q2.b.no.0": "Measurement point written as “at the fulfilment centre” or “the entire process”",
+"q2.b.no.1": "Putting “achieve 99.5% on-time delivery” in the CSF slot",
+"q2.c.prompt": "Pick one of your four indicators that concerns time (add one if you have none). State one condition that must be fixed in advance to calculate that time, and explain what goes wrong if it is not fixed.",
+"q2.c.guide": "1 condition + consequence · 3–6 lines",
+"q2.c.e0.n": "The condition",
+"q2.c.e0.o0": "Offers the actual choice to be made (e.g. working hours or round-the-clock)",
+"q2.c.e0.o1": "Mentions a condition but offers no choice (“we need to set a time basis”)",
+"q2.c.e0.o2": "Restates the indicator, or no condition",
+"q2.c.e1.n": "What goes wrong",
+"q2.c.e1.o0": "Explains how the number gets distorted without a fixed basis",
+"q2.c.e1.o1": "Mentions a problem but the direction of distortion is unclear",
+"q2.c.e1.o2": "No explanation",
+"q2.c.ok.0": "Working hours or round-the-clock (does it include nights and holidays)",
+"q2.c.ok.1": "Which event counts as the start and which as the end",
+"q2.c.ok.2": "How public holidays and closed days are handled",
+"q2.c.ok.3": "Whether waiting time (e.g. awaiting an external reply) is included",
+"q2.c.ok.4": "Consequence: with different bases the same performance looks different and centres cannot be compared / changing the basis afterwards lets you manufacture an improvement",
+"q2.c.no.0": "“It has to be measured accurately”",
+"q2.c.no.1": "“The basis is important”",
+
+/* ---------- Q3 ---------- */
+"q3.title": "How to stop a complaint from wandering",
+"q3.org": "Hanbit Hospital",
+"q3.scope": "Week 4 — A single point of contact and its authority",
+"q3.intent": "Whether you can tell the difference between naming one person and creating a post that holds authority, under a budget constraint. This question separates on part (2), the design of authority.",
+"q3.sit.0": "At Hanbit Hospital, a regional general hospital, billing disputes wander between departments. Complaints arrive at admissions, which says “the clinical content isn't ours” and passes them to the clinical department. The clinical department says “it's the insurance coverage rules” and passes them to insurance review, which sends them back to admissions.",
+"q3.sit.1": "It takes 11 days on average from intake to resolution, and only 20% are handled through to the end by whoever first received them. Some complaints go round several times.",
+"q3.sit.2": "The hospital director has ruled out any budget for a new complaint-management system.",
+"q3.a.prompt": "Without buying a new system, name three things you could change in this situation.",
+"q3.a.guide": "3 items · 1–2 lines each",
+"q3.a.e0.n": "The three things",
+"q3.a.e0.o0": "All three are non-purchase levers and pass the specificity test",
+"q3.a.e0.o1": "Two pass", "q3.a.e0.o2": "One passes",
+"q3.a.e0.o3": "All at the level of “improve the system”, “improve communication”",
+"q3.a.ok.0": "How ownership is assigned",
+"q3.a.ok.1": "The rules for classifying complaints",
+"q3.a.ok.2": "The intake form and its required fields",
+"q3.a.ok.3": "An agreed turnaround deadline between departments",
+"q3.a.ok.4": "The escalation path",
+"q3.a.ok.5": "The scope of delegated authority",
+"q3.a.ok.6": "A duplicate-intake check",
+"q3.a.no.0": "“Improve the system”",
+"q3.a.no.1": "“Train the staff” (without saying what is taught)",
+"q3.a.no.2": "“Improve communication”",
+"q3.b.prompt": "Design a single point of contact so complaints stop wandering. It must include all three: ① who holds it (role and which unit)  ② what that person can decide alone, and what they can demand of other departments  ③ for matters beyond their authority — to whom, under what condition, and within how many days they escalate.",
+"q3.b.guide": "Who · authority · escalation path · 6–10 lines",
+"q3.b.key": "A design where the contact point has no power to move other departments scores at most 2 on ②. Naming one person without authority just means the complaint stops at that person's desk — the structure is unchanged.",
+"q3.b.e0.n": "① Who holds it",
+"q3.b.e0.o0": "Both the role and the unit are named",
+"q3.b.e0.o1": "Only one of the two is named",
+"q3.b.e0.o2": "At the level of “appoint someone in charge”",
+"q3.b.e1.n": "② Authority — what they decide alone",
+"q3.b.e1.o0": "The scope they can decide alone is pinned down by amount, matter type or deadline",
+"q3.b.e1.o1": "Absent",
+"q3.b.e2.n": "② Authority — what they can demand of others",
+"q3.b.e2.o0": "The right to demand records or a reply is stated, with its deadline",
+"q3.b.e2.o1": "Absent",
+"q3.b.e3.n": "③ Escalation path",
+"q3.b.e3.o0": "To whom / under what condition / within how many days — all three present",
+"q3.b.e3.o1": "Two of the three", "q3.b.e3.o2": "Only the person escalated to",
+"q3.b.e3.o3": "Absent",
+"q3.b.ok.0": "A ‘billing dispute officer’ in admissions, one person at manager grade",
+"q3.b.ok.1": "Adjustments of ₩500,000 or less approved alone",
+"q3.b.ok.2": "Can require a reply from the clinical department within 2 business days; no reply escalates automatically to the deputy director",
+"q3.b.ok.3": "Adjustments above ₩500,000, or anything past 5 business days from intake, go up to the deputy director",
+"q3.b.no.0": "“Appoint a dedicated person in admissions and make them responsible to the end” (no authority stated)",
+"q3.c.prompt": "Six months after the contact point is set up, complaints start wandering again. Name the single most likely cause and give a device that would prevent it.",
+"q3.c.guide": "1 cause + 1 device · 4–8 lines",
+"q3.c.e0.n": "Naming the cause",
+"q3.c.e0.o0": "Clearly names one of the causes listed below",
+"q3.c.e0.o1": "The cause is vague (“it wasn't managed well”)",
+"q3.c.e0.o2": "No cause — only a device",
+"q3.c.e1.n": "The device",
+"q3.c.e1.o0": "Directly blocks the named cause and passes the specificity test",
+"q3.c.e1.o1": "The device is concrete but only weakly linked to the named cause",
+"q3.c.e1.o2": "Fails the specificity test",
+"q3.c.ok.0": "Classification rules are missing or vague, so the contact point falls back on judgement again",
+"q3.c.ok.1": "The contact point has no escalation authority, so other departments do not move",
+"q3.c.ok.2": "Volume piles onto one person and that post becomes the new bottleneck",
+"q3.c.ok.3": "A new type of complaint arrives that the rules do not cover, so there is no path for it",
+"q3.c.ok.4": "The post changed hands and the rules and know-how were never handed over",
+"q3.c.no.0": "“Management got lax”",
+"q3.c.no.1": "“Staff lacked a sense of responsibility”",
+
+/* ---------- Q4 ---------- */
+"q4.title": "A manual untouched for two years",
+"q4.org": "Pureun Maeul Co-op",
+"q4.scope": "Week 5 — Keeping a document alive",
+"q4.intent": "Whether you can turn this from ‘how to write a good document’ into ‘how to keep a document alive’. It separates on the boundary in (2) and the forced coupling in (3).",
+"q4.sit.0": "Pureun Maeul Co-op runs four consumer-co-op stores. The store operations manual was written by an outside consultant two years ago and has never been revised since. In that time the POS system, the ordering method, the delivery contractor and the refund policy have all changed.",
+"q4.sit.1": "New staff learn the job by asking senior colleagues instead of reading the manual, and each store now handles things slightly differently.",
+"q4.sit.2": "The chair wants to “fully revise the manual” and is looking into hiring consultants again.",
+"q4.a.prompt": "A full revision alone is likely to leave the co-op in the same position two years from now. Explain why, in terms of the relationship between the people who write the manual and the people who use it.",
+"q4.a.guide": "3–6 lines",
+"q4.a.e0.n": "Naming the split",
+"q4.a.e0.o0": "Points out that writers and users are separate, so users have neither the authority nor the means to fix it",
+"q4.a.e0.o1": "Says only “it doesn't match the floor” without naming the split",
+"q4.a.e0.o2": "“It's old”, “nobody managed it”",
+"q4.a.e1.n": "The consequence",
+"q4.a.e1.o0": "Explains that the split drives documents apart from reality and back into word of mouth",
+"q4.a.e1.o1": "Mentions a consequence but the link is weak",
+"q4.a.e1.o2": "No explanation",
+"q4.a.ok.0": "An outside consultant writes it and floor staff use it, so the users have neither the authority nor the means to change it",
+"q4.a.ok.1": "The writer leaves when the project ends, so no one owns keeping it current",
+"q4.a.ok.2": "Consequence: when reality changes there is nobody to update it, so documents and reality drift apart and staff go back to asking seniors — which makes each store different",
+"q4.a.no.0": "“The manual is old”",
+"q4.a.no.1": "“It was managed carelessly”",
+"q4.b.prompt": "Design a two-way structure where floor staff can edit directly and a responsible owner still governs. It must include all three: ① what floor staff edit, where, and through what procedure  ② what only the owner governs  ③ when a floor edit and the owner's policy conflict, who resolves it and how.",
+"q4.b.guide": "Editing path · owner's scope · conflict procedure · 6–10 lines",
+"q4.b.key": "If the boundaries of ① and ② overlap — that is, if what the floor may edit is not separated from what is owner-only — ② scores 0. Without a boundary, the conflict rule in ③ cannot work at all.",
+"q4.b.e0.n": "① The floor's editing path",
+"q4.b.e0.o0": "What (the editable scope) / where (tool or place) / how (procedure) — all three present",
+"q4.b.e0.o1": "Two of the three", "q4.b.e0.o2": "One of the three",
+"q4.b.e0.o3": "At the level of “staff edit freely”",
+"q4.b.e1.n": "② The owner's scope",
+"q4.b.e1.o0": "Specifically lists the items the floor cannot touch",
+"q4.b.e1.o1": "At the level of “the owner governs what matters”",
+"q4.b.e1.o2": "Absent, or overlaps ① so the two are not separated",
+"q4.b.e2.n": "③ Conflict procedure",
+"q4.b.e2.o0": "Three or more of: who / under what condition / within how many days / what kind of ruling",
+"q4.b.e2.o1": "Two of them", "q4.b.e2.o2": "Only who resolves it", "q4.b.e2.o3": "Absent",
+"q4.b.ok.0": "① Store staff edit the ordering, display and POS procedures directly in the shared document, leaving a one-line reason with each edit",
+"q4.b.ok.1": "② Refund limits, legally required labelling and co-op-wide pricing rules can only be changed by the operations manager",
+"q4.b.ok.2": "③ The operations manager reviews the edit history every Friday and approves or rejects within 5 business days, stating a reason on rejection",
+"q4.b.no.0": "“Staff edit freely and the owner manages it” (no boundary)",
+"q4.c.prompt": "Give one device that couples the manual to other work so that failing to update it blocks that work, and explain why it works.",
+"q4.c.guide": "1 device + reason · 3–6 lines",
+"q4.c.e0.n": "The device",
+"q4.c.e0.o0": "A structure where not updating the manual actually blocks other work",
+"q4.c.e0.o1": "A device, but with no force behind it (“announce a monthly review”)",
+"q4.c.e0.o2": "At the level of “encourage people to read it often”",
+"q4.c.e1.n": "Why it works",
+"q4.c.e1.o0": "Explains whose work gets blocked, and how, if it is not updated",
+"q4.c.e1.o1": "Explains the effect only in the abstract",
+"q4.c.e1.o2": "No explanation",
+"q4.c.ok.0": "New-hire training material is generated from the manual, so if it is not updated new staff learn the wrong procedure → the training owner ends up fixing it",
+"q4.c.ok.1": "The monthly checklist is built from manual items, so a stale manual makes the check itself impossible",
+"q4.c.ok.2": "Inter-store ordering and settlement forms are tied to the manual's rules, so a mismatch gets the submission rejected",
+"q4.c.no.0": "“Review it regularly”",
+"q4.c.no.1": "“Encourage people to read it often”",
+
+/* ---------- Q5 ---------- */
+"q5.title": "Protect what works, or build something new",
+"q5.org": "Daejeon Central Market Merchants' Association",
+"q5.scope": "Week 1 — Four-axis diagnosis and choosing a direction",
+"q5.intent": "Whether you can run the four-axis diagnosis off facts that are actually in the situation, and connect that diagnosis to your conclusion. The direction of the diagnosis itself has no right answer.",
+"q5.sit.0": "The Daejeon Central Market Merchants' Association covers 320 stalls. Over the past three years, competition from online platforms has steadily cut footfall and revenue. The association is split between two proposals.",
+"q5.sit.1": "Plan A — cut unit costs through joint delivery and joint purchasing to compete on price.",
+"q5.sit.2": "Plan B — brand the whole market as one and open new online channels and an experience store.",
+"q5.sit.3": "The association's available budget is limited. Most members are in their sixties or older and are reluctant about new methods. The stalls also differ widely in what they sell and how they operate.",
+"q5.a.prompt": "Diagnose this organisation's situation along four axes: goal, process, organisation, environment. For each axis, judge whether it sits closer to ‘refining what already works’ or ‘searching for something new’, and give the grounds for that judgement from the situation described.",
+"q5.a.guide": "Judgement + grounds for each of the four axes",
+"q5.a.key": "Do not add or subtract points based on which way an axis was judged. Only whether the grounds come from facts in the situation. Inventing a fact that is not in the situation scores 0.",
+"q5.a.e0.n": "Judgement (four axes)",
+"q5.a.e0.o0": "All four axes clearly pick one side",
+"q5.a.e0.o1": "Three axes", "q5.a.e0.o2": "Two axes", "q5.a.e0.o3": "One axis",
+"q5.a.e0.o4": "Writes “both” or does not pick",
+"q5.a.e1.n": "Grounds (four axes)",
+"q5.a.e1.o0": "All four cite a fact that is actually in the situation",
+"q5.a.e1.o1": "Three axes", "q5.a.e1.o2": "Two axes", "q5.a.e1.o3": "One axis",
+"q5.a.e1.o4": "Invents facts not in the situation, or gives no grounds",
+"q5.a.ok.0": "Goal — falling revenue and footfall create survival pressure (arguable either way)",
+"q5.a.ok.1": "Process — stalls differ widely in products and operations → non-standard, closer to searching for something new",
+"q5.a.ok.2": "Organisation — limited budget, mostly members in their sixties, reluctant about new methods → closer to refining what works",
+"q5.a.ok.3": "Environment — competition from online platforms, three straight years of decline → closer to searching for something new",
+"q5.a.no.0": "Grounds like “the merchants were never trained”, which is not in the situation",
+"q5.a.no.1": "Writing “both apply” for all four axes",
+"q5.b.prompt": "Choose Plan A, Plan B, or propose a third option, and give three grounds. At least two of the grounds must come from your diagnosis in part (1).",
+"q5.b.guide": "Choice + 3 grounds",
+"q5.b.e0.n": "The choice",
+"q5.b.e0.o0": "Clearly picks A, B or a third option",
+"q5.b.e0.o1": "The choice is vague or ends up arguing both ways",
+"q5.b.e1.n": "Ground ①",
+"q5.b.e1.o0": "Connects to the diagnosis in (1) and rests on facts in the situation",
+"q5.b.e1.o1": "Rests on facts in the situation but does not connect to the diagnosis in (1)",
+"q5.b.e1.o2": "Fails the specificity test, or is a generality",
+"q5.b.e2.n": "Ground ②",
+"q5.b.e2.o0": "Connects to the diagnosis in (1) and rests on facts in the situation",
+"q5.b.e2.o1": "Rests on facts in the situation only", "q5.b.e2.o2": "A generality",
+"q5.b.e3.n": "Ground ③",
+"q5.b.e3.o0": "Connects to the diagnosis in (1) and rests on facts in the situation",
+"q5.b.e3.o1": "Rests on facts in the situation only", "q5.b.e3.o2": "A generality",
+"q5.b.p0": "Fewer than two of the three grounds come from the diagnosis in (1)",
+"q5.b.ok.0": "Choosing a third option earns no bonus and no penalty — it is graded on the same criteria as A and B",
+"q5.b.ok.1": "Example: since the organisation axis sits on ‘refining’, Plan B's full switch would struggle to find anyone to execute it",
+"q5.b.ok.2": "Example: because the stalls are non-standard, even joint delivery (Plan A) needs product standardisation first",
+"q5.b.no.0": "“Plan B is what everyone is doing now”",
+"q5.b.no.1": "“Online is the future” (with no fact from the situation)",
+"q5.c.prompt": "When you execute your chosen plan, the most likely source of resistance is the organisation's culture and its people. Give one concrete measure to address that.",
+"q5.c.guide": "1 measure · 3–5 lines",
+"q5.c.e0.n": "The measure",
+"q5.c.e0.o0": "Who / to whom / what / how — all four present",
+"q5.c.e0.o1": "Three of the four", "q5.c.e0.o2": "Two of the four",
+"q5.c.e0.o3": "One or fewer, or a zero-score phrase",
+"q5.c.ok.0": "The association's executive picks ten stall owners in their forties and fifties first, has them pilot joint delivery for three months, and has those same owners present the results themselves at the monthly meeting",
+"q5.c.no.0": "“Strengthen training”",
+"q5.c.no.1": "“Raise awareness”",
+"q5.c.no.2": "“Persuade them”",
+
+/* ---------- Q6 ---------- */
+"q6.title": "Can you trust these numbers",
+"q6.org": "Reading a performance report",
+"q6.scope": "Weeks 3 & 4 — Indicator design and reading results",
+"q6.intent": "Whether you have built the habit of not taking a result at face value and asking what the number actually counted.",
+"q6.sit.0": "A company redesigned its customer complaint handling process and reported the following results. The measurement window is two months before and two months after.",
+"q6.th.0": "Indicator", "q6.th.1": "Before", "q6.th.2": "After", "q6.th.3": "Change",
+"q6.tc.0": "Average handling time", "q6.tc.1": "Reassignment rate",
+"q6.tc.2": "Monthly intake volume", "q6.tc.3": "Staff hours consumed",
+"q6.a.prompt": "One of the four numbers is hard to read as a direct effect of the process redesign. Say which it is and why you judged so, then explain what that number is more likely a result of.",
+"q6.a.guide": "Identify + why + real cause · 5–8 lines",
+"q6.a.gate": "If you identify the wrong number, all of part (1) scores 0.",
+"q6.a.e0.n": "Identification",
+"q6.a.e0.o0": "Identifies ‘monthly intake volume’",
+"q6.a.e0.o1": "Identifies something else — in which case all of (1) scores 0",
+"q6.a.e1.n": "Why",
+"q6.a.e1.o0": "Explains that changing the process gives no reason for the underlying complaints themselves to fall",
+"q6.a.e1.o1": "Only points out that it “looks odd”, with no reason",
+"q6.a.e1.o2": "No explanation",
+"q6.a.e2.n": "What actually fell",
+"q6.a.e2.o0": "Explains that duplicate intakes fell",
+"q6.a.e2.o1": "Only says “there must be another reason”",
+"q6.a.e2.o2": "No explanation",
+"q6.a.ok.0": "Changing the process gives no reason for the problems customers experience to fall",
+"q6.a.ok.1": "A redesign changed how cases are handled; it did not remove the cause of the complaints",
+"q6.a.ok.2": "Intake volume swings with external factors — season, product changes, customer count — so it cannot be attributed to the redesign alone",
+"q6.a.ok.3": "What actually fell: when handling dragged, the same customer filed again, so one case was logged as two or three — that has now been cleaned up",
+"q6.a.no.0": "Identifying ‘staff hours consumed’ — that number is explained by the drop in reassignment, so it is a direct effect",
+"q6.b.prompt": "Before this report goes to the executive team, give two caveats that must be attached. Explain why each one is needed.",
+"q6.b.guide": "2 caveats · 2–4 lines each",
+"q6.b.e0.n": "Caveat ①",
+"q6.b.e0.o0": "Names the limitation concretely and explains why it is needed",
+"q6.b.e0.o1": "The limitation is concrete but no reason is given",
+"q6.b.e0.o2": "At the level of “there are limitations”, without naming what",
+"q6.b.e0.o3": "Restates the results",
+"q6.b.e1.n": "Caveat ②",
+"q6.b.e1.o0": "Names the limitation concretely and explains why it is needed",
+"q6.b.e1.o1": "The limitation is concrete but no reason is given",
+"q6.b.e1.o2": "At the level of “there are limitations”", "q6.b.e1.o3": "Restates the results",
+"q6.b.p0": "Repeats in (2) the same caveat already written in (1)",
+"q6.b.ok.0": "The window is only two months either side, so nothing can be said about whether it holds long term",
+"q6.b.ok.1": "External factors over the same period (seasonality, product or policy changes, customer count) were not controlled for",
+"q6.b.ok.2": "The fall in intake volume may be duplicate removal, so it must not be read as fewer complaints",
+"q6.b.ok.3": "It is not established that the before and after groups are comparable — whether they are the same type of complaint",
+"q6.b.ok.4": "Whether the measurement method and counting basis were identical before and after needs confirming",
+"q6.b.no.0": "“There may be limitations”",
+"q6.b.no.1": "“We should watch it longer”",
+"q6.c.prompt": "To check whether this project's effect still holds a year from now, what would you measure? Give one indicator and how it is measured.",
+"q6.c.guide": "1 indicator + method · 3–6 lines",
+"q6.c.e0.n": "The indicator",
+"q6.c.e0.o0": "An indicator that shows persistence, not a single point in time",
+"q6.c.e0.o1": "A sound indicator but measured at one point (“measure handling time a year later”)",
+"q6.c.e0.o2": "Fails the specificity test",
+"q6.c.e1.n": "How it is measured",
+"q6.c.e1.o0": "What the source is / how often / who reviews it — all three present",
+"q6.c.e1.o1": "Two of the three", "q6.c.e1.o2": "One of the three", "q6.c.e1.o3": "Absent",
+"q6.c.ok.0": "The month-by-month trend in the reassignment rate",
+"q6.c.ok.1": "The monthly median and 90th-percentile handling time",
+"q6.c.ok.2": "The monthly share of complaints of a new type the rules do not cover",
+"q6.c.ok.3": "The reassignment rate over the three months after the contact-point holder changes",
+"q6.c.no.0": "“Measure again in a year” (a single point)",
+"q6.c.no.1": "“Run a satisfaction survey” (unclear what is counted)"
+};
+
+</script>
+<script>
+/* ===== 문항 내용 — 中文 ===== */
+const TR_ZH = {
+/* ---------- Q1 ---------- */
+"q1.title": "界线划在哪里",
+"q1.org": "韩结物流",
+"q1.scope": "第2周 — 梳理主要流程",
+"q1.intent": "考察能否把筛选标准做成“可测量的条件”，以及能否自己防住该标准漏掉的部分。",
+"q1.sit.0": "韩结物流是一家拥有740名员工、年销售额2,100亿韩元的中型物流企业。公司决定首次导入全公司范围的流程管理体系。",
+"q1.sit.1": "启动研讨会上，各部门提交的业务清单汇总起来共1,240项。推进组组长主张：“必须无一遗漏地管理，所以把1,240项全部登记为正式流程并文档化。”推进组连组长在内共4人，管理层给的期限是10个月。",
+"q1.a.prompt": "请指出把1,240项全部登记这一方案很可能失败的两个理由。不要停留在“事情太多”，还要写出由此会发生什么后果。",
+"q1.a.guide": "2个理由 · 每个3~5行",
+"q1.a.e0.n": "理由 ①",
+"q1.a.e0.o0": "“为什么会失败”与“由此会发生什么”都写到了",
+"q1.a.e0.o1": "两者只写了其一",
+"q1.a.e0.o2": "属于零分套话，或只写“事情太多”而没有后果",
+"q1.a.e1.n": "理由 ②",
+"q1.a.e1.o0": "“为什么会失败”与“由此会发生什么”都写到了",
+"q1.a.e1.o1": "两者只写了其一",
+"q1.a.e1.o2": "属于零分套话，或只写“事情太多”而没有后果",
+"q1.a.ok.0": "无法维持 — 4个人无法在10个月内把1,240项文档化并持续更新 → 半成品文档越积越多，整个体系失去可信度",
+"q1.a.ok.1": "无人使用 — 量太大，没人会去查 → 登记本身变成目的，无法转化为改进",
+"q1.a.ok.2": "优先级消失 — 重要业务与琐碎业务被放在同等分量上 → 改进资源被分散",
+"q1.a.ok.3": "更新失败 — 现实变化了却无法全部修订 → 文档与现实脱节，反而造成混乱",
+"q1.a.no.0": "“事情太多，时间不够”",
+"q1.a.no.1": "“效率低下”",
+"q1.a.no.2": "“需要完善体系”",
+"q1.b.prompt": "请设计3条准入标准，用来筛选韩结物流应登记为正式流程的对象。每条标准必须同时具备两点：① 能判定是否通过的可测量条件；② 依据什么来确认该条件（判定资料或方法）。",
+"q1.b.guide": "3条标准 · 每条2~4行",
+"q1.b.e0.n": "标准 ① — 可测量的条件",
+"q1.b.e0.o0": "把该标准套用到1,240项清单上，能数出通过的个数",
+"q1.b.e0.o1": "数不出来（“经常发生的业务”“重要的业务”等）",
+"q1.b.e1.n": "标准 ① — 判定资料·方法",
+"q1.b.e1.o0": "写明了依据什么来确认",
+"q1.b.e1.o1": "没有",
+"q1.b.e2.n": "标准 ② — 可测量的条件",
+"q1.b.e2.o0": "能数出通过的个数",
+"q1.b.e2.o1": "数不出来",
+"q1.b.e3.n": "标准 ② — 判定资料·方法",
+"q1.b.e3.o0": "写明了依据什么来确认",
+"q1.b.e3.o1": "没有",
+"q1.b.e4.n": "标准 ③ — 可测量的条件",
+"q1.b.e4.o0": "能数出通过的个数",
+"q1.b.e4.o1": "数不出来",
+"q1.b.e5.n": "标准 ③ — 判定资料·方法",
+"q1.b.e5.o0": "写明了依据什么来确认",
+"q1.b.e5.o1": "没有",
+"q1.b.p0": "三条标准实质上是同一个维度（例如都是金额标准）— 按原则7算作一条",
+"q1.b.ok.0": "年处理件数500件以上 — 用ERP处理件数日志确认",
+"q1.b.ok.1": "年相关费用1亿韩元以上 — 用上年度决算的科目汇总确认",
+"q1.b.ok.2": "产生法律规定须保存的文件的业务 — 对照法务组保存年限清单确认",
+"q1.b.ok.3": "一旦中断，24小时内客户配送即停摆的业务 — 对照客户SLA合同确认",
+"q1.b.ok.4": "有3个以上部门参与的业务 — 用各部门职责分工表确认",
+"q1.b.no.0": "“经常发生的业务”",
+"q1.b.no.1": "“费用高的业务”",
+"q1.b.no.2": "“与监管有关的业务”",
+"q1.b.no.3": "“重要的业务”",
+"q1.c.prompt": "把你设计的标准套用到1,240项清单上，会有一些业务被淘汰——它们既不产生收入，也不属于监管对象，但核心业务离了它就转不动。要防止这类业务被排除在管理对象之外，你会在标准中加入什么？请写出要追加的条款，并说明它为什么有效。",
+"q1.c.guide": "1个条款 + 效果说明 · 4~8行",
+"q1.c.e0.n": "追加的条款",
+"q1.c.e0.o0": "采用了金额·监管之外的维度，且与核心业务的关联可以判定",
+"q1.c.e0.o1": "提出了条款但无法判定（如“重要的支援业务也纳入”）",
+"q1.c.e0.o2": "没有条款，只是把问题又说了一遍",
+"q1.c.e1.n": "效果说明",
+"q1.c.e1.o0": "举出了该条款能救回的业务实例来说明",
+"q1.c.e1.o1": "只在原则层面说明效果",
+"q1.c.e1.o2": "没有说明",
+"q1.c.ok.0": "核心流程（接单·派车·结算）一旦中断就会随之中断的业务",
+"q1.c.ok.1": "构成某项核心流程前置条件的业务 — 这项业务结束后核心业务才能开始",
+"q1.c.ok.2": "一旦中断会使核心流程处理时间增加○小时以上的业务",
+"q1.c.ok.3": "把四个条件组合成“满足其一即可通过”的结构",
+"q1.c.no.0": "只写了“用OR条件串起来”而没有条款内容",
+"q1.c.no.1": "“重要的业务也纳入”",
+
+/* ---------- Q2 ---------- */
+"q2.title": "80个指标要减到几个",
+"q2.org": "鲜市场（OnMarket）",
+"q2.scope": "第3周 — 流程绩效指标设计",
+"q2.intent": "考察是否理解“先定目标与成功要因、再选指标”的顺序，以及能否落到测量点和计算条件。",
+"q2.sit.0": "鲜市场是一家生鲜凌晨配送创业公司。数据组针对物流中心的拣货·包装流程设计了80个KPI，并做了仪表盘。",
+"q2.sit.1": "上线三个月了，现场管理者几乎不打开它。打开过的人说：“数字太多，不知道该看哪个。”",
+"q2.sit.2": "另一方面，公司提出的战略目标有两个：'次日上午7点前到达率达成99.5%'与'与新鲜度相关的客户投诉为零'。",
+"q2.a.prompt": "数据组打算先从削减80个指标入手。但在削减指标之前，有一件事必须先做。那是什么？为什么它必须排在指标选定之前？",
+"q2.a.guide": "3~6行",
+"q2.a.e0.n": "先要做什么",
+"q2.a.e0.o0": "明确提出了以下之一：先定该流程的目标、先导出关键成功要因、先定测量目的、先梳理流程",
+"q2.a.e0.o1": "方向对但表述含糊（“要想一想目的”）",
+"q2.a.e0.o2": "“只留重要指标”“听取现场意见”等，没有先后关系",
+"q2.a.e1.n": "为什么必须排在前面",
+"q2.a.e1.o0": "说明了不先做会出什么问题",
+"q2.a.e1.o1": "方向对但没有写出后果",
+"q2.a.e1.o2": "没有说明",
+"q2.a.ok.0": "先确定该流程必须达成的目标",
+"q2.a.ok.1": "从公司战略出发，先导出该流程的关键成功要因",
+"q2.a.ok.2": "先确定测量的目的——为了什么而测量",
+"q2.a.ok.3": "先把对象流程画出来，确认在哪个环节发生了什么",
+"q2.a.ok.4": "为什么：没有目标，看起来不错的指标又会混进来，重新回到80个／没有取舍的依据，无法决定舍弃什么",
+"q2.a.no.0": "“只挑重要的”",
+"q2.a.no.1": "“收集现场意见”（未说明先后关系）",
+"q2.b.prompt": "请从上述战略目标出发，导出该流程的关键成功要因（CSF）2个。然后为每个CSF各提出2个指标，共4个。对每个指标，必须一并写明“在流程的哪个点测量”。",
+"q2.b.guide": "CSF 2个 + 指标4个 + 测量点4个",
+"q2.b.e0.n": "CSF 2个",
+"q2.b.e0.o0": "两个都从战略目标导出，且是能据以提取指标的维度",
+"q2.b.e0.o1": "只有一个是",
+"q2.b.e0.o2": "把战略目标原样照抄（“到达率99.5%”是目标而非CSF）",
+"q2.b.e1.n": "指标 4个",
+"q2.b.e1.o0": "4个都写清了数什么或测什么，以及单位",
+"q2.b.e1.o1": "有3个", "q2.b.e1.o2": "有2个", "q2.b.e1.o3": "有1个", "q2.b.e1.o4": "一个都没有",
+"q2.b.e2.n": "测量点 4个",
+"q2.b.e2.o0": "4个都指明了流程中的具体环节",
+"q2.b.e2.o1": "有3个", "q2.b.e2.o2": "有2个", "q2.b.e2.o3": "有1个",
+"q2.b.e2.o4": "写成“全过程”“随时”等，没有指明环节",
+"q2.b.p0": "有指标与自己的CSF对不上（如把新鲜度指标放在时间CSF之下）",
+"q2.b.ok.0": "CSF“守时” → 拣货完成所需时间（分钟）／测量点：拣货完成扫描时点",
+"q2.b.ok.1": "CSF“守时” → 截止时刻前装车完成率（%）／测量点：车辆装车扫描时点",
+"q2.b.ok.2": "CSF“新鲜度品质” → 保冷包装不良件数（件/日）／测量点：包装检验环节",
+"q2.b.ok.3": "CSF“新鲜度品质” → 温度超标发生率（%）／测量点：出库前温度记录时点",
+"q2.b.no.0": "测量点写成“在物流中心”“全过程”",
+"q2.b.no.1": "把“达成到达率99.5%”原样放进CSF栏",
+"q2.c.prompt": "请从你提出的4个指标中挑一个与时间有关的（没有就补一个）。提出计算该时间时必须事先确定的一个条件，并说明不确定下来会产生什么问题。",
+"q2.c.guide": "1个条件 + 问题 · 3~6行",
+"q2.c.e0.n": "条件的提出",
+"q2.c.e0.o0": "连可选项一并提出（例如：按工作时间计还是按24小时计）",
+"q2.c.e0.o1": "提到了条件但没有可选项（“要定个时间基准”）",
+"q2.c.e0.o2": "只是把指标又说了一遍，或没有条件",
+"q2.c.e1.n": "会产生的问题",
+"q2.c.e1.o0": "说明了没有统一基准时数字会如何失真",
+"q2.c.e1.o1": "提到了问题但失真方向不清楚",
+"q2.c.e1.o2": "没有说明",
+"q2.c.ok.0": "按工作时间计还是按24小时计（是否含夜间与节假日）",
+"q2.c.ok.1": "以哪个事件为起点、哪个事件为终点",
+"q2.c.ok.2": "法定节假日与停业日如何处理",
+"q2.c.ok.3": "等待区间（如等待外部回复）是否计入",
+"q2.c.ok.4": "问题：基准不同，同样的绩效看起来不一样，中心之间无法比较／事后更改基准就能制造出改善效果",
+"q2.c.no.0": "“必须准确测量”",
+"q2.c.no.1": "“基准很重要”",
+
+/* ---------- Q3 ---------- */
+"q3.title": "如何让漂来漂去的投诉停下来",
+"q3.org": "韩光医院",
+"q3.scope": "第4周 — 专职窗口与权限设计",
+"q3.intent": "考察在预算受限的前提下，是否分得清“指定一个人”与“设立一个有权限的岗位”的差别。本题的区分点在第(2)小题的权限设计。",
+"q3.sit.0": "地区综合医院韩光医院的诊疗费异议投诉在各部门之间漂来漂去。投诉受理在门诊收费科，但收费科说“诊疗内容不归我们管”，转给诊疗科；诊疗科说“问题出在医保适用标准”，转给医保审核组；医保审核组又退回收费科。",
+"q3.sit.1": "从受理到解决平均需要11天，最初受理者负责到底的比例只有20%。同一件投诉有时要转好几圈。",
+"q3.sit.2": "院长明确表态：“没有预算新上投诉管理系统。”",
+"q3.a.prompt": "在不新购系统的前提下，请提出这个情境中可以改变的三样东西。",
+"q3.a.guide": "3样 · 每样1~2行",
+"q3.a.e0.n": "可以改变的三样",
+"q3.a.e0.o0": "三样都不是购置系统的手段，且都通过具体性测试",
+"q3.a.e0.o1": "有2样通过", "q3.a.e0.o2": "有1样通过",
+"q3.a.e0.o3": "全都停留在“改善系统”“加强沟通”的水平",
+"q3.a.ok.0": "负责人的指定方式",
+"q3.a.ok.1": "投诉的分类规则",
+"q3.a.ok.2": "受理表单与必填项",
+"q3.a.ok.3": "部门之间的处理时限约定",
+"q3.a.ok.4": "上报（escalation）路径",
+"q3.a.ok.5": "授权范围",
+"q3.a.ok.6": "重复受理的核查程序",
+"q3.a.no.0": "“改善系统”",
+"q3.a.no.1": "“对员工进行培训”（未说明教什么）",
+"q3.a.no.2": "“加强沟通”",
+"q3.b.prompt": "请设计一个“专职窗口”，让投诉不再漂来漂去。必须包含以下三点：① 由谁担任（职务与所属）；② 这个人可以独自决定的范围，以及可以向其他部门提出要求的权限；③ 超出权限的事项，向谁、在什么条件下、几天之内上报。",
+"q3.b.guide": "由谁 · 权限 · 权限外路径 · 6~10行",
+"q3.b.key": "如果专职窗口没有“推动其他部门的权限”，第②项最多只给2分。只是指定了一个人而没有权限，投诉不过是停在那个人的桌上，结构并没有变。",
+"q3.b.e0.n": "① 由谁担任",
+"q3.b.e0.o0": "职务与所属都写明了",
+"q3.b.e0.o1": "两者只写明其一",
+"q3.b.e0.o2": "停留在“设一名负责人”的水平",
+"q3.b.e1.n": "② 权限 — 可独自决定的范围",
+"q3.b.e1.o0": "可独自决定的范围按金额·事项·期限中的至少一项做了具体化",
+"q3.b.e1.o1": "没有",
+"q3.b.e2.n": "② 权限 — 要求他部门配合的权限",
+"q3.b.e2.o0": "写明了可要求提供资料或回复的权限及其期限",
+"q3.b.e2.o1": "没有",
+"q3.b.e3.n": "③ 权限外的处理路径",
+"q3.b.e3.o0": "向谁／在什么条件下／几天之内 — 三项齐全",
+"q3.b.e3.o1": "有两项", "q3.b.e3.o2": "只写了上报对象", "q3.b.e3.o3": "没有",
+"q3.b.ok.0": "收费科下设“诊疗费异议专职负责人”1名，科长级",
+"q3.b.ok.1": "50万韩元以下的调整可单独审批",
+"q3.b.ok.2": "可要求诊疗科在2个工作日内回复，逾期未复自动报告至诊疗副院长",
+"q3.b.ok.3": "调整金额超过50万韩元，或受理后超过5个工作日，上报诊疗副院长",
+"q3.b.no.0": "“在收费科指定专职员工，让其负责到底”（没有写权限）",
+"q3.c.prompt": "专职窗口设立6个月后，投诉又开始漂来漂去了。请指出最可能的一个原因，并提出能堵住该原因的装置。",
+"q3.c.guide": "1个原因 + 1个装置 · 4~8行",
+"q3.c.e0.n": "原因的指认",
+"q3.c.e0.o0": "明确指认了下列认可范围中的某一项",
+"q3.c.e0.o1": "原因含糊（“管理没跟上”）",
+"q3.c.e0.o2": "没有原因，只提装置",
+"q3.c.e1.n": "装置的提出",
+"q3.c.e1.o0": "能直接堵住所指认的原因，且通过具体性测试",
+"q3.c.e1.o1": "装置很具体，但与所指认的原因关联薄弱",
+"q3.c.e1.o2": "未通过具体性测试",
+"q3.c.ok.0": "投诉分类规则缺失或含糊，专职窗口又回到靠个人判断",
+"q3.c.ok.1": "专职窗口没有上报权限，其他部门不动",
+"q3.c.ok.2": "工作量全压在1个人身上，这个岗位成了新的瓶颈",
+"q3.c.ok.3": "出现了规则未覆盖的新类型投诉，没有对应路径",
+"q3.c.ok.4": "负责人更换时，规则与经验没有交接下去",
+"q3.c.no.0": "“管理松懈了”",
+"q3.c.no.1": "“员工缺乏责任心”",
+
+/* ---------- Q4 ---------- */
+"q4.title": "两年没动过的手册",
+"q4.org": "青村合作社",
+"q4.scope": "第5周 — 让文档活着的结构",
+"q4.intent": "考察能否把问题从“如何写好文档”转换成“如何让文档活着”。区分点在第(2)题的边界设定与第(3)题的强制联动。",
+"q4.sit.0": "青村合作社经营四家生活合作社门店。门店运营手册由外部顾问在两年前编写，此后一次也没有修订。这期间POS系统、订货方式、配送公司、退款规定全都变了。",
+"q4.sit.1": "新员工不看手册，而是问前辈学干活，各门店的处理方式也渐渐各不相同。",
+"q4.sit.2": "理事长主张“把手册全面修订一遍”，正在再次物色咨询公司。",
+"q4.a.prompt": "仅靠全面修订，两年后很可能重演同样的状况。请从“编写手册的人”与“使用手册的人”之间的关系出发，说明原因。",
+"q4.a.guide": "3~6行",
+"q4.a.e0.n": "对分离结构的指认",
+"q4.a.e0.o0": "指出了编写者与使用者相互分离，使用者既无修改权限也无修改手段",
+"q4.a.e0.o1": "只写“与现场不符”，没有提到分离结构",
+"q4.a.e0.o2": "“太旧了”“没人管”",
+"q4.a.e1.n": "结果的说明",
+"q4.a.e1.o0": "说明了这种分离导致文档与现实脱节，最终又回到口口相传",
+"q4.a.e1.o1": "提到了结果但关联薄弱",
+"q4.a.e1.o2": "没有说明",
+"q4.a.ok.0": "外部顾问编写、现场员工使用，使用者既没有修改的权限也没有修改的手段",
+"q4.a.ok.1": "编写者在项目结束后就离开，更新的责任主体随之消失",
+"q4.a.ok.2": "结果：现实变了却没人来改，文档与现实越拉越远，最终回到问前辈的方式，各门店也随之不同",
+"q4.a.no.0": "“手册太旧了”",
+"q4.a.no.1": "“疏于管理”",
+"q4.b.prompt": "请设计一个“双向结构”，既让现场员工能直接修改，又让负责人保有管理权。必须包含以下三点：① 现场员工改什么、在哪里改、怎么改；② 只由负责人管理的范围是什么；③ 现场的修改与负责人的规定发生冲突时，由谁、如何裁定。",
+"q4.b.guide": "修改通道 · 负责人范围 · 冲突程序 · 6~10行",
+"q4.b.key": "若①与②的边界重叠——即现场可改的范围与负责人专属范围没有区分开——②判0分。没有边界，③的冲突规则根本无从运作。",
+"q4.b.e0.n": "① 现场的修改通道",
+"q4.b.e0.o0": "改什么（可改范围）／在哪里（工具·场所）／怎么改（程序）三项齐全",
+"q4.b.e0.o1": "有两项", "q4.b.e0.o2": "有一项",
+"q4.b.e0.o3": "停留在“员工可自由修改”的水平",
+"q4.b.e1.n": "② 负责人管理范围",
+"q4.b.e1.o0": "具体列举了现场不得触碰的项目",
+"q4.b.e1.o1": "停留在“重要的由负责人管理”的水平",
+"q4.b.e1.o2": "没有，或与①边界重叠而未区分",
+"q4.b.e2.n": "③ 冲突裁定程序",
+"q4.b.e2.o0": "由谁／在什么条件下／几天之内／作出何种结论 — 其中三项以上",
+"q4.b.e2.o1": "有两项", "q4.b.e2.o2": "只写了裁定主体", "q4.b.e2.o3": "没有",
+"q4.b.ok.0": "① 门店员工在共享文档中直接修改订货·陈列·POS操作流程，每次修改留一行理由",
+"q4.b.ok.1": "② 退款上限、法定标示事项、门店统一价格规定只有合作社运营组长可以修改",
+"q4.b.ok.2": "③ 运营组长每周五查看修改记录，在5个工作日内批准或驳回，驳回须写明理由",
+"q4.b.no.0": "“员工自由修改，负责人负责管理”（没有边界）",
+"q4.c.prompt": "请提出一个把手册与其他业务联动起来的装置，使得不修改手册其他业务就会卡住，并说明它为什么能起作用。",
+"q4.c.guide": "1个装置 + 理由 · 3~6行",
+"q4.c.e0.n": "装置的提出",
+"q4.c.e0.o0": "构成了“不改手册其他业务就真的会卡住”的结构",
+"q4.c.e0.o1": "有装置但没有强制力（“通知说每月检查一次”）",
+"q4.c.e0.o2": "停留在“鼓励大家常看”的水平",
+"q4.c.e1.n": "起作用的理由",
+"q4.c.e1.o0": "说明了不修改会卡住谁的什么工作",
+"q4.c.e1.o1": "只在原则层面说明效果",
+"q4.c.e1.o2": "没有说明",
+"q4.c.ok.0": "新员工培训材料由手册自动生成，不改手册新人就会学到错误流程 → 培训负责人自然会去改",
+"q4.c.ok.1": "月度检查表由手册条目生成，手册过时则检查本身就不成立",
+"q4.c.ok.2": "门店之间的订货·结算表单与手册规定联动，不一致则提交被驳回",
+"q4.c.no.0": "“定期检查”",
+"q4.c.no.1": "“鼓励大家常看”",
+
+/* ---------- Q5 ---------- */
+"q5.title": "是守住现有的，还是另起炉灶",
+"q5.org": "大田中央市场商人会",
+"q5.scope": "第1周 — 四维诊断与方向选择",
+"q5.intent": "考察能否依据情境中实际存在的事实完成四维诊断，并把诊断与结论连起来。诊断的方向本身不设标准答案。",
+"q5.sit.0": "大田中央市场商人会下辖320个店铺。最近三年受线上平台竞争影响，客流持续下降，销售额也在下滑。商人会正围绕两个方案争论不下。",
+"q5.sit.1": "A案 — 通过共同配送与共同采购压低成本，确保价格竞争力。",
+"q5.sit.2": "B案 — 把整个市场打包成一个品牌，新开线上渠道与体验型门店。",
+"q5.sit.3": "商人会可用预算并不充裕。会员多数在60岁以上，对新方式态度消极。各店铺经营的品类与运营方式也各不相同。",
+"q5.a.prompt": "请从目标·流程·组织·环境四个维度诊断该组织的状况。每个维度判断它更接近“打磨现有方式”还是“寻找新东西”，并从情境说明中找出判断依据。",
+"q5.a.guide": "四个维度各自的判断 + 依据",
+"q5.a.key": "不因四个维度判成哪一边而加分或扣分，只看是否以情境中的事实为依据。若编造情境中没有的事实则判0分。",
+"q5.a.e0.n": "判断（四个维度）",
+"q5.a.e0.o0": "四个维度都明确选了其中一边",
+"q5.a.e0.o1": "三个维度", "q5.a.e0.o2": "两个维度", "q5.a.e0.o3": "一个维度",
+"q5.a.e0.o4": "写成“两边都是”或没有做选择",
+"q5.a.e1.n": "依据（四个维度）",
+"q5.a.e1.o0": "四个维度都引用了情境说明中实际存在的事实",
+"q5.a.e1.o1": "三个维度", "q5.a.e1.o2": "两个维度", "q5.a.e1.o3": "一个维度",
+"q5.a.e1.o4": "编造了情境中没有的内容，或没有依据",
+"q5.a.ok.0": "目标 — 销售额下滑、客流减少带来的生存压力（两边都可论证）",
+"q5.a.ok.1": "流程 — 各店铺品类与运营方式各不相同 → 非标准化，偏向寻找新东西",
+"q5.a.ok.2": "组织 — 预算不足、多数在60岁以上、对新方式消极 → 偏向打磨现有方式",
+"q5.a.ok.3": "环境 — 与线上平台竞争、连续三年下滑 → 偏向寻找新东西",
+"q5.a.no.0": "把“商人们没受过培训”这类情境中没有的内容当作依据",
+"q5.a.no.1": "四个维度全写“两边都适用”",
+"q5.b.prompt": "请在A案与B案中择一，或提出第三方案，并写出三条依据。其中至少两条必须取自第(1)题的诊断。",
+"q5.b.guide": "选择 + 3条依据",
+"q5.b.e0.n": "选择的明示",
+"q5.b.e0.o0": "明确选了A·B·第三方案中的一个",
+"q5.b.e0.o1": "选择含糊，或最后两边都说",
+"q5.b.e1.n": "依据 ①",
+"q5.b.e1.o0": "与第(1)题的诊断相连，且以情境事实为依据",
+"q5.b.e1.o1": "以情境事实为依据，但与第(1)题的诊断没有连上",
+"q5.b.e1.o2": "未通过具体性测试，或是泛泛之论",
+"q5.b.e2.n": "依据 ②",
+"q5.b.e2.o0": "与第(1)题的诊断相连，且以情境事实为依据",
+"q5.b.e2.o1": "仅以情境事实为依据", "q5.b.e2.o2": "泛泛之论",
+"q5.b.e3.n": "依据 ③",
+"q5.b.e3.o0": "与第(1)题的诊断相连，且以情境事实为依据",
+"q5.b.e3.o1": "仅以情境事实为依据", "q5.b.e3.o2": "泛泛之论",
+"q5.b.p0": "三条依据中取自第(1)题诊断的不足两条",
+"q5.b.ok.0": "选第三方案既不加分也不扣分 — 与A·B适用同一标准",
+"q5.b.ok.1": "例：组织维度落在“打磨”一侧，因此全面转型的B案难以找到执行主体",
+"q5.b.ok.2": "例：各店铺非标准化，所以即便是共同配送（A案）也需要先做品类标准化",
+"q5.b.no.0": "“B案是当下的潮流”",
+"q5.b.no.1": "“线上是大势所趋”（没有引用情境事实）",
+"q5.c.prompt": "执行你所选的方案时，最可能产生抵触的是组织文化与人。请提出一项能够弥补这一点的具体措施。",
+"q5.c.guide": "1项措施 · 3~5行",
+"q5.c.e0.n": "弥补措施",
+"q5.c.e0.o0": "由谁／对谁／做什么／怎么做 — 四项齐全",
+"q5.c.e0.o1": "有三项", "q5.c.e0.o2": "有两项",
+"q5.c.e0.o3": "只有一项或更少，或属于零分套话",
+"q5.c.ok.0": "商人会理事会先挑选10名40~50岁的店主，让他们试运营共同配送3个月，并在月度例会上由当事人亲自发表结果",
+"q5.c.no.0": "“加强培训”",
+"q5.c.no.1": "“提高认识”",
+"q5.c.no.2": "“去说服他们”",
+
+/* ---------- Q6 ---------- */
+"q6.title": "这些数字可信吗",
+"q6.org": "读一份绩效报告",
+"q6.scope": "第3·4周 — 指标设计与绩效解读",
+"q6.intent": "考察是否养成了不照单全收绩效数字、而是反问“这个数字到底数的是什么”的习惯。",
+"q6.sit.0": "某企业重新设计了客户投诉处理流程，并报告了如下绩效。测量期间为实施前2个月与实施后2个月。",
+"q6.th.0": "指标", "q6.th.1": "实施前", "q6.th.2": "实施后", "q6.th.3": "变化",
+"q6.tc.0": "平均处理时间", "q6.tc.1": "负责人再分配率",
+"q6.tc.2": "月均受理件数", "q6.tc.3": "投入人力工时",
+"q6.a.prompt": "四个数字中，有一个很难视为“流程重新设计的直接效果”。请指出是哪一个、为什么这样判断，并说明该数字实际上更可能是什么减少的结果。",
+"q6.a.guide": "指认 + 理由 + 实际原因 · 5~8行",
+"q6.a.gate": "若指认错误，第(1)小题整体判0分。",
+"q6.a.e0.n": "指认",
+"q6.a.e0.o0": "指认了“月均受理件数”",
+"q6.a.e0.o1": "指认了其他项 — 此时第(1)小题整体判0分",
+"q6.a.e1.n": "为什么",
+"q6.a.e1.o0": "说明了改了流程并没有理由让投诉本身的成因减少",
+"q6.a.e1.o1": "只指出“有点奇怪”而没有理由",
+"q6.a.e1.o2": "没有说明",
+"q6.a.e2.n": "实际减少的是什么",
+"q6.a.e2.o0": "说明了这是重复受理减少的结果",
+"q6.a.e2.o1": "只写了“应该另有原因”",
+"q6.a.e2.o2": "没有说明",
+"q6.a.ok.0": "改了流程，并没有理由让客户遭遇的问题本身减少",
+"q6.a.ok.1": "重新设计改的是处理方式，并没有消除投诉的成因",
+"q6.a.ok.2": "受理件数受季节、产品变更、客户数等外部因素左右，无法单独归因于重新设计",
+"q6.a.ok.3": "实际上：处理一拖延，同一位客户会再次提交，一件被记成两三件，这种情况被消除了",
+"q6.a.no.0": "指认“投入人力工时” — 该数字可由再分配减少来解释，属于直接效果",
+"q6.b.prompt": "在把这份报告提交给管理层之前，请提出必须附加的两条限定说明，并一并写出每条为什么必要。",
+"q6.b.guide": "2条限定说明 · 每条2~4行",
+"q6.b.e0.n": "限定说明 ①",
+"q6.b.e0.o0": "具体写明了局限是什么，并说明了为什么必要",
+"q6.b.e0.o1": "局限写得具体，但没有说明理由",
+"q6.b.e0.o2": "停留在“存在局限”的水平，没写清局限是什么",
+"q6.b.e0.o3": "只是把绩效又总结了一遍",
+"q6.b.e1.n": "限定说明 ②",
+"q6.b.e1.o0": "具体写明了局限是什么，并说明了为什么必要",
+"q6.b.e1.o1": "局限写得具体，但没有说明理由",
+"q6.b.e1.o2": "停留在“存在局限”的水平", "q6.b.e1.o3": "只是把绩效又总结了一遍",
+"q6.b.p0": "在第(2)题重复了第(1)题已经写过的同一条限定说明",
+"q6.b.ok.0": "测量期前后各仅2个月，无法判断长期是否持续",
+"q6.b.ok.1": "同期的外部因素（季节性、产品·政策变更、客户数变动）没有加以控制",
+"q6.b.ok.2": "受理件数下降有可能是去重的结果，不能读作投诉实际减少",
+"q6.b.ok.3": "比较对象是否条件相同——是否为同类投诉——未经确认",
+"q6.b.ok.4": "测量方式与统计口径前后是否一致，需要确认",
+"q6.b.no.0": "“可能存在局限”",
+"q6.b.no.1": "“还需要再观察”",
+"q6.c.prompt": "要确认该项目的效果在一年后是否仍然保持，应当测量什么？请提出一个指标及其测量方法。",
+"q6.c.guide": "1个指标 + 测量方法 · 3~6行",
+"q6.c.e0.n": "指标",
+"q6.c.e0.o0": "能看出持续性的指标，而非单一时点",
+"q6.c.e0.o1": "指标本身成立，但是单一时点测量（“一年后测一次处理时间”）",
+"q6.c.e0.o2": "未通过具体性测试",
+"q6.c.e1.n": "测量方法",
+"q6.c.e1.o0": "以什么为资料／多久一次／由谁查看 — 三项齐全",
+"q6.c.e1.o1": "有两项", "q6.c.e1.o2": "有一项", "q6.c.e1.o3": "没有",
+"q6.c.ok.0": "再分配率的逐月走势",
+"q6.c.ok.1": "处理时间的逐月中位数与前10%分位值",
+"q6.c.ok.2": "规则未覆盖的新类型投诉的逐月占比",
+"q6.c.ok.3": "专职负责人更换后3个月内的再分配率",
+"q6.c.no.0": "“一年后再测一次”（单一时点）",
+"q6.c.no.1": "“做满意度调查”（数什么不清楚）"
+};
+
+</script>
+<script>
 /* ===== 상태 ===== */
 const PROF_EMAILS = ["gt4065b@wsu.ac.kr"];
 let ME = null;            // {uid, email, name, studentNo}
-let STATE = {};           // qid -> {answers:{subId:text}, stage, auto, self:{}, pen:{}, score, done}
-let CUR = 0;              // 현재 문항 index
+let STATE = {};           // qid -> {answers, stage, auto, self, pen, common, score, done}
+let CUR = 0;
 let SAVE_TIMER = null;
+let LANG = "ko";
+
+const TRS = { ko: {}, en: TR_EN, zh: TR_ZH };
 
 const $ = (s, r) => (r || document).querySelector(s);
 const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* ===== 다국어 ===== */
+function U(key, vars) {
+  let s = (UI[LANG] && UI[LANG][key]) || UI.ko[key] || key;
+  if (vars) for (const k in vars) s = s.split("{" + k + "}").join(vars[k]);
+  return s;
+}
+/* 문항 내용: 번역이 없으면 한국어 원문으로 */
+function C(path, fallback) {
+  const t = TRS[LANG] && TRS[LANG][path];
+  return (t === undefined || t === null || t === "") ? fallback : t;
+}
+const pat = () => PAT[LANG] || PAT.ko;
+const prins = () => PRIN_TR[LANG] || PRIN_TR.ko;
+
+function setLang(l, rerender) {
+  LANG = l;
+  try { localStorage.setItem("mockexam.lang", l); } catch (e) {}
+  document.documentElement.lang = l === "zh" ? "zh-CN" : l;
+  paintStatic();
+  renderLangMenu();
+  if (rerender) {
+    const on = $(".screen.on");
+    const id = on ? on.id : "";
+    if (id === "scHome") renderHome();
+    else if (id === "scExam") renderQuestion();
+    else if (id === "scReport") renderReport();
+    else if (id === "scProf") renderProf();
+    if (ME) queueSave();
+  }
+}
+
+/* data-t / data-tph 속성을 가진 정적 문구 치환 */
+function paintStatic() {
+  $$("[data-t]").forEach(el => { el.textContent = U(el.dataset.t); });
+  $$("[data-tph]").forEach(el => { el.placeholder = U(el.dataset.tph); });
+  document.title = U("brand.t") + " — " + U("brand.s");
+  setAuthTab($("#btnEmail").dataset.mode || "login");
+}
+
+function renderLangMenu() {
+  $("#langBtn").textContent = LANGS.find(l => l.id === LANG).label;
+  $("#langList").innerHTML = LANGS.map(l =>
+    '<button class="langopt' + (l.id === LANG ? " cur" : "") + '" data-l="' + l.id + '">' + l.label + "</button>"
+  ).join("");
+  $$("#langList .langopt").forEach(b => b.onclick = () => {
+    $("#langWrap").classList.remove("open");
+    if (b.dataset.l !== LANG) setLang(b.dataset.l, true);
+  });
+}
+
+/* ===== 화면 ===== */
+function show(id) {
+  $$(".screen").forEach(s => s.classList.remove("on"));
+  $("#" + id).classList.add("on");
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+function toast(msg, kind) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.className = "toast on" + (kind ? " " + kind : "");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.className = "toast", 2600);
+}
 
 function blankState() {
   const o = {};
@@ -1129,69 +2348,48 @@ function blankState() {
   return o;
 }
 
-/* ===== 화면 전환 ===== */
-function show(id) {
-  $$(".screen").forEach(s => s.classList.remove("on"));
-  $("#" + id).classList.add("on");
-  window.scrollTo({ top: 0, behavior: "instant" });
-}
-
-function toast(msg, kind) {
-  const t = $("#toast");
-  t.textContent = msg;
-  t.className = "toast on" + (kind ? " " + kind : "");
-  clearTimeout(t._h);
-  t._h = setTimeout(() => t.className = "toast", 2600);
-}
-
 /* ===== 로그인 ===== */
 function authError(e) {
   const m = {
-    "auth/invalid-email": "이메일 형식이 올바르지 않습니다.",
-    "auth/user-not-found": "가입되지 않은 이메일입니다. 먼저 회원가입을 해주세요.",
-    "auth/wrong-password": "비밀번호가 맞지 않습니다.",
-    "auth/invalid-credential": "이메일 또는 비밀번호가 맞지 않습니다.",
-    "auth/email-already-in-use": "이미 가입된 이메일입니다. 로그인을 눌러주세요.",
-    "auth/weak-password": "비밀번호는 6자 이상이어야 합니다.",
-    "auth/popup-closed-by-user": "구글 로그인 창이 닫혔습니다.",
-    "auth/popup-blocked": "팝업이 차단되었습니다. 주소창의 팝업 차단을 해제해주세요.",
-    "auth/network-request-failed": "네트워크 연결을 확인해주세요.",
-    "auth/too-many-requests": "시도가 많았습니다. 잠시 후 다시 해주세요."
+    "auth/invalid-email": "err.email", "auth/user-not-found": "err.nouser",
+    "auth/wrong-password": "err.pw", "auth/invalid-credential": "err.pw",
+    "auth/email-already-in-use": "err.dup", "auth/weak-password": "err.weak",
+    "auth/popup-closed-by-user": "err.popup", "auth/popup-blocked": "err.blocked",
+    "auth/network-request-failed": "err.net", "auth/too-many-requests": "err.many"
   };
-  return m[e && e.code] || (e && e.message) || "잠시 후 다시 시도해주세요.";
+  if (e && m[e.code]) return U(m[e.code]);
+  if (e && e.uiKey) return U(e.uiKey);
+  return U("err.etc");
 }
 
 function setAuthTab(mode) {
   $("#tabLogin").classList.toggle("act", mode === "login");
   $("#tabJoin").classList.toggle("act", mode === "join");
   $("#joinFields").style.display = mode === "join" ? "block" : "none";
-  $("#btnEmail").textContent = mode === "join" ? "가입하고 시작하기" : "로그인";
+  $("#btnEmail").textContent = mode === "join" ? U("auth.joinbtn") : U("auth.login");
   $("#btnEmail").dataset.mode = mode;
-  $("#authMsg").textContent = "";
 }
 
 async function doEmailAuth() {
   const mode = $("#btnEmail").dataset.mode;
-  const email = $("#inEmail").value.trim();
-  const pw = $("#inPw").value;
-  if (!email || !pw) return ($("#authMsg").textContent = "이메일과 비밀번호를 입력해주세요.");
-  const btn = $("#btnEmail"); btn.disabled = true; btn.textContent = "처리 중…";
+  const email = $("#inEmail").value.trim(), pw = $("#inPw").value;
+  if (!email || !pw) return ($("#authMsg").textContent = U("auth.need"));
+  const btn = $("#btnEmail"); btn.disabled = true; btn.textContent = U("auth.wait");
+  $("#authMsg").textContent = "";
   try {
     if (mode === "join") {
       const name = $("#inName").value.trim(), sno = $("#inSno").value.trim();
-      if (!name || !sno) throw { message: "이름과 학번을 입력해주세요." };
+      if (!name || !sno) throw { uiKey: "auth.needname" };
       const cred = await auth.createUserWithEmailAndPassword(email, pw);
       await cred.user.updateProfile({ displayName: name });
-      await db.ref("mockexam/users/" + cred.user.uid).update({
-        name, studentNo: sno, email, joinedAt: Date.now()
-      });
+      await db.ref("mockexam/users/" + cred.user.uid).update({ name, studentNo: sno, email, joinedAt: Date.now() });
     } else {
       await auth.signInWithEmailAndPassword(email, pw);
     }
   } catch (e) {
     $("#authMsg").textContent = authError(e);
   } finally {
-    btn.disabled = false; setAuthTab($("#btnEmail").dataset.mode);
+    btn.disabled = false; setAuthTab(mode);
   }
 }
 
@@ -1203,18 +2401,19 @@ async function doGoogle() {
   } catch (e) { $("#authMsg").textContent = authError(e); }
 }
 
-/* ===== 프로필 보완 (구글 최초 로그인 시 학번 수집) ===== */
 async function ensureProfile(user) {
   const snap = await db.ref("mockexam/users/" + user.uid).get();
-  let v = snap.val() || {};
+  const v = snap.val() || {};
   if (!v.studentNo) {
     show("scProfile");
     $("#pfName").value = v.name || user.displayName || "";
     return new Promise(res => {
       $("#btnProfile").onclick = async () => {
         const name = $("#pfName").value.trim(), sno = $("#pfSno").value.trim();
-        if (!name || !sno) return ($("#pfMsg").textContent = "이름과 학번을 모두 입력해주세요.");
-        await db.ref("mockexam/users/" + user.uid).update({ name, studentNo: sno, email: user.email, joinedAt: v.joinedAt || Date.now() });
+        if (!name || !sno) return ($("#pfMsg").textContent = U("pf.need"));
+        await db.ref("mockexam/users/" + user.uid).update({
+          name, studentNo: sno, email: user.email, joinedAt: v.joinedAt || Date.now()
+        });
         res({ name, studentNo: sno });
       };
     });
@@ -1222,31 +2421,27 @@ async function ensureProfile(user) {
   return { name: v.name || user.displayName || "", studentNo: v.studentNo };
 }
 
-/* ===== 진행상황 불러오기/저장 ===== */
+/* ===== 저장 ===== */
 async function loadProgress() {
   const snap = await db.ref("mockexam/attempts/" + ME.uid).get();
   const v = snap.val();
   STATE = blankState();
   if (v && v.state) {
     QUESTIONS.forEach(q => {
-      const s = v.state[q.id];
-      if (!s) return;
+      const s = v.state[q.id]; if (!s) return;
       const t = STATE[q.id];
-      t.stage = s.stage || 0;
-      t.done = !!s.done;
+      t.stage = s.stage || 0; t.done = !!s.done;
       t.score = (s.score === undefined ? null : s.score);
-      t.common = !!s.common;
-      t.self = s.self || {};
-      t.pen = s.pen || {};
-      t.auto = s.auto || null;
+      t.common = !!s.common; t.self = s.self || {}; t.pen = s.pen || {}; t.auto = s.auto || null;
       q.subs.forEach(sub => t.answers[sub.id] = (s.answers && s.answers[sub.id]) || "");
     });
   }
+  if (v && v.lang && TRS[v.lang]) setLang(v.lang, false);
 }
 
 function queueSave() {
   clearTimeout(SAVE_TIMER);
-  $("#saveTag").textContent = "저장 중…";
+  $("#saveTag").textContent = U("save.ing");
   SAVE_TIMER = setTimeout(saveNow, 900);
 }
 
@@ -1254,12 +2449,12 @@ async function saveNow() {
   if (!ME) return;
   try {
     await db.ref("mockexam/attempts/" + ME.uid).update({
-      name: ME.name, studentNo: ME.studentNo, email: ME.email,
+      name: ME.name, studentNo: ME.studentNo, email: ME.email, lang: LANG,
       updatedAt: Date.now(), state: STATE, total: totalScore(), doneCount: doneCount()
     });
-    $("#saveTag").textContent = "저장됨 · " + new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+    $("#saveTag").textContent = U("save.ok", { t: new Date().toLocaleTimeString(LANG === "ko" ? "ko-KR" : LANG === "zh" ? "zh-CN" : "en-US", { hour: "2-digit", minute: "2-digit" }) });
   } catch (e) {
-    $("#saveTag").textContent = "저장 실패 — 연결을 확인해주세요";
+    $("#saveTag").textContent = U("save.fail");
   }
 }
 
@@ -1268,77 +2463,63 @@ const totalScore = () => QUESTIONS.reduce((a, q) => a + (STATE[q.id].score || 0)
 
 /* ===== 자동 1차 점검 ===== */
 function runAuto(q) {
+  const P = pat();
   const found = { ban: [], cases: [], vague: [] };
-  let chars = 0, hasNum = false, hasActor = false, hasCond = false;
-  let perSub = [];
+  let hasNum = false, hasActor = false, hasCond = false;
+  const shortSubs = [];
 
-  q.subs.forEach(sub => {
+  q.subs.forEach((sub, si) => {
     const t = STATE[q.id].answers[sub.id] || "";
-    chars += t.replace(/\s/g, "").length;
-    BAN_PHRASES.forEach(p => { if (t.includes(p) && !found.ban.includes(p)) found.ban.push(p); });
+    const n = t.replace(/\s/g, "").length;
+    if (n < 20) shortSubs.push("(" + (si + 1) + ")");
+    P.ban.forEach(p => { if (t.toLowerCase().includes(p.toLowerCase()) && !found.ban.includes(p)) found.ban.push(p); });
     CASE_TERMS.forEach(p => { if (t.includes(p) && !found.cases.includes(p)) found.cases.push(p); });
     if (sub.check && sub.check.warnVaguePoint) {
-      const m = t.match(VAGUE_POINT);
+      const m = t.match(P.vague);
       if (m && !found.vague.includes(m[0])) found.vague.push(m[0]);
     }
-    if (NUM_UNIT.test(t)) hasNum = true;
-    if (ACTOR.test(t)) hasActor = true;
-    if (CONDITION.test(t)) hasCond = true;
-    perSub.push({ id: sub.id, len: t.replace(/\s/g, "").length, need: sub.check || {} });
+    if (P.num.test(t)) hasNum = true;
+    if (P.actor.test(t)) hasActor = true;
+    if (P.cond.test(t)) hasCond = true;
   });
 
   const items = [];
-  const emptySubs = perSub.filter(s => s.len < 20);
-  if (emptySubs.length) items.push({ lv: "bad", t: "분량이 매우 짧은 소문항", d: "(" + emptySubs.map(s => s.id.toUpperCase()).join(", ") + ") — 원칙 5: 분량 자체는 감점이 아니지만, 2줄 이하는 대부분 구체성 테스트를 통과하지 못합니다." });
+  if (shortSubs.length) items.push({ lv: "bad", k: "au.short", x: shortSubs.join(", ") });
+  if (found.ban.length) items.push({ lv: "bad", k: "au.ban", x: found.ban.join("”, “") });
+  else items.push({ lv: "good", k: "au.noban" });
+  if (found.cases.length) items.push({ lv: "warn", k: "au.case", x: found.cases.join("”, “") });
+  if (found.vague.length) items.push({ lv: "bad", k: "au.vague", x: found.vague.join("”, “") });
 
-  if (found.ban.length) items.push({ lv: "bad", t: "0점 처리 문구가 발견됨", d: "“" + found.ban.join("”, “") + "” — 원칙 2에 해당합니다. 뒤에 구체적 내용이 따라붙지 않았다면 그 요소는 0점입니다." });
-  else items.push({ lv: "good", t: "0점 처리 문구 없음", d: "원칙 2의 관용구 목록에 걸리는 표현이 없습니다." });
+  if (q.subs.some(s => s.check && s.check.needNum)) items.push(hasNum ? { lv: "good", k: "au.num1" } : { lv: "bad", k: "au.num0" });
+  if (q.subs.some(s => s.check && s.check.needActor)) items.push(hasActor ? { lv: "good", k: "au.act1" } : { lv: "warn", k: "au.act0" });
+  if (q.id === "q1" || q.id === "q3" || q.id === "q4") items.push(hasCond ? { lv: "good", k: "au.cond1" } : { lv: "warn", k: "au.cond0" });
 
-  if (found.cases.length) items.push({ lv: "warn", t: "수업 사례의 고유명사·수치가 그대로 등장", d: "“" + found.cases.join("”, “") + "” — 원칙 3: 그대로 옮겨 썼다면 −2점. 주어진 조직의 규모로 환산했다면 감점 없습니다." });
-
-  if (found.vague.length) items.push({ lv: "bad", t: "측정 지점이 특정되지 않은 표현", d: "“" + found.vague.join("”, “") + "” — 원칙 1: 측정 지점은 프로세스의 어느 단계인지 특정되어야 합니다." });
-
-  const needNum = q.subs.some(s => s.check && s.check.needNum);
-  if (needNum) items.push(hasNum
-    ? { lv: "good", t: "측정 가능한 수치·단위 발견", d: "조건을 숫자와 단위로 쓴 흔적이 있습니다. 실제 판정은 2단계에서 직접 하십시오." }
-    : { lv: "bad", t: "수치나 단위가 하나도 없음", d: "이 문항은 ‘통과 개수를 셀 수 있는 조건’을 요구합니다. 수치·단위 없이 통과하기 어렵습니다." });
-
-  const needActor = q.subs.some(s => s.check && s.check.needActor);
-  if (needActor) items.push(hasActor
-    ? { lv: "good", t: "주체(직책·부서) 표현 발견", d: "누가 하는지 밝힌 흔적이 있습니다." }
-    : { lv: "warn", t: "주체를 밝힌 표현이 보이지 않음", d: "이 문항은 ‘누가’를 요구합니다. 직책과 소속이 없으면 해당 요소가 감점됩니다." });
-
-  if (q.id === "q1" || q.id === "q3" || q.id === "q4") {
-    items.push(hasCond
-      ? { lv: "good", t: "조건·범위 표현 발견", d: "‘이상/이내/경우에는’ 같은 판정 가능한 조건 표현이 있습니다." }
-      : { lv: "warn", t: "조건·범위 표현이 보이지 않음", d: "판정 기준이 되려면 범위나 조건이 드러나야 합니다." });
-  }
-
-  return { items, chars, caseHit: found.cases.length > 0, at: Date.now() };
+  return { items, at: Date.now() };
 }
 
-/* ===== 렌더: 홈 ===== */
+/* ===== 홈 ===== */
 function renderHome() {
   $("#meName").textContent = ME.name;
   $("#meSub").textContent = ME.studentNo + " · " + ME.email;
   const dc = doneCount();
   $("#homeProgress").style.width = (dc / QUESTIONS.length * 100) + "%";
-  $("#homeProgressTxt").textContent = dc + " / " + QUESTIONS.length + " 문항 완료";
-  $("#homeScore").textContent = dc ? totalScore() + "점" : "—";
-  $("#homeScoreSub").textContent = dc ? "완료한 " + dc + "문항 합계 (문항당 20점)" : "아직 채점한 문항이 없습니다";
+  $("#homeProgressTxt").textContent = U("home.prog", { a: dc, b: QUESTIONS.length });
+  $("#homeScore").textContent = dc ? totalScore() + "" : "—";
+  $("#homeScoreSub").textContent = dc ? U("home.scoresub", { n: dc }) : U("home.noscore");
 
   $("#qGrid").innerHTML = QUESTIONS.map((q, i) => {
     const s = STATE[q.id];
     const written = q.subs.filter(sub => (s.answers[sub.id] || "").trim().length > 10).length;
     const badge = s.done
-      ? '<span class="pill ok">' + s.score + ' / 20점</span>'
-      : (written ? '<span class="pill mid">작성 중 ' + written + '/' + q.subs.length + '</span>' : '<span class="pill">시작 전</span>');
+      ? '<span class="pill ok">' + U("card.done", { n: s.score }) + "</span>"
+      : (written ? '<span class="pill mid">' + U("card.writing", { a: written, b: q.subs.length }) + "</span>"
+                 : '<span class="pill">' + U("card.before") + "</span>");
     return '<button class="qcard" data-i="' + i + '">'
-      + '<div class="qcard-n">문제 ' + q.no + '</div>'
-      + '<div class="qcard-t">' + esc(q.title) + '</div>'
-      + '<div class="qcard-o">' + esc(q.org) + '</div>'
-      + '<div class="qcard-b">' + badge + '</div>'
-      + '<div class="qcard-s">' + esc(q.scope) + '</div></button>';
+      + '<div class="qcard-n">' + U("q.label", { n: q.no }) + "</div>"
+      + '<div class="qcard-t">' + esc(C(q.id + ".title", q.title)) + "</div>"
+      + '<div class="qcard-o">' + esc(C(q.id + ".org", q.org)) + "</div>"
+      + '<div class="qcard-b">' + badge + "</div>"
+      + '<div class="qcard-s">' + esc(C(q.id + ".scope", q.scope)) + "</div></button>";
   }).join("");
   $$("#qGrid .qcard").forEach(b => b.onclick = () => openQuestion(+b.dataset.i));
 
@@ -1346,119 +2527,118 @@ function renderHome() {
   $("#profLink").style.display = PROF_EMAILS.includes((ME.email || "").toLowerCase()) ? "inline-flex" : "none";
 }
 
-/* ===== 렌더: 문항 ===== */
-function openQuestion(i) {
-  CUR = i;
-  renderQuestion();
-  show("scExam");
-}
+/* ===== 문항 ===== */
+function openQuestion(i) { CUR = i; renderQuestion(); show("scExam"); }
 
 function renderQuestion() {
   const q = QUESTIONS[CUR], s = STATE[q.id];
 
   $("#exNav").innerHTML = QUESTIONS.map((x, i) =>
-    '<button class="navdot' + (i === CUR ? " cur" : "") + (STATE[x.id].done ? " fin" : "") + '" data-i="' + i + '">' + x.no + '</button>'
+    '<button class="navdot' + (i === CUR ? " cur" : "") + (STATE[x.id].done ? " fin" : "") + '" data-i="' + i + '">' + x.no + "</button>"
   ).join("");
   $$("#exNav .navdot").forEach(b => b.onclick = () => openQuestion(+b.dataset.i));
 
-  $("#exStage").innerHTML = ["답안 작성", "1단계 · 자동 점검", "2단계 · 기준표로 채점", "3단계 · 해설"]
-    .map((t, i) => '<span class="stp' + (i === s.stage ? " cur" : (i < s.stage ? " done" : "")) + '">' + t + '</span>').join('<span class="stp-sep"></span>');
+  $("#exStage").innerHTML = [0, 1, 2, 3].map(i =>
+    '<span class="stp' + (i === s.stage ? " cur" : (i < s.stage ? " done" : "")) + '">' + U("stage." + i) + "</span>"
+  ).join('<span class="stp-sep"></span>');
 
-  $("#exTitle").textContent = "문제 " + q.no + ". " + q.title;
-  $("#exMeta").textContent = q.org + " · " + q.scope + " · 20점";
+  $("#exTitle").textContent = qLabel(q) + ". " + C(q.id + ".title", q.title);
+  $("#exMeta").textContent = C(q.id + ".org", q.org) + " · " + C(q.id + ".scope", q.scope) + " · " + U("ex.pts", { n: 20 });
 
   const body = $("#exBody");
-  if (s.stage === 0) body.innerHTML = viewWrite(q, s);
-  else if (s.stage === 1) body.innerHTML = viewAuto(q, s);
-  else if (s.stage === 2) body.innerHTML = viewSelf(q, s);
-  else body.innerHTML = viewExplain(q, s);
-
+  body.innerHTML = s.stage === 0 ? viewWrite(q, s) : s.stage === 1 ? viewAuto(q, s) : s.stage === 2 ? viewSelf(q, s) : viewExplain(q, s);
   bindStage(q, s);
 }
 
-/* --- 0단계: 작성 --- */
+function qLabel(q) { return U("q.label", { n: q.no }); }
+const subPrompt = (q, sub) => C(q.id + "." + sub.id + ".prompt", sub.prompt);
+const subBase = (q, sub) => q.id + "." + sub.id;
+
+/* --- 0단계 --- */
 function viewWrite(q, s) {
-  let h = '<div class="sitbox"><div class="sitlab">상황</div>'
-    + q.situation.map(p => "<p>" + esc(p) + "</p>").join("");
+  let h = '<div class="sitbox"><div class="sitlab">' + U("ex.sit") + "</div>"
+    + q.situation.map((p, i) => "<p>" + esc(C(q.id + ".sit." + i, p)) + "</p>").join("");
   if (q.table) {
-    h += '<table class="dt"><thead><tr>' + q.table.head.map(c => "<th>" + esc(c) + "</th>").join("") + "</tr></thead><tbody>"
-      + q.table.rows.map(r => "<tr>" + r.map((c, i) => "<td" + (i ? ' class="num"' : "") + ">" + esc(c) + "</td>").join("") + "</tr>").join("")
+    h += '<table class="dt"><thead><tr>' + q.table.head.map((c, i) => "<th>" + esc(C(q.id + ".th." + i, c)) + "</th>").join("") + "</tr></thead><tbody>"
+      + q.table.rows.map((r, ri) => "<tr>" + r.map((c, ci) =>
+          "<td" + (ci ? ' class="num"' : "") + ">" + esc(ci === 0 ? C(q.id + ".tc." + ri, c) : c) + "</td>").join("") + "</tr>").join("")
       + "</tbody></table>";
   }
   h += "</div>";
 
   q.subs.forEach((sub, i) => {
-    const v = s.answers[sub.id] || "";
     h += '<div class="sub">'
       + '<div class="sub-h"><span class="sub-n">(' + (i + 1) + ')</span>'
-      + '<span class="sub-q">' + esc(sub.prompt) + '</span>'
-      + '<span class="sub-p">' + sub.points + '점</span></div>'
-      + '<div class="sub-g">권장 분량 · ' + esc(sub.guide) + '</div>'
-      + '<textarea class="ta" data-sub="' + sub.id + '" rows="7" placeholder="여기에 답안을 작성하십시오.">' + esc(v) + '</textarea>'
+      + '<span class="sub-q">' + esc(subPrompt(q, sub)) + "</span>"
+      + '<span class="sub-p">' + U("ex.pts", { n: sub.points }) + "</span></div>"
+      + '<div class="sub-g">' + U("ex.guide") + " · " + esc(C(subBase(q, sub) + ".guide", sub.guide)) + "</div>"
+      + '<textarea class="ta" data-sub="' + sub.id + '" rows="7" placeholder="' + U("ex.ph") + '">' + esc(s.answers[sub.id] || "") + "</textarea>"
       + '<div class="ta-c" data-cnt="' + sub.id + '"></div></div>';
   });
 
-  h += '<div class="actions"><button class="btn ghost" id="btnHome2">홈으로</button>'
-    + '<button class="btn primary" id="btnSubmit">답안 제출하고 채점 시작</button></div>'
-    + '<p class="fine">제출한 뒤에도 답안은 그대로 보관됩니다. 채점 단계에서 자기 답안을 다시 읽으며 기준에 맞춰 판정하게 됩니다.</p>';
+  h += '<div class="actions"><button class="btn ghost" id="btnHome2">' + U("ex.tohome") + "</button>"
+    + '<button class="btn primary" id="btnSubmit">' + U("ex.submit") + "</button></div>"
+    + '<p class="fine">' + U("ex.fine") + "</p>";
   return h;
 }
 
-/* --- 1단계: 자동 점검 --- */
+/* --- 1단계 --- */
 function viewAuto(q, s) {
   const a = s.auto || runAuto(q);
-  let h = '<div class="note amber"><strong>이것은 점수가 아닙니다.</strong> 채점 기준표의 원칙 1·2·3을 기계적으로 훑은 1차 점검입니다. '
-    + '실제 점수는 다음 단계에서 기준표를 보고 직접 판정합니다. 사람 채점자도 이 순서로 봅니다 — 형식을 먼저 걸러내고, 그다음 내용을 봅니다.</div>';
-  h += '<div class="autolist">' + a.items.map(it =>
-    '<div class="auto ' + it.lv + '"><div class="auto-i">' + (it.lv === "good" ? "통과" : it.lv === "warn" ? "주의" : "확인") + '</div>'
-    + '<div><div class="auto-t">' + esc(it.t) + '</div><div class="auto-d">' + esc(it.d) + '</div></div></div>'
-  ).join("") + "</div>";
-  h += '<div class="actions"><button class="btn ghost" id="btnBack0">답안 고치기</button>'
-    + '<button class="btn primary" id="btnTo2">기준표로 채점하기</button></div>';
+  let h = '<div class="note amber">' + U("au.notice") + "</div>";
+  h += '<div class="autolist">' + a.items.map(it => {
+    const label = U("au." + (it.lv === "good" ? "good" : it.lv === "warn" ? "warn" : "bad"));
+    return '<div class="auto ' + it.lv + '"><div class="auto-i">' + label + "</div>"
+      + '<div><div class="auto-t">' + esc(U(it.k + ".t")) + "</div>"
+      + '<div class="auto-d">' + esc(U(it.k + ".d", { x: it.x || "" })) + "</div></div></div>";
+  }).join("") + "</div>";
+  h += '<div class="actions"><button class="btn ghost" id="btnBack0">' + U("au.back") + "</button>"
+    + '<button class="btn primary" id="btnTo2">' + U("au.next") + "</button></div>";
   return h;
 }
 
-/* --- 2단계: 자가 채점 --- */
+/* --- 2단계 --- */
 function viewSelf(q, s) {
-  let h = '<div class="note teal"><strong>자기 답안을 다시 읽으면서</strong> 각 요소마다 해당되는 줄을 고르십시오. '
-    + '교수자가 쓰는 기준표와 같은 표입니다. 후하게 고르면 실제 시험에서 그만큼 손해를 봅니다 — 애매하면 원칙 8에 따라 낮은 쪽을 고르십시오.</div>';
+  let h = '<div class="note teal">' + U("sf.notice") + "</div>";
 
   q.subs.forEach((sub, si) => {
-    h += '<div class="gsub"><div class="gsub-h"><span>(' + (si + 1) + ') ' + esc(sub.prompt) + '</span>'
-      + '<span class="sub-p">' + sub.points + '점</span></div>';
-    h += '<details class="myans"><summary>내 답안 보기</summary><pre>' + esc(s.answers[sub.id] || "(작성하지 않음)") + '</pre></details>';
-    if (sub.gate) h += '<div class="gate">' + esc(sub.gate.note) + '</div>';
-    if (sub.key) h += '<div class="note red small"><strong>변별 기준</strong> ' + esc(sub.key) + '</div>';
+    const b = subBase(q, sub);
+    h += '<div class="gsub"><div class="gsub-h"><span>(' + (si + 1) + ") " + esc(subPrompt(q, sub)) + "</span>"
+      + '<span class="sub-p">' + U("ex.pts", { n: sub.points }) + "</span></div>";
+    h += '<details class="myans"><summary>' + U("sf.myans") + "</summary><pre>"
+      + esc(s.answers[sub.id] || U("sf.noans")) + "</pre></details>";
+    if (sub.gate) h += '<div class="gate">' + esc(C(b + ".gate", sub.gate.note)) + "</div>";
+    if (sub.key) h += '<div class="note red small"><strong>' + U("sf.key") + "</strong> " + esc(C(b + ".key", sub.key)) + "</div>";
 
     sub.elements.forEach((el, ei) => {
-      const key = sub.id + ":" + ei;
-      const cur = s.self[key];
-      h += '<div class="el"><div class="el-n">' + esc(el.name) + '</div>'
+      const key = sub.id + ":" + ei, cur = s.self[key];
+      h += '<div class="el"><div class="el-n">' + esc(C(b + ".e" + ei + ".n", el.name)) + "</div>"
         + el.options.map((o, oi) =>
           '<label class="opt' + (cur === oi ? " sel" : "") + '">'
-          + '<input type="radio" name="' + q.id + "_" + key + '" data-key="' + key + '" value="' + oi + '"' + (cur === oi ? " checked" : "") + '>'
-          + '<span class="opt-p">' + o.p + '점</span><span class="opt-c">' + esc(o.cond) + '</span></label>'
+          + '<input type="radio" name="' + q.id + "_" + key + '" data-key="' + key + '" value="' + oi + '"' + (cur === oi ? " checked" : "") + ">"
+          + '<span class="opt-p">' + U("ex.pts", { n: o.p }) + "</span>"
+          + '<span class="opt-c">' + esc(C(b + ".e" + ei + ".o" + oi, o.cond)) + "</span></label>"
         ).join("") + "</div>";
     });
 
-    if (sub.penalties && sub.penalties.length) {
-      sub.penalties.forEach((pn, pi) => {
-        const key = sub.id + ":p" + pi;
-        h += '<label class="pen' + (s.pen[key] ? " sel" : "") + '">'
-          + '<input type="checkbox" data-pen="' + key + '"' + (s.pen[key] ? " checked" : "") + '>'
-          + '<span class="opt-p neg">' + pn.p + '점</span><span class="opt-c">' + esc(pn.cond) + '</span></label>';
-      });
-    }
+    (sub.penalties || []).forEach((pn, pi) => {
+      const key = sub.id + ":p" + pi;
+      h += '<label class="pen' + (s.pen[key] ? " sel" : "") + '">'
+        + '<input type="checkbox" data-pen="' + key + '"' + (s.pen[key] ? " checked" : "") + ">"
+        + '<span class="opt-p neg">' + U("ex.pts", { n: pn.p }) + "</span>"
+        + '<span class="opt-c">' + esc(C(b + ".p" + pi, pn.cond)) + "</span></label>";
+    });
     h += "</div>";
   });
 
-  h += '<label class="pen big' + (s.common ? " sel" : "") + '"><input type="checkbox" id="cmPen"' + (s.common ? " checked" : "") + '>'
-    + '<span class="opt-p neg">' + COMMON_PENALTY.p + '점</span><span class="opt-c">' + esc(COMMON_PENALTY.cond) + '</span></label>';
+  h += '<label class="pen big' + (s.common ? " sel" : "") + '"><input type="checkbox" id="cmPen"' + (s.common ? " checked" : "") + ">"
+    + '<span class="opt-p neg">' + U("ex.pts", { n: COMMON_PENALTY.p }) + "</span>"
+    + '<span class="opt-c">' + esc(U("cp.cond")) + "</span></label>";
 
-  h += '<div class="livebox"><div class="live-l">현재 채점 합계</div><div class="live-v" id="liveScore">—</div>'
+  h += '<div class="livebox"><div class="live-l">' + U("sf.live") + '</div><div class="live-v" id="liveScore">—</div>'
     + '<div class="live-s" id="liveMiss"></div></div>';
-  h += '<div class="actions"><button class="btn ghost" id="btnBack1">1단계로</button>'
-    + '<button class="btn primary" id="btnTo3">채점 확정하고 해설 보기</button></div>';
+  h += '<div class="actions"><button class="btn ghost" id="btnBack1">' + U("sf.back") + "</button>"
+    + '<button class="btn primary" id="btnTo3">' + U("sf.next") + "</button></div>";
   return h;
 }
 
@@ -1467,55 +2647,17 @@ function computeSelf(q, s) {
   q.subs.forEach(sub => {
     let sum = 0, gateFail = false;
     sub.elements.forEach((el, ei) => {
-      const key = sub.id + ":" + ei;
-      const idx = s.self[key];
+      const idx = s.self[sub.id + ":" + ei];
       if (idx === undefined) { missing++; return; }
       sum += el.options[idx].p;
       if (sub.gate && sub.gate.elementIndex === ei && el.options[idx].p === sub.gate.failAt) gateFail = true;
     });
     if (gateFail) sum = 0;
-    if (sub.penalties) sub.penalties.forEach((pn, pi) => { if (s.pen[sub.id + ":p" + pi]) sum += pn.p; });
+    (sub.penalties || []).forEach((pn, pi) => { if (s.pen[sub.id + ":p" + pi]) sum += pn.p; });
     total += Math.max(0, sum);
   });
   if (s.common) total += COMMON_PENALTY.p;
   return { score: Math.max(0, Math.min(20, total)), missing };
-}
-
-function refreshLive(q, s) {
-  const r = computeSelf(q, s);
-  const el = $("#liveScore"); if (!el) return;
-  el.textContent = r.score + " / 20점";
-  $("#liveMiss").textContent = r.missing ? "아직 고르지 않은 항목 " + r.missing + "개" : "모든 항목을 판정했습니다";
-  $("#liveMiss").className = "live-s" + (r.missing ? " warn" : " ok");
-}
-
-/* --- 3단계: 해설 --- */
-function viewExplain(q, s) {
-  let h = '<div class="scorehero"><div class="sh-l">문제 ' + q.no + ' 자가 채점 결과</div>'
-    + '<div class="sh-v">' + s.score + '<span>/ 20점</span></div>'
-    + '<div class="sh-b"><i style="width:' + (s.score / 20 * 100) + '%"></i></div>'
-    + '<div class="sh-s">' + esc(verdict(s.score)) + '</div></div>';
-
-  h += '<div class="note ink"><strong>출제 의도</strong> ' + esc(q.intent) + '</div>';
-
-  q.subs.forEach((sub, si) => {
-    const r = subScore(sub, s);
-    h += '<div class="gsub"><div class="gsub-h"><span>(' + (si + 1) + ') ' + esc(sub.prompt) + '</span>'
-      + '<span class="sub-p">' + r + ' / ' + sub.points + '점</span></div>';
-    h += '<div class="twocol">'
-      + '<div class="col ok"><div class="col-h">점수가 인정되는 답</div><ul>' + sub.model.ok.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul></div>"
-      + '<div class="col no"><div class="col-h">0점이거나 깎이는 답</div><ul>' + sub.model.no.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul></div>"
-      + "</div>";
-    h += '<details class="myans"><summary>내가 쓴 답안과 비교하기</summary><pre>' + esc(s.answers[sub.id] || "(작성하지 않음)") + '</pre></details>';
-    h += "</div>";
-  });
-
-  const nxt = QUESTIONS.findIndex((x, i) => i > CUR && !STATE[x.id].done);
-  h += '<div class="actions"><button class="btn ghost" id="btnBack2">채점 다시하기</button>'
-    + '<button class="btn ghost" id="btnRetry">답안 고쳐 다시 풀기</button>'
-    + (nxt >= 0 ? '<button class="btn primary" id="btnNextQ" data-i="' + nxt + '">다음 문항으로</button>'
-      : '<button class="btn primary" id="btnReport2">전체 결과 보기</button>') + "</div>";
-  return h;
 }
 
 function subScore(sub, s) {
@@ -1527,19 +2669,53 @@ function subScore(sub, s) {
     if (sub.gate && sub.gate.elementIndex === ei && el.options[idx].p === sub.gate.failAt) gateFail = true;
   });
   if (gateFail) sum = 0;
-  if (sub.penalties) sub.penalties.forEach((pn, pi) => { if (s.pen[sub.id + ":p" + pi]) sum += pn.p; });
+  (sub.penalties || []).forEach((pn, pi) => { if (s.pen[sub.id + ":p" + pi]) sum += pn.p; });
   return Math.max(0, sum);
 }
 
-function verdict(sc) {
-  if (sc >= 18) return "기준표의 요소를 거의 모두 갖췄습니다. 실제 시험에서도 이 수준을 유지하면 됩니다.";
-  if (sc >= 14) return "방향은 맞습니다. 빠진 요소가 무엇이었는지 아래 해설에서 확인하십시오.";
-  if (sc >= 9) return "내용은 있으나 구체성이 부족합니다. ‘셀 수 있는가 / 단계가 특정되는가 / 누가 결정하는가’를 다시 보십시오.";
-  if (sc >= 4) return "원칙 1의 구체성 테스트에서 대부분 걸렸습니다. 해설의 ‘인정되는 답’을 문장 단위로 비교해보십시오.";
-  return "다시 한 번 풀어보기를 권합니다. 해설을 먼저 읽고 답안을 고쳐 재도전할 수 있습니다.";
+function refreshLive(q, s) {
+  const r = computeSelf(q, s);
+  const el = $("#liveScore"); if (!el) return;
+  el.textContent = U("ex.score", { a: r.score, b: 20 });
+  $("#liveMiss").textContent = r.missing ? U("sf.miss", { n: r.missing }) : U("sf.all");
+  $("#liveMiss").className = "live-s" + (r.missing ? " warn" : " ok");
 }
 
-/* ===== 단계 이벤트 ===== */
+/* --- 3단계 --- */
+function viewExplain(q, s) {
+  let h = '<div class="scorehero"><div class="sh-l">' + U("xp.result", { n: q.no }) + "</div>"
+    + '<div class="sh-v">' + s.score + "<span>" + U("xp.of") + "</span></div>"
+    + '<div class="sh-b"><i style="width:' + (s.score / 20 * 100) + '%"></i></div>'
+    + '<div class="sh-s">' + esc(verdict(s.score)) + "</div></div>";
+
+  h += '<div class="note ink"><strong>' + U("xp.intent") + "</strong> " + esc(C(q.id + ".intent", q.intent)) + "</div>";
+
+  q.subs.forEach((sub, si) => {
+    const b = subBase(q, sub), r = subScore(sub, s);
+    h += '<div class="gsub"><div class="gsub-h"><span>(' + (si + 1) + ") " + esc(subPrompt(q, sub)) + "</span>"
+      + '<span class="sub-p">' + U("ex.score", { a: r, b: sub.points }) + "</span></div>";
+    h += '<div class="twocol">'
+      + '<div class="col ok"><div class="col-h">' + U("xp.ok") + "</div><ul>"
+      + sub.model.ok.map((x, i) => "<li>" + esc(C(b + ".ok." + i, x)) + "</li>").join("") + "</ul></div>"
+      + '<div class="col no"><div class="col-h">' + U("xp.no") + "</div><ul>"
+      + sub.model.no.map((x, i) => "<li>" + esc(C(b + ".no." + i, x)) + "</li>").join("") + "</ul></div></div>";
+    h += '<details class="myans"><summary>' + U("xp.cmp") + "</summary><pre>"
+      + esc(s.answers[sub.id] || U("sf.noans")) + "</pre></details></div>";
+  });
+
+  const nxt = QUESTIONS.findIndex((x, i) => i > CUR && !STATE[x.id].done);
+  h += '<div class="actions"><button class="btn ghost" id="btnBack2">' + U("xp.regrade") + "</button>"
+    + '<button class="btn ghost" id="btnRetry">' + U("xp.retry") + "</button>"
+    + (nxt >= 0 ? '<button class="btn primary" id="btnNextQ" data-i="' + nxt + '">' + U("xp.next") + "</button>"
+               : '<button class="btn primary" id="btnReport2">' + U("xp.report") + "</button>") + "</div>";
+  return h;
+}
+
+function verdict(sc) {
+  return U(sc >= 18 ? "v.18" : sc >= 14 ? "v.14" : sc >= 9 ? "v.9" : sc >= 4 ? "v.4" : "v.0");
+}
+
+/* ===== 이벤트 ===== */
 function bindStage(q, s) {
   const go = (st) => { s.stage = st; queueSave(); renderQuestion(); };
 
@@ -1548,7 +2724,7 @@ function bindStage(q, s) {
     const upd = () => {
       const n = ta.value.replace(/\s/g, "").length;
       const lines = ta.value.split("\n").filter(x => x.trim()).length;
-      cnt.textContent = n + "자 · " + lines + "줄";
+      cnt.textContent = U("ex.cnt", { c: n, l: lines });
       cnt.className = "ta-c" + (n < 20 ? " low" : "");
     };
     upd();
@@ -1560,10 +2736,8 @@ function bindStage(q, s) {
   b("btnHome2", () => { saveNow(); renderHome(); show("scHome"); });
   b("btnSubmit", () => {
     const empty = q.subs.filter(sub => (s.answers[sub.id] || "").replace(/\s/g, "").length < 10);
-    if (empty.length === q.subs.length) return toast("답안을 먼저 작성해주세요.", "bad");
-    if (empty.length) {
-      if (!confirm("아직 비어 있는 소문항이 " + empty.length + "개 있습니다. 그대로 제출하면 그 항목은 0점으로 채점됩니다. 계속할까요?")) return;
-    }
+    if (empty.length === q.subs.length) return toast(U("ex.needans"), "bad");
+    if (empty.length && !confirm(U("ex.confirm", { n: empty.length }))) return;
     s.auto = runAuto(q); go(1);
   });
   b("btnBack0", () => go(0));
@@ -1591,7 +2765,7 @@ function bindStage(q, s) {
 
   b("btnTo3", () => {
     const r = computeSelf(q, s);
-    if (r.missing) return toast("아직 판정하지 않은 항목이 " + r.missing + "개 있습니다.", "bad");
+    if (r.missing) return toast(U("sf.needall", { n: r.missing }), "bad");
     s.score = r.score; s.done = true; s.stage = 3;
     saveNow(); renderQuestion();
   });
@@ -1599,82 +2773,96 @@ function bindStage(q, s) {
 
 /* ===== 전체 결과 ===== */
 function renderReport() {
-  const dc = doneCount(), tot = totalScore();
-  const maxed = dc * 20;
-  $("#rpTotal").textContent = tot + (maxed ? " / " + maxed + "점" : "점");
-  $("#rpSub").textContent = dc + "문항 채점 완료" + (dc < 6 ? " · 남은 " + (6 - dc) + "문항은 아직 반영되지 않았습니다" : "");
+  const dc = doneCount(), tot = totalScore(), maxed = dc * 20;
+  $("#rpTotal").textContent = maxed ? tot + " / " + maxed : tot;
+  $("#rpSub").textContent = U("rp.sub", { n: dc }) + (dc < QUESTIONS.length ? U("rp.sub2", { n: QUESTIONS.length - dc }) : "");
   $("#rpPct").textContent = maxed ? Math.round(tot / maxed * 100) + "%" : "—";
 
   $("#rpBars").innerHTML = QUESTIONS.map(q => {
-    const s = STATE[q.id];
-    const w = s.done ? s.score / 20 * 100 : 0;
-    return '<div class="bar"><div class="bar-l">문제 ' + q.no + ' · ' + esc(q.title) + '</div>'
+    const s = STATE[q.id], w = s.done ? s.score / 20 * 100 : 0;
+    return '<div class="bar"><div class="bar-l">' + qLabel(q) + " · " + esc(C(q.id + ".title", q.title)) + "</div>"
       + '<div class="bar-t"><i style="width:' + w + '%" class="' + (s.score >= 14 ? "hi" : s.score >= 9 ? "mid" : "lo") + '"></i></div>'
-      + '<div class="bar-v">' + (s.done ? s.score + "점" : "미채점") + '</div></div>';
+      + '<div class="bar-v">' + (s.done ? U("ex.pts", { n: s.score }) : U("rp.unscored")) + "</div></div>";
   }).join("");
 
   const weak = [];
   QUESTIONS.forEach(q => {
-    const s = STATE[q.id];
-    if (!s.done) return;
+    const s = STATE[q.id]; if (!s.done) return;
     q.subs.forEach((sub, si) => {
       const r = subScore(sub, s);
-      if (r < sub.points * 0.6) weak.push("문제 " + q.no + "-(" + (si + 1) + ") " + sub.guide.split("·")[0].trim() + " — " + r + "/" + sub.points + "점");
+      if (r < sub.points * 0.6) weak.push(qLabel(q) + "-(" + (si + 1) + ") " + U("ex.score", { a: r, b: sub.points }));
     });
   });
   $("#rpWeak").innerHTML = weak.length
     ? "<ul>" + weak.map(w => "<li>" + esc(w) + "</li>").join("") + "</ul>"
-    : '<p class="fine">60% 미만으로 떨어진 소문항이 없습니다.</p>';
+    : '<p class="fine">' + U("rp.noweak") + "</p>";
 
-  $("#rpPrin").innerHTML = PRINCIPLES.map(p =>
-    '<div class="prin"><div class="prin-n">원칙 ' + p.n + '</div><div><div class="prin-t">' + esc(p.t) + '</div><div class="prin-d">' + esc(p.d) + '</div></div></div>'
+  $("#rpPrin").innerHTML = prinHTML();
+}
+
+function prinHTML() {
+  return prins().map(p =>
+    '<div class="prin"><div class="prin-n">' + U("pr.n", { n: p.n }) + "</div>"
+    + '<div><div class="prin-t">' + esc(p.t) + '</div><div class="prin-d">' + esc(p.d) + "</div></div></div>"
   ).join("");
 }
 
-/* ===== 교수자 보기 ===== */
+/* ===== 교수자 ===== */
 async function renderProf() {
-  $("#pfList").innerHTML = '<p class="fine">불러오는 중…</p>';
+  $("#pfList").innerHTML = '<p class="fine">' + U("pv.load") + "</p>";
   show("scProf");
   try {
     const snap = await db.ref("mockexam/attempts").get();
     const v = snap.val() || {};
-    const rows = Object.keys(v).map(k => v[k]).filter(Boolean)
-      .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-    if (!rows.length) return ($("#pfList").innerHTML = '<p class="fine">아직 제출된 기록이 없습니다.</p>');
+    const rows = Object.keys(v).map(k => v[k]).filter(Boolean).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    if (!rows.length) return ($("#pfList").innerHTML = '<p class="fine">' + U("pv.none") + "</p>");
 
     const avg = {};
     QUESTIONS.forEach(q => {
       const ss = rows.map(r => r.state && r.state[q.id]).filter(x => x && x.done).map(x => x.score || 0);
-      avg[q.id] = ss.length ? (ss.reduce((a, b) => a + b, 0) / ss.length).toFixed(1) + "점 (" + ss.length + "명)" : "—";
+      avg[q.id] = ss.length ? (ss.reduce((a, b) => a + b, 0) / ss.length).toFixed(1) + " (" + U("pv.persons", { n: ss.length }) + ")" : "—";
     });
+    const langName = (l) => (LANGS.find(x => x.id === l) || { label: "—" }).label;
 
     $("#pfList").innerHTML =
-      '<div class="pfstat"><div><b>' + rows.length + '</b>명 응시</div>'
-      + QUESTIONS.map(q => '<div>문제 ' + q.no + ' 평균 <b>' + avg[q.id] + '</b></div>').join("") + "</div>"
-      + '<table class="dt wide"><thead><tr><th>학번</th><th>이름</th><th>완료</th>'
-      + QUESTIONS.map(q => "<th>" + q.no + "</th>").join("") + "<th>합계</th><th>최종 활동</th></tr></thead><tbody>"
+      '<div class="pfstat"><div>' + U("pv.n", { n: "<b>" + rows.length + "</b>" }) + "</div>"
+      + QUESTIONS.map(q => "<div>" + U("pv.avg", { n: q.no }) + " <b>" + avg[q.id] + "</b></div>").join("") + "</div>"
+      + '<table class="dt wide"><thead><tr><th>' + U("pv.sno") + "</th><th>" + U("pv.name") + "</th><th>" + U("pv.lang")
+      + "</th><th>" + U("pv.done") + "</th>"
+      + QUESTIONS.map(q => "<th>" + q.no + "</th>").join("") + "<th>" + U("pv.sum") + "</th><th>" + U("pv.last") + "</th></tr></thead><tbody>"
       + rows.map(r => "<tr><td>" + esc(r.studentNo || "—") + "</td><td>" + esc(r.name || "—") + "</td>"
+        + "<td>" + esc(langName(r.lang || "ko")) + "</td>"
         + "<td class='num'>" + (r.doneCount || 0) + "</td>"
-        + QUESTIONS.map(q => {
-          const s = r.state && r.state[q.id];
-          return "<td class='num'>" + (s && s.done ? s.score : "·") + "</td>";
-        }).join("")
+        + QUESTIONS.map(q => { const s = r.state && r.state[q.id]; return "<td class='num'>" + (s && s.done ? s.score : "·") + "</td>"; }).join("")
         + "<td class='num'><b>" + (r.total || 0) + "</b></td>"
         + "<td>" + (r.updatedAt ? new Date(r.updatedAt).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "—") + "</td></tr>").join("")
       + "</tbody></table>";
   } catch (e) {
-    $("#pfList").innerHTML = '<p class="fine">기록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</p>';
+    $("#pfList").innerHTML = '<p class="fine">' + U("pv.fail") + "</p>";
   }
 }
 
 /* ===== 부팅 ===== */
 function boot() {
+  let saved = "ko";
+  try { saved = localStorage.getItem("mockexam.lang") || ""; } catch (e) {}
+  if (!saved) {
+    /* 첫 방문 기본값은 한국어. 중국어권 브라우저만 중국어로 시작하고,
+       나머지는 상단 메뉴에서 한 번 고르면 그 선택이 기억된다. */
+    const n = (navigator.language || "ko").toLowerCase();
+    saved = n.startsWith("zh") ? "zh" : "ko";
+  }
+  LANG = TRS[saved] ? saved : "ko";
+
   $("#tabLogin").onclick = () => setAuthTab("login");
   $("#tabJoin").onclick = () => setAuthTab("join");
   $("#btnEmail").onclick = doEmailAuth;
+  $("#btnEmail").dataset.mode = "login";
   $("#btnGoogle").onclick = doGoogle;
   $("#inPw").onkeydown = e => { if (e.key === "Enter") doEmailAuth(); };
-  setAuthTab("login");
+
+  $("#langBtn").onclick = (e) => { e.stopPropagation(); $("#langWrap").classList.toggle("open"); };
+  document.addEventListener("click", () => $("#langWrap").classList.remove("open"));
 
   $("#btnStart").onclick = () => {
     const nxt = QUESTIONS.findIndex(q => !STATE[q.id].done);
@@ -1682,25 +2870,29 @@ function boot() {
   };
   $("#btnReport").onclick = () => { renderReport(); show("scReport"); };
   $("#rpHome").onclick = () => { renderHome(); show("scHome"); };
-  $("#topHome").onclick = () => { saveNow(); renderHome(); show("scHome"); };
+  $("#topHome").onclick = () => { if (!ME) return; saveNow(); renderHome(); show("scHome"); };
   $("#profLink").onclick = renderProf;
   $("#pfHome").onclick = () => { renderHome(); show("scHome"); };
   $$(".btnOut").forEach(b => b.onclick = () => auth.signOut());
-  $("#btnPrin").onclick = () => { $("#prinModal").classList.add("on"); $("#prinBody").innerHTML = $("#rpPrin").innerHTML || PRINCIPLES.map(p => '<div class="prin"><div class="prin-n">원칙 ' + p.n + '</div><div><div class="prin-t">' + esc(p.t) + '</div><div class="prin-d">' + esc(p.d) + '</div></div></div>').join(""); };
+  $("#btnPrin").onclick = () => { $("#prinBody").innerHTML = prinHTML(); $("#prinModal").classList.add("on"); };
   $("#prinClose").onclick = () => $("#prinModal").classList.remove("on");
+  $("#prinModal").onclick = (e) => { if (e.target.id === "prinModal") $("#prinModal").classList.remove("on"); };
+
+  setLang(LANG, false);
 
   auth.onAuthStateChanged(async user => {
-    if (!user) { ME = null; show("scAuth"); return; }
+    if (!user) { ME = null; $("#topHome").style.display = "none"; show("scAuth"); return; }
     show("scLoad");
     try {
       const p = await ensureProfile(user);
       ME = { uid: user.uid, email: user.email, name: p.name, studentNo: p.studentNo };
       await db.ref("mockexam/users/" + user.uid).update({ lastSeen: Date.now() });
       await loadProgress();
+      $("#topHome").style.display = "";
       renderHome(); show("scHome");
     } catch (e) {
       show("scAuth");
-      $("#authMsg").textContent = "기록을 불러오지 못했습니다. 다시 로그인해주세요.";
+      $("#authMsg").textContent = U("auth.loadfail");
     }
   });
 }
