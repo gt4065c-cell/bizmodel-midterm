@@ -1,0 +1,1711 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>비즈니스모델과의사결정론 — 모의 평가</title>
+<meta name="description" content="중간 평가 대비 모의 연습. 답안을 쓰고, 채점 기준표로 직접 채점해 봅니다.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230E1E38'/><path d='M28 52l14 14 30-32' stroke='%23F5F2EC' stroke-width='9' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+:root{
+  --ink:#0E1E38; --ink2:#16233B; --paper:#F5F2EC; --white:#fff;
+  --teal:#1C7293; --teal-d:#155A74; --amber:#C2561A; --red:#9B2C2C; --green:#1F6B4A;
+  --muted:#5A6677; --line:#DCD6CA; --line2:#EDE8DF;
+  --r:14px; --sh:0 1px 2px rgba(14,30,56,.06), 0 8px 24px rgba(14,30,56,.07);
+  --ff:'Malgun Gothic','맑은 고딕',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR','Pretendard',system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:var(--ff);background:var(--paper);color:var(--ink2);line-height:1.65;
+  font-size:16px;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
+h1,h2,h3{margin:0;line-height:1.3;letter-spacing:-.01em}
+p{margin:0 0 .6em}
+ul{margin:.3em 0;padding-left:1.1em}
+li{margin:.25em 0}
+
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 80px}
+.screen{display:none}
+.screen.on{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---- top bar ---- */
+.top{position:sticky;top:0;z-index:40;background:rgba(245,242,236,.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);}
+.top-in{max-width:860px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
+.brand{font-weight:800;color:var(--ink);font-size:15px;letter-spacing:-.02em;white-space:nowrap}
+.brand small{display:block;font-weight:600;font-size:11.5px;color:var(--muted);letter-spacing:0}
+.top-sp{flex:1}
+.tlink{background:none;border:0;color:var(--teal);font-weight:700;font-size:13.5px;cursor:pointer;
+  padding:6px 10px;border-radius:9px}
+.tlink:hover{background:rgba(28,114,147,.09)}
+.savetag{font-size:11.5px;color:var(--muted);white-space:nowrap}
+
+/* ---- buttons ---- */
+.btn{border:0;border-radius:11px;padding:12px 20px;font-weight:700;cursor:pointer;
+  transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:15px}
+.btn.primary{background:var(--ink);color:#fff;box-shadow:0 2px 0 rgba(14,30,56,.25)}
+.btn.primary:hover{background:#15274a;transform:translateY(-1px)}
+.btn.primary:disabled{opacity:.5;cursor:default;transform:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ghost:hover{border-color:var(--ink);background:rgba(14,30,56,.04)}
+.btn.g{background:#fff;color:#1f1f1f;border:1.5px solid var(--line);width:100%}
+.btn.g:hover{background:#fafafa;border-color:#bbb}
+.btn.block{width:100%}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.actions .btn{flex:1 1 auto;min-width:140px}
+
+/* ---- auth ---- */
+.auth{max-width:420px;margin:7vh auto 0;padding:0 16px}
+.auth-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px 26px;box-shadow:var(--sh)}
+.auth h1{font-size:23px;color:var(--ink);margin-bottom:6px}
+.auth-sub{color:var(--muted);font-size:14px;margin-bottom:22px}
+.tabs{display:flex;background:var(--paper);border-radius:11px;padding:4px;margin-bottom:18px}
+.tabs button{flex:1;background:none;border:0;padding:9px;border-radius:8px;font-weight:700;color:var(--muted);cursor:pointer;font-size:14.5px}
+.tabs button.act{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.field{margin-bottom:11px}
+.field label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:5px}
+.field input{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
+.field input:focus{outline:0;border-color:var(--teal);box-shadow:0 0 0 3px rgba(28,114,147,.12)}
+.divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:18px 0}
+.divider:before,.divider:after{content:"";flex:1;height:1px;background:var(--line)}
+.msg{color:var(--red);font-size:13.5px;margin-top:10px;min-height:19px;font-weight:600}
+.gicon{width:17px;height:17px;flex:0 0 17px}
+
+/* ---- home ---- */
+.hero{background:var(--ink);color:#fff;border-radius:18px;padding:26px 24px;margin:22px 0 18px;
+  box-shadow:var(--sh);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-50px;top:-50px;width:190px;height:190px;border-radius:50%;
+  background:rgba(28,114,147,.26)}
+.hero h1{font-size:21px;margin-bottom:5px;position:relative}
+.hero .hsub{color:rgba(255,255,255,.72);font-size:13.5px;position:relative;margin-bottom:18px}
+.hstats{display:flex;gap:22px;position:relative;flex-wrap:wrap}
+.hstat .v{font-size:27px;font-weight:800;letter-spacing:-.02em}
+.hstat .l{font-size:12px;color:rgba(255,255,255,.65)}
+.prog{height:7px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;margin:16px 0 7px;position:relative}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#2C92BA,#58C4D8);border-radius:99px;transition:width .5s cubic-bezier(.3,1,.4,1)}
+.progtxt{font-size:12.5px;color:rgba(255,255,255,.7);position:relative}
+
+.howto{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:20px}
+.howto h3{font-size:15px;color:var(--ink);margin-bottom:10px}
+.steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.st3{background:var(--paper);border-radius:11px;padding:13px 13px 14px}
+.st3 b{display:block;font-size:11.5px;color:var(--teal);font-weight:800;margin-bottom:3px}
+.st3 span{font-size:13px;color:var(--ink2);font-weight:600;display:block;line-height:1.45}
+
+h2.sect{font-size:16px;color:var(--ink);margin:26px 0 12px;display:flex;align-items:center;gap:9px}
+h2.sect:after{content:"";flex:1;height:1px;background:var(--line)}
+
+#qGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.qcard{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 17px;
+  cursor:pointer;transition:.16s;display:block;width:100%}
+.qcard:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:var(--sh)}
+.qcard-n{font-size:11.5px;font-weight:800;color:var(--teal);letter-spacing:.03em}
+.qcard-t{font-size:16px;font-weight:800;color:var(--ink);margin:2px 0 1px;letter-spacing:-.01em}
+.qcard-o{font-size:13px;color:var(--muted);margin-bottom:11px}
+.qcard-s{font-size:11.5px;color:#8A94A3;margin-top:9px}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;
+  background:var(--line2);color:var(--muted)}
+.pill.ok{background:#E3F0EA;color:var(--green)}
+.pill.mid{background:#FAEEE2;color:var(--amber)}
+
+/* ---- exam ---- */
+.exhead{margin:20px 0 14px}
+.exhead h1{font-size:21px;color:var(--ink)}
+.exmeta{font-size:13px;color:var(--muted);margin-top:3px}
+#exNav{display:flex;gap:7px;margin:16px 0 12px;flex-wrap:wrap}
+.navdot{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line);background:#fff;
+  font-weight:800;color:var(--muted);cursor:pointer;font-size:14px}
+.navdot:hover{border-color:var(--ink)}
+.navdot.fin{background:#E3F0EA;border-color:#B7D8C8;color:var(--green)}
+.navdot.cur{background:var(--ink);border-color:var(--ink);color:#fff}
+#exStage{display:flex;align-items:center;gap:4px;margin-bottom:18px;flex-wrap:wrap}
+.stp{font-size:12px;font-weight:700;color:#A3ACB9;padding:4px 9px;border-radius:8px;background:var(--line2)}
+.stp.cur{background:var(--teal);color:#fff}
+.stp.done{background:#E3F0EA;color:var(--green)}
+.stp-sep{width:11px;height:1.5px;background:var(--line)}
+
+.sitbox{background:#fff;border:1px solid var(--line);border-left:5px solid var(--ink);
+  border-radius:12px;padding:18px 20px;margin-bottom:22px}
+.sitlab{font-size:11.5px;font-weight:800;color:var(--ink);letter-spacing:.06em;margin-bottom:8px}
+.sitbox p{font-size:15px;line-height:1.72}
+.sitbox p:last-child{margin-bottom:0}
+
+.dt{width:100%;border-collapse:collapse;margin:14px 0 2px;font-size:14px}
+.dt th{background:var(--ink);color:#fff;text-align:left;padding:9px 11px;font-weight:700;font-size:13px}
+.dt td{padding:8px 11px;border-bottom:1px solid var(--line2)}
+.dt tbody tr:nth-child(odd){background:#FAF8F4}
+.dt td.num,.dt th.num{text-align:right;font-variant-numeric:tabular-nums}
+.dt.wide{font-size:13px}
+.dt.wide th,.dt.wide td{padding:7px 8px}
+
+.sub{margin-bottom:26px}
+.sub-h{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.sub-n{font-weight:800;color:var(--ink);flex:0 0 auto}
+.sub-q{flex:1 1 240px;font-size:15.5px;line-height:1.68;font-weight:600}
+.sub-p{font-size:12.5px;font-weight:800;color:var(--amber);white-space:nowrap;flex:0 0 auto}
+.sub-g{font-size:12px;color:var(--muted);margin:5px 0 8px}
+.ta{width:100%;padding:14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;
+  line-height:1.72;resize:vertical;min-height:130px}
+.ta:focus{outline:0;border-color:var(--teal);box-shadow:0 0 0 3px rgba(28,114,147,.1)}
+.ta-c{font-size:11.5px;color:var(--muted);text-align:right;margin-top:4px}
+.ta-c.low{color:var(--amber);font-weight:700}
+
+.note{border-radius:12px;padding:14px 17px;font-size:14px;line-height:1.68;margin-bottom:20px}
+.note.amber{background:#FBF3EA;border:1px solid #EAD4BB;color:#6B3A14}
+.note.teal{background:#EEF5F8;border:1px solid #C6DEE8;color:#13475C}
+.note.red{background:#FCF2F2;border:1px solid #E8CBCB;color:#7A2222}
+.note.ink{background:#fff;border:1px solid var(--line);border-left:5px solid var(--teal)}
+.note.small{font-size:13px;padding:11px 14px}
+
+.autolist{display:flex;flex-direction:column;gap:9px}
+.auto{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.auto-i{flex:0 0 46px;height:23px;border-radius:7px;font-size:11.5px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;margin-top:2px}
+.auto.good{border-color:#C3DED0}.auto.good .auto-i{background:#E3F0EA;color:var(--green)}
+.auto.warn{border-color:#EAD4BB}.auto.warn .auto-i{background:#FAEEE2;color:var(--amber)}
+.auto.bad{border-color:#E8CBCB}.auto.bad .auto-i{background:#FCE9E9;color:var(--red)}
+.auto-t{font-weight:800;font-size:14.5px;color:var(--ink)}
+.auto-d{font-size:13.5px;color:var(--muted);line-height:1.6;margin-top:2px}
+
+.gsub{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 18px;margin-bottom:16px}
+.gsub-h{font-weight:800;color:var(--ink);font-size:14.5px;line-height:1.6;margin-bottom:11px;
+  display:flex;gap:10px;align-items:baseline;justify-content:space-between}
+.gsub-h>span:first-child{flex:1 1 auto}
+.myans{margin:10px 0}
+.myans summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--teal);outline:0}
+.myans pre{white-space:pre-wrap;font-family:inherit;font-size:13.5px;background:var(--paper);
+  border-radius:10px;padding:12px 14px;margin:8px 0 0;color:var(--ink2);line-height:1.7}
+.gate{background:#FCF2F2;border:1px solid #E8CBCB;color:#7A2222;font-size:13px;font-weight:700;
+  border-radius:9px;padding:9px 12px;margin-bottom:11px}
+
+.el{margin:13px 0}
+.el-n{font-size:13px;font-weight:800;color:var(--teal);margin-bottom:6px}
+.opt,.pen{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line2);border-radius:10px;
+  padding:9px 12px;margin-bottom:5px;cursor:pointer;transition:.13s;background:#FDFCFA}
+.opt:hover,.pen:hover{border-color:var(--teal);background:#fff}
+.opt.sel{border-color:var(--teal);background:#F2F8FA;box-shadow:inset 0 0 0 1px var(--teal)}
+.pen.sel{border-color:var(--red);background:#FCF4F4;box-shadow:inset 0 0 0 1px var(--red)}
+.opt input,.pen input{margin:5px 0 0;flex:0 0 auto;accent-color:var(--teal)}
+.pen input{accent-color:var(--red)}
+.opt-p{flex:0 0 42px;font-weight:800;font-size:13.5px;color:var(--ink);font-variant-numeric:tabular-nums}
+.opt-p.neg{color:var(--red)}
+.opt-c{flex:1;font-size:13.5px;line-height:1.6}
+.pen.big{margin-top:18px;padding:13px 15px}
+
+.livebox{position:sticky;bottom:12px;background:var(--ink);color:#fff;border-radius:13px;
+  padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 8px 28px rgba(14,30,56,.28);margin-top:20px}
+.live-l{font-size:12.5px;color:rgba(255,255,255,.7)}
+.live-v{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-left:auto}
+.live-s{font-size:12px;width:100%;color:rgba(255,255,255,.62)}
+.live-s.warn{color:#F0B37E}.live-s.ok{color:#8FD6B4}
+
+.scorehero{background:var(--ink);color:#fff;border-radius:16px;padding:24px;margin-bottom:20px;text-align:center}
+.sh-l{font-size:12.5px;color:rgba(255,255,255,.66)}
+.sh-v{font-size:46px;font-weight:800;letter-spacing:-.03em;line-height:1.1;margin:2px 0 12px}
+.sh-v span{font-size:17px;font-weight:700;color:rgba(255,255,255,.6);margin-left:6px;letter-spacing:0}
+.sh-b{height:8px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.sh-b i{display:block;height:100%;background:linear-gradient(90deg,#2C92BA,#58C4D8);border-radius:99px;
+  animation:grow .8s cubic-bezier(.3,1,.4,1)}
+@keyframes grow{from{width:0 !important}}
+.sh-s{font-size:14px;color:rgba(255,255,255,.85);line-height:1.6}
+
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:12px 0}
+.col{border-radius:11px;padding:13px 15px;font-size:13.5px}
+.col.ok{background:#F1F7F4;border:1px solid #C9E0D4}
+.col.no{background:#FBF4F4;border:1px solid #E6CFCF}
+.col-h{font-weight:800;font-size:12.5px;margin-bottom:7px;letter-spacing:.01em}
+.col.ok .col-h{color:var(--green)}.col.no .col-h{color:var(--red)}
+.col ul{padding-left:1em;margin:0}
+.col li{line-height:1.6;margin:.3em 0}
+
+/* ---- report ---- */
+.bar{display:grid;grid-template-columns:1fr 140px 62px;gap:11px;align-items:center;margin-bottom:9px}
+.bar-l{font-size:13.5px;font-weight:600}
+.bar-t{height:9px;background:var(--line2);border-radius:99px;overflow:hidden}
+.bar-t i{display:block;height:100%;border-radius:99px;transition:width .6s}
+.bar-t i.hi{background:var(--green)}.bar-t i.mid{background:var(--amber)}.bar-t i.lo{background:var(--red)}
+.bar-v{font-size:13px;font-weight:800;text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+.prin{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:11px;
+  padding:13px 15px;margin-bottom:8px}
+.prin-n{flex:0 0 52px;font-size:12px;font-weight:800;color:var(--teal)}
+.prin-t{font-weight:800;font-size:14.5px;color:var(--ink)}
+.prin-d{font-size:13.5px;color:var(--muted);line-height:1.62;margin-top:2px}
+.pfstat{display:flex;gap:18px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:14px 17px;margin-bottom:14px;font-size:13.5px;color:var(--muted)}
+.pfstat b{color:var(--ink);font-size:16px}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+.fine{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:12px}
+.loadbox{text-align:center;padding:16vh 20px;color:var(--muted)}
+.spin{width:30px;height:30px;border:3px solid var(--line);border-top-color:var(--teal);
+  border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 14px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);background:var(--ink);color:#fff;
+  padding:12px 20px;border-radius:11px;font-size:14px;font-weight:600;opacity:0;transition:.26s;z-index:90;
+  max-width:88vw;text-align:center;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast.bad{background:var(--red)}
+
+.modal{position:fixed;inset:0;background:rgba(14,30,56,.55);display:none;z-index:80;
+  align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.modal-in{background:var(--paper);border-radius:16px;max-width:620px;width:100%;max-height:82vh;
+  overflow-y:auto;padding:24px}
+.modal-h{display:flex;align-items:center;margin-bottom:14px}
+.modal-h h2{font-size:18px;color:var(--ink);flex:1}
+.xbtn{background:none;border:0;font-size:24px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px}
+
+@media (max-width:620px){
+  body{font-size:15.5px}
+  #qGrid,.steps3,.twocol{grid-template-columns:1fr}
+  .bar{grid-template-columns:1fr 60px;gap:8px}
+  .bar-t{display:none}
+  .hero,.scorehero{padding:20px 18px}
+  .sh-v{font-size:38px}
+  .actions .btn{flex:1 1 100%}
+  .auth{margin-top:3vh}
+  .auth-card{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-in">
+    <div class="brand">모의 평가 <small>비즈니스모델과의사결정론</small></div>
+    <div class="top-sp"></div>
+    <button class="tlink" id="topHome">홈</button>
+    <span class="savetag" id="saveTag"></span>
+    <button class="tlink" id="btnPrin">채점 원칙</button>
+  </div>
+</div>
+
+<!-- ===== 로그인 ===== -->
+<section class="screen on" id="scAuth">
+  <div class="auth">
+    <div class="auth-card">
+      <h1>중간 평가 모의 연습</h1>
+      <p class="auth-sub">실제 시험과 같은 문제를 풀고, 교수자가 쓰는 채점 기준표로 직접 채점해 봅니다.</p>
+      <div class="tabs"><button id="tabLogin" class="act">로그인</button><button id="tabJoin">회원가입</button></div>
+      <div id="joinFields" style="display:none">
+        <div class="field"><label>이름</label><input id="inName" type="text" placeholder="홍길동" autocomplete="name"></div>
+        <div class="field"><label>학번</label><input id="inSno" type="text" placeholder="20231234" inputmode="numeric" autocomplete="off"></div>
+      </div>
+      <div class="field"><label>이메일</label><input id="inEmail" type="email" placeholder="you@wsu.ac.kr" autocomplete="email"></div>
+      <div class="field"><label>비밀번호</label><input id="inPw" type="password" placeholder="6자 이상" autocomplete="current-password"></div>
+      <button class="btn primary block" id="btnEmail">로그인</button>
+      <div class="msg" id="authMsg"></div>
+      <div class="divider">또는</div>
+      <button class="btn g" id="btnGoogle">
+        <svg class="gicon" viewBox="0 0 48 48"><path fill="#4285F4" d="M45 24.5c0-1.6-.1-2.8-.4-4H24v7.6h12c-.2 2-1.5 5-4.4 7l-.1.3 6.4 5 .4.1c4.1-3.8 6.7-9.4 6.7-16"/><path fill="#34A853" d="M24 46c5.8 0 10.7-1.9 14.3-5.2l-6.8-5.3c-1.8 1.3-4.3 2.2-7.5 2.2-5.7 0-10.6-3.8-12.3-9l-.3.1-6.6 5.1-.1.3C8.3 41.1 15.6 46 24 46"/><path fill="#FBBC05" d="M11.7 28.7c-.5-1.3-.7-2.8-.7-4.2s.3-2.9.7-4.2v-.4l-6.8-5.2-.2.1A22 22 0 0 0 2 24.5c0 3.5.9 6.9 2.7 9.8z"/><path fill="#EA4335" d="M24 11.1c4 0 6.8 1.7 8.3 3.2l6.1-5.9C34.7 4.9 29.8 3 24 3 15.6 3 8.3 7.9 4.7 14.7l7 5.4c1.7-5.1 6.6-9 12.3-9"/></svg>
+        구글 계정으로 계속하기
+      </button>
+      <p class="fine">학번은 결과를 교수자가 확인할 때 쓰입니다. 작성한 답안은 본인만 볼 수 있습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 프로필 보완 ===== -->
+<section class="screen" id="scProfile">
+  <div class="auth">
+    <div class="auth-card">
+      <h1>이름과 학번만 알려주세요</h1>
+      <p class="auth-sub">결과를 확인할 때 필요합니다. 한 번만 입력하면 됩니다.</p>
+      <div class="field"><label>이름</label><input id="pfName" type="text" placeholder="홍길동"></div>
+      <div class="field"><label>학번</label><input id="pfSno" type="text" placeholder="20231234" inputmode="numeric"></div>
+      <button class="btn primary block" id="btnProfile">시작하기</button>
+      <div class="msg" id="pfMsg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 로딩 ===== -->
+<section class="screen" id="scLoad">
+  <div class="loadbox"><div class="spin"></div>기록을 불러오는 중입니다…</div>
+</section>
+
+<!-- ===== 홈 ===== -->
+<section class="screen" id="scHome">
+  <div class="wrap">
+    <div class="hero">
+      <h1 id="meName">—</h1>
+      <div class="hsub" id="meSub"></div>
+      <div class="hstats">
+        <div class="hstat"><div class="v" id="homeScore">—</div><div class="l" id="homeScoreSub">—</div></div>
+      </div>
+      <div class="prog"><i id="homeProgress" style="width:0%"></i></div>
+      <div class="progtxt" id="homeProgressTxt">0 / 6 문항 완료</div>
+    </div>
+
+    <div class="howto">
+      <h3>한 문항을 푸는 순서</h3>
+      <div class="steps3">
+        <div class="st3"><b>1단계</b><span>답안을 쓰고 제출하면 형식부터 기계적으로 점검합니다</span></div>
+        <div class="st3"><b>2단계</b><span>교수자가 쓰는 기준표를 보고 내 답안을 직접 채점합니다</span></div>
+        <div class="st3"><b>3단계</b><span>점수가 인정되는 답과 깎이는 답을 비교해 봅니다</span></div>
+      </div>
+      <p class="fine">실제 시험은 이 여섯 문항 중 다섯 문항이 100점 만점으로 출제됩니다. 답안은 자동으로 보관되므로 중간에 나갔다 와도 이어서 쓸 수 있습니다.</p>
+    </div>
+
+    <div class="actions" style="margin-top:0">
+      <button class="btn primary" id="btnStart">이어서 풀기</button>
+      <button class="btn ghost" id="btnReport" style="display:none">전체 결과 보기</button>
+      <button class="btn ghost" id="profLink" style="display:none">제출 현황</button>
+      <button class="btn ghost btnOut">로그아웃</button>
+    </div>
+
+    <h2 class="sect">문항</h2>
+    <div id="qGrid"></div>
+  </div>
+</section>
+
+<!-- ===== 시험 ===== -->
+<section class="screen" id="scExam">
+  <div class="wrap">
+    <div id="exNav"></div>
+    <div class="exhead"><h1 id="exTitle">—</h1><div class="exmeta" id="exMeta"></div></div>
+    <div id="exStage"></div>
+    <div id="exBody"></div>
+  </div>
+</section>
+
+<!-- ===== 전체 결과 ===== -->
+<section class="screen" id="scReport">
+  <div class="wrap">
+    <div class="hero" style="margin-top:22px">
+      <h1>전체 결과</h1>
+      <div class="hsub" id="rpSub"></div>
+      <div class="hstats">
+        <div class="hstat"><div class="v" id="rpTotal">—</div><div class="l">자가 채점 합계</div></div>
+        <div class="hstat"><div class="v" id="rpPct">—</div><div class="l">득점률</div></div>
+      </div>
+    </div>
+    <h2 class="sect">문항별 점수</h2>
+    <div id="rpBars"></div>
+    <h2 class="sect">보완이 필요한 소문항</h2>
+    <div id="rpWeak"></div>
+    <h2 class="sect">채점 원칙 다시 보기</h2>
+    <div id="rpPrin"></div>
+    <div class="actions"><button class="btn primary" id="rpHome">홈으로</button><button class="btn ghost btnOut">로그아웃</button></div>
+  </div>
+</section>
+
+<!-- ===== 교수자 ===== -->
+<section class="screen" id="scProf">
+  <div class="wrap">
+    <h2 class="sect" style="margin-top:24px">제출 현황</h2>
+    <div class="tblwrap" id="pfList"></div>
+    <div class="actions"><button class="btn primary" id="pfHome">홈으로</button></div>
+  </div>
+</section>
+
+<div class="modal" id="prinModal">
+  <div class="modal-in">
+    <div class="modal-h"><h2>채점의 공통 원칙</h2><button class="xbtn" id="prinClose">&times;</button></div>
+    <div id="prinBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyDf_b40lEuHvI9NUvCNtx6et1TcWXQ644I",
+  authDomain: "srt-people.firebaseapp.com",
+  databaseURL: "https://srt-people-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "srt-people",
+  storageBucket: "srt-people.firebasestorage.app",
+  messagingSenderId: "246383141664",
+  appId: "1:246383141664:web:326b69af146cb626f3ad45"
+});
+const auth = firebase.auth();
+const db = firebase.database();
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
+</script>
+<script>
+/* ===== 문항 · 채점기준 · 해설 데이터 ===== */
+/* 배점 합계: 문항당 20점, 전체 120점 (5문항 선택 시 100점) */
+
+const BAN_PHRASES = [
+  "소통을 강화", "소통 강화", "체계를 정비", "체계 정비", "효율을 높", "효율성을 높",
+  "적극적으로 관리", "적극 관리", "전사적으로 공유", "전사적 공유",
+  "관련 부서와 협의", "유관 부서와 협의", "지속적으로 개선", "지속적 개선",
+  "중요한 것부터", "책임감을 갖", "책임감을 가지", "문화를 바꾸", "인식을 개선",
+  "교육을 강화", "마인드를 바꾸", "시스템을 개선", "프로세스를 개선하면 된다"
+];
+
+const CASE_TERMS = [
+  "SAP", "sap", "eTOM", "etom", "ETOM", "Focal Point", "focal point", "포컬 포인트", "포컬포인트",
+  "S-Y", "S-Y Systems", "에스와이", "CK Hutchison", "허치슨", "Hutchison",
+  "100만 유로", "백만 유로", "Lufthansa", "루프트한자", "Zalando", "잘란도",
+  "Dompe", "돔페", "Autogrill", "Ghent", "Mobiliar", "모빌리아"
+];
+
+const NUM_UNIT = /\d[\d,.]*\s*(점|건|원|억|천만|만|%|퍼센트|일|시간|분|초|개|명|영업일|주|개월|년|회|도|℃|배)/;
+const VAGUE_POINT = /(전\s?과정|전체\s?과정|상시|수시로|전반적으로|필요할\s?때마다)/;
+const ACTOR = /(누가|담당자|책임자|팀장|과장|부장|처장|원장|점주|집행부|운영팀|추진팀|관리자|원무과|진료과|법무팀|데이터팀|전담)/;
+const CONDITION = /(이상|이하|초과|미만|이내|안에|경우에는|때에는|하면|할 때|조건)/;
+
+/* 요소(element) = 채점기준표의 한 행 묶음. options는 배점이 높은 순. */
+
+const QUESTIONS = [
+  /* ========================= 문제 1 ========================= */
+  {
+    id: "q1",
+    no: 1,
+    title: "어디에 선을 그을 것인가",
+    org: "한결로지스",
+    scope: "2주차 — 주요 프로세스 도출",
+    points: 20,
+    intent: "관리 대상을 선별하는 기준을 ‘측정 가능한 조건’으로 만들 수 있는지, 그리고 그 기준이 놓치는 것을 스스로 방어할 수 있는지를 봅니다.",
+    situation: [
+      "한결로지스는 직원 740명, 연매출 2,100억 원 규모의 중견 물류기업이다. 창사 이래 처음으로 전사 프로세스 관리 체계를 도입하기로 했다.",
+      "착수 워크숍에서 각 부서가 제출한 업무 목록을 모아 보니 1,240개였다. 추진팀장은 “빠짐없이 관리해야 하니 1,240개를 모두 공식 프로세스로 등록하고 문서화하자”고 주장한다. 추진팀은 팀장을 포함해 4명이고, 경영진이 준 기한은 10개월이다."
+    ],
+    subs: [
+      {
+        id: "a", points: 4, guide: "이유 2개 · 각 3~5줄",
+        prompt: "1,240개를 모두 등록하는 방안이 실패할 가능성이 높은 이유를 두 가지 제시하시오. 단순히 “일이 많아서”가 아니라, 그 결과 무슨 일이 벌어지는지까지 쓰시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "이유 ①", options: [
+            { p: 2, cond: "‘왜 실패하는가’와 ‘그 결과 무슨 일이 벌어지는가’가 모두 있다" },
+            { p: 1, cond: "둘 중 하나만 있다" },
+            { p: 0, cond: "0점 문구이거나, 결과 서술 없이 “일이 많다” 수준이다" }
+          ]},
+          { name: "이유 ②", options: [
+            { p: 2, cond: "‘왜 실패하는가’와 ‘그 결과 무슨 일이 벌어지는가’가 모두 있다" },
+            { p: 1, cond: "둘 중 하나만 있다" },
+            { p: 0, cond: "0점 문구이거나, 결과 서술 없이 “일이 많다” 수준이다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: [
+            "유지 불가 — 4명이 10개월 안에 1,240개를 문서화하고 갱신할 수 없다 → 미완성 문서가 쌓여 체계 전체의 신뢰를 잃는다",
+            "미사용 — 양이 많아 아무도 찾아보지 않는다 → 등록 자체가 목적이 되고 개선으로 이어지지 않는다",
+            "우선순위 소실 — 중요한 업무와 사소한 업무가 같은 무게로 놓인다 → 개선 자원이 분산된다",
+            "갱신 실패 — 현실이 바뀌어도 전부 고칠 수 없다 → 문서와 현실이 어긋나 오히려 혼란을 준다"
+          ],
+          no: ["“일이 너무 많아서 시간이 부족하다”", "“비효율적이다”", "“체계를 정비해야 한다”"]
+        }
+      },
+      {
+        id: "b", points: 9, guide: "기준 3개 · 각 2~4줄",
+        prompt: "한결로지스가 공식 프로세스로 등록할 대상을 걸러낼 진입 기준 3개를 설계하시오. 각 기준은 다음 두 가지를 모두 갖추어야 한다. ① 통과 여부를 판정할 수 있는 측정 가능한 조건  ② 그 조건을 무엇을 보고 확인하는지(판정 자료 또는 방법).",
+        check: { needNum: true, needActor: false },
+        elements: [
+          { name: "기준 ① — 측정 가능한 조건", options: [
+            { p: 2, cond: "이 기준을 1,240개 목록에 적용했을 때 통과하는 개수를 셀 수 있다" },
+            { p: 0, cond: "셀 수 없다 (“자주 발생하는 업무”, “중요한 업무” 등)" }
+          ]},
+          { name: "기준 ① — 판정 자료·방법", options: [
+            { p: 1, cond: "무엇을 보고 확인하는지 자료나 방법이 명시되어 있다" },
+            { p: 0, cond: "없다" }
+          ]},
+          { name: "기준 ② — 측정 가능한 조건", options: [
+            { p: 2, cond: "통과하는 개수를 셀 수 있다" }, { p: 0, cond: "셀 수 없다" }
+          ]},
+          { name: "기준 ② — 판정 자료·방법", options: [
+            { p: 1, cond: "무엇을 보고 확인하는지 명시되어 있다" }, { p: 0, cond: "없다" }
+          ]},
+          { name: "기준 ③ — 측정 가능한 조건", options: [
+            { p: 2, cond: "통과하는 개수를 셀 수 있다" }, { p: 0, cond: "셀 수 없다" }
+          ]},
+          { name: "기준 ③ — 판정 자료·방법", options: [
+            { p: 1, cond: "무엇을 보고 확인하는지 명시되어 있다" }, { p: 0, cond: "없다" }
+          ]}
+        ],
+        penalties: [
+          { p: -6, cond: "세 기준이 사실상 같은 축이다 (예: 모두 금액 기준) — 원칙 7에 따라 1개로 센다" }
+        ],
+        model: {
+          ok: [
+            "연간 처리 건수 500건 이상 — ERP 처리 건수 로그로 확인",
+            "연간 관련 비용 1억 원 이상 — 전년도 결산 계정별 집계로 확인",
+            "법령상 기록 보존 의무가 있는 문서를 생성하는 업무 — 법무팀 보존연한 목록으로 확인",
+            "중단 시 24시간 안에 고객 배송이 멈추는 업무 — 고객 SLA 계약서로 확인",
+            "3개 부서 이상이 관여하는 업무 — 부서별 업무분장표로 확인"
+          ],
+          no: ["“자주 발생하는 업무”", "“비용이 많이 드는 업무”", "“규제와 관련된 업무”", "“중요한 업무”"]
+        }
+      },
+      {
+        id: "c", points: 7, guide: "조항 1개 + 효과 설명 · 4~8줄",
+        prompt: "여러분이 만든 기준을 1,240개 목록에 적용하면, 돈이 되지도 않고 규제 대상도 아니지만 핵심 업무가 돌아가는 데 꼭 필요한 업무가 탈락할 수 있다. 이런 업무가 관리 대상에서 빠지는 것을 막으려면 기준에 무엇을 추가하겠는가. 추가할 조항을 쓰고, 그 조항이 왜 효과가 있는지 설명하시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "추가 조항", options: [
+            { p: 4, cond: "금액·규제 외의 축이면서, 핵심 업무와의 연결을 판정할 수 있는 조항이다" },
+            { p: 2, cond: "조항은 제시했으나 판정이 불가능하다 (“중요한 지원 업무도 포함한다” 등)" },
+            { p: 0, cond: "조항 없이 문제 상황만 다시 설명했다" }
+          ]},
+          { name: "효과 설명", options: [
+            { p: 3, cond: "그 조항으로 구제되는 업무의 예를 들어 설명했다" },
+            { p: 1, cond: "효과를 원칙으로만 설명했다" },
+            { p: 0, cond: "설명이 없다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: [
+            "핵심 프로세스(수주·배차·정산)가 중단되면 함께 중단되는 업무",
+            "특정 핵심 프로세스의 선행 조건이 되는 업무 — 이 업무가 끝나야 핵심 업무가 시작된다",
+            "중단 시 핵심 프로세스의 처리 시간이 ○시간 이상 늘어나는 업무",
+            "네 조건 중 하나만 충족해도 통과하는 구조로 결합한다"
+          ],
+          no: ["‘OR 조건으로 묶는다’는 말만 쓰고 조항 내용이 없는 경우", "“중요한 업무도 포함한다”"]
+        }
+      }
+    ]
+  },
+
+  /* ========================= 문제 2 ========================= */
+  {
+    id: "q2",
+    no: 2,
+    title: "80개를 몇 개로 줄일 것인가",
+    org: "온마켓",
+    scope: "3주차 — 프로세스 성과지표 설계",
+    points: 20,
+    intent: "지표를 고르기 전에 목표와 성공요인을 먼저 세우는 순서를 이해했는지, 그리고 측정 지점과 계산 조건까지 내려갈 수 있는지를 봅니다.",
+    situation: [
+      "온마켓은 신선식품 새벽배송 스타트업이다. 데이터팀이 물류센터의 피킹·포장 프로세스에 대해 KPI 80개를 설계하고 대시보드를 만들었다.",
+      "공개한 지 3개월이 지났지만 현장 관리자들은 대시보드를 거의 열지 않는다. 열어본 사람들은 “숫자가 너무 많아 무엇을 봐야 할지 모르겠다”고 말한다.",
+      "한편 회사가 내건 전략 목표는 두 가지다. ‘주문 다음 날 오전 7시 이전 도착률 99.5% 달성’과 ‘신선도 관련 고객 불만 제로’."
+    ],
+    subs: [
+      {
+        id: "a", points: 5, guide: "3~6줄",
+        prompt: "데이터팀은 80개를 줄이는 일부터 시작하려 한다. 그러나 지표를 줄이기 전에 먼저 해야 할 일이 있다. 그것이 무엇이며, 왜 지표 선정보다 먼저여야 하는지 설명하시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "무엇을 먼저 하는가", options: [
+            { p: 3, cond: "목표·핵심 성공요인·측정 목적·프로세스 파악 중 하나 이상을 명확히 제시했다" },
+            { p: 1, cond: "방향은 맞으나 모호하다 (“목적을 생각한다”)" },
+            { p: 0, cond: "“중요한 지표만 고른다”, “현장 의견을 듣는다”처럼 선후 관계가 없다" }
+          ]},
+          { name: "왜 먼저여야 하는가", options: [
+            { p: 2, cond: "먼저 하지 않으면 무엇이 잘못되는지를 설명했다" },
+            { p: 1, cond: "방향은 맞으나 결과 서술이 없다" },
+            { p: 0, cond: "설명이 없다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: [
+            "이 프로세스가 달성해야 할 목표를 먼저 정한다",
+            "회사 전략에서 출발해 이 프로세스의 핵심 성공요인을 먼저 도출한다",
+            "측정의 목적 — 무엇을 위해 재는가 — 을 먼저 정한다",
+            "대상 프로세스를 그려서 어디서 무슨 일이 일어나는지 먼저 확인한다",
+            "왜: 목표가 없으면 그럴듯해 보이는 지표가 다시 끼어들어 80개로 돌아간다 / 버릴 기준 자체가 없어 무엇을 뺄지 정할 수 없다"
+          ],
+          no: ["“중요한 지표만 남긴다”", "“현장 의견을 수렴한다”(선후 관계 설명 없이)"]
+        }
+      },
+      {
+        id: "b", points: 10, guide: "CSF 2개 + 지표 4개 + 측정 지점 4개",
+        prompt: "위 전략 목표에서 출발하여 이 프로세스의 핵심 성공요인(CSF)을 2개 도출하시오. 그리고 각 CSF마다 지표를 2개씩, 총 4개를 제시하시오. 각 지표에 대해 ‘프로세스의 어느 지점에서 측정하는가’를 반드시 함께 쓰시오.",
+        check: { needNum: true, needActor: false, warnVaguePoint: true },
+        elements: [
+          { name: "CSF 2개", options: [
+            { p: 2, cond: "둘 다 전략 목표에서 도출된, 지표를 뽑을 수 있는 축이다" },
+            { p: 1, cond: "하나만 그렇다" },
+            { p: 0, cond: "전략 목표를 그대로 옮겨 적었다 (“도착률 99.5%”는 목표이지 CSF가 아니다)" }
+          ]},
+          { name: "지표 4개", options: [
+            { p: 4, cond: "4개 모두 무엇을 세거나 재는지와 단위가 분명하다" },
+            { p: 3, cond: "3개가 그렇다" }, { p: 2, cond: "2개가 그렇다" },
+            { p: 1, cond: "1개가 그렇다" }, { p: 0, cond: "해당 없음" }
+          ]},
+          { name: "측정 지점 4개", options: [
+            { p: 4, cond: "4개 모두 프로세스의 특정 단계가 지목되어 있다" },
+            { p: 3, cond: "3개가 그렇다" }, { p: 2, cond: "2개가 그렇다" },
+            { p: 1, cond: "1개가 그렇다" },
+            { p: 0, cond: "“전 과정”, “상시”처럼 단계가 특정되지 않았다" }
+          ]}
+        ],
+        penalties: [
+          { p: -1, cond: "지표가 자기 CSF와 연결되지 않은 것이 있다 (시간 CSF 아래에 신선도 지표 등)" }
+        ],
+        model: {
+          ok: [
+            "CSF ‘시간 준수’ → 피킹 완료까지 소요 시간(분) / 측정 지점: 피킹 완료 스캔 시점",
+            "CSF ‘시간 준수’ → 마감 시각 내 상차 완료율(%) / 측정 지점: 차량 상차 스캔 시점",
+            "CSF ‘신선도 품질’ → 보냉 포장 불량 건수(건/일) / 측정 지점: 포장 검수 단계",
+            "CSF ‘신선도 품질’ → 온도 이탈 발생률(%) / 측정 지점: 출고 직전 온도 기록 시점"
+          ],
+          no: ["측정 지점을 “물류센터에서”, “전 과정”이라고 쓴 경우", "CSF 자리에 “도착률 99.5% 달성”을 그대로 옮긴 경우"]
+        }
+      },
+      {
+        id: "c", points: 5, guide: "조건 1개 + 문제 · 3~6줄",
+        prompt: "여러분이 제시한 4개 지표 중 시간에 관한 지표를 하나 고르시오(없다면 하나 추가하시오). 그 시간을 계산할 때 반드시 미리 정해두어야 할 조건을 하나 제시하고, 정해두지 않으면 어떤 문제가 생기는지 설명하시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "조건 제시", options: [
+            { p: 3, cond: "선택지까지 제시했다 (예: 근무시간 기준인가 24시간 기준인가)" },
+            { p: 1, cond: "조건은 언급했으나 선택지가 없다 (“시간 기준을 정해야 한다”)" },
+            { p: 0, cond: "지표를 다시 설명했거나 조건이 없다" }
+          ]},
+          { name: "생기는 문제", options: [
+            { p: 2, cond: "기준이 없을 때 숫자가 어떻게 왜곡되는지 설명했다" },
+            { p: 1, cond: "문제를 언급했으나 왜곡 방향이 불분명하다" },
+            { p: 0, cond: "설명이 없다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: [
+            "근무시간 기준인가 24시간 기준인가 (야간·휴일 포함 여부)",
+            "시작과 종료를 각각 어느 이벤트로 잡는가",
+            "공휴일과 휴무일 처리 방법",
+            "대기 구간(외부 응답 대기 등)을 포함하는가",
+            "문제: 기준이 다르면 같은 성과가 다르게 보여 센터 간 비교가 불가능해진다 / 기준을 사후에 바꾸면 개선 효과를 조작할 수 있다"
+          ],
+          no: ["“정확하게 측정해야 한다”", "“기준이 중요하다”"]
+        }
+      }
+    ]
+  },
+
+  /* ========================= 문제 3 ========================= */
+  {
+    id: "q3",
+    no: 3,
+    title: "떠도는 민원을 멈추는 법",
+    org: "한빛병원",
+    scope: "4주차 — 전담 창구와 권한 설계",
+    points: 20,
+    intent: "예산 제약 아래에서 ‘사람을 한 명 지정하는 것’과 ‘권한을 가진 자리를 만드는 것’의 차이를 아는지 봅니다. 변별은 (2)의 권한 설계에서 갈립니다.",
+    situation: [
+      "지역 종합병원 한빛병원에서 진료비 이의제기 민원이 부서 사이를 떠돌고 있다. 민원은 원무과로 접수되지만, 원무과는 “진료 내용은 우리 소관이 아니다”며 진료과에 넘긴다. 진료과는 “보험 적용 기준이 문제”라며 보험심사팀에 넘기고, 보험심사팀은 다시 원무과로 돌려보낸다.",
+      "접수부터 해결까지 평균 11일이 걸리고, 최초 접수자가 끝까지 처리하는 비율은 20%에 불과하다. 같은 민원이 몇 차례나 돌기도 한다.",
+      "병원장은 “민원 관리 시스템을 새로 도입할 예산은 없다”고 못 박았다."
+    ],
+    subs: [
+      {
+        id: "a", points: 3, guide: "3가지 · 각 1~2줄",
+        prompt: "시스템을 새로 사지 않고, 이 상황에서 바꿀 수 있는 것을 세 가지 제시하시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "바꿀 수 있는 것 3가지", options: [
+            { p: 3, cond: "3개 모두 시스템 구매가 아닌 수단이면서 구체성 테스트를 통과한다" },
+            { p: 2, cond: "2개가 통과한다" }, { p: 1, cond: "1개가 통과한다" },
+            { p: 0, cond: "모두 “시스템을 개선한다”, “소통을 강화한다” 수준이다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: ["담당 지정 방식", "민원 분류 규칙", "접수 양식과 필수 입력 항목", "부서 간 처리 기한 약속", "에스컬레이션 경로", "권한 위임 범위", "중복 접수 확인 절차"],
+          no: ["“시스템을 개선한다”", "“직원 교육을 한다”(무엇을 가르치는지 없이)", "“소통을 강화한다”"]
+        }
+      },
+      {
+        id: "b", points: 10, guide: "누가 · 권한 · 권한 밖 경로 · 6~10줄",
+        prompt: "민원이 떠돌지 않도록 ‘전담 창구’를 설계하시오. 다음 세 가지를 모두 포함해야 한다. ① 누가 맡는가(직책과 소속)  ② 그 사람이 혼자 결정할 수 있는 범위와, 타 부서에 요구할 수 있는 권한  ③ 권한을 넘는 사안은 누구에게, 어떤 조건에서, 며칠 안에 올리는가.",
+        check: { needNum: true, needActor: true },
+        elements: [
+          { name: "① 누가 맡는가", options: [
+            { p: 2, cond: "직책과 소속이 모두 명시되어 있다" },
+            { p: 1, cond: "둘 중 하나만 명시되어 있다" },
+            { p: 0, cond: "“담당자를 둔다” 수준이다" }
+          ]},
+          { name: "② 권한 — 단독 결정 범위", options: [
+            { p: 3, cond: "혼자 결정할 수 있는 범위가 금액·사안·기한 중 하나 이상으로 구체화되어 있다" },
+            { p: 0, cond: "없다" }
+          ]},
+          { name: "② 권한 — 타 부서 요구권", options: [
+            { p: 2, cond: "자료나 회신을 요구할 수 있는 권한과 그 기한이 명시되어 있다" },
+            { p: 0, cond: "없다" }
+          ]},
+          { name: "③ 권한 밖 처리 경로", options: [
+            { p: 3, cond: "누구에게 / 어떤 조건에서 / 며칠 안에 — 세 가지가 모두 있다" },
+            { p: 2, cond: "두 가지가 있다" }, { p: 1, cond: "올릴 대상만 있다" },
+            { p: 0, cond: "없다" }
+          ]}
+        ],
+        penalties: [],
+        key: "전담 창구에 ‘다른 부서를 움직일 권한’이 없는 설계는 ②에서 최대 2점까지만 받습니다. 담당자를 한 명 지정했을 뿐 권한이 없으면 민원이 그 사람 책상에서 멈출 뿐, 구조는 그대로이기 때문입니다.",
+        model: {
+          ok: [
+            "원무과 소속 ‘진료비 이의 전담 담당자’ 1명, 과장급",
+            "50만 원 이하 조정은 단독 승인",
+            "진료과에 2영업일 내 회신을 요구할 수 있고, 미회신 시 진료부원장에게 자동 보고된다",
+            "조정 금액 50만 원 초과 또는 접수 후 5영업일 경과 시 진료부원장에게 상신한다"
+          ],
+          no: ["“원무과에 전담 직원을 지정해 민원을 끝까지 책임지게 한다”(권한 서술 없음)"]
+        }
+      },
+      {
+        id: "c", points: 7, guide: "원인 1개 + 장치 1개 · 4~8줄",
+        prompt: "전담 창구를 만들고 6개월 뒤, 민원이 다시 떠돌기 시작했다. 무엇이 원인일 가능성이 높은지 하나를 지목하고, 그 원인을 막을 장치를 제시하시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "원인 지목", options: [
+            { p: 3, cond: "아래 인정 범위 중 하나를 명확히 지목했다" },
+            { p: 1, cond: "원인이 모호하다 (“관리가 안 돼서”)" },
+            { p: 0, cond: "원인 없이 장치만 제시했다" }
+          ]},
+          { name: "장치 제시", options: [
+            { p: 4, cond: "지목한 원인을 직접 막는 장치이고 구체성 테스트를 통과한다" },
+            { p: 2, cond: "장치는 구체적이나 지목한 원인과의 연결이 약하다" },
+            { p: 0, cond: "구체성 테스트를 통과하지 못한다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: [
+            "민원 분류 규칙이 없거나 모호해 전담 창구가 다시 판단에 기댄다",
+            "전담 창구에 에스컬레이션 권한이 없어 타 부서가 움직이지 않는다",
+            "전담 창구 1인에게 물량이 몰려 그 자리가 새 병목이 된다",
+            "규칙에 없는 새로운 유형의 민원이 들어와 경로가 없다",
+            "담당자가 교체되면서 규칙과 노하우가 전달되지 않았다"
+          ],
+          no: ["“관리가 소홀해서”", "“직원들이 책임감이 없어서”"]
+        }
+      }
+    ]
+  },
+
+  /* ========================= 문제 4 ========================= */
+  {
+    id: "q4",
+    no: 4,
+    title: "2년째 그대로인 매뉴얼",
+    org: "푸른마을 협동조합",
+    scope: "5주차 — 살아 있는 문서 구조",
+    points: 20,
+    intent: "문서를 ‘잘 만드는 문제’가 아니라 ‘살아 있게 하는 문제’로 전환할 수 있는지 봅니다. 변별은 (2)의 경계 설정과 (3)의 강제 연결에서 갈립니다.",
+    situation: [
+      "푸른마을 협동조합은 생활협동조합 매장 네 곳을 운영한다. 매장 운영 매뉴얼은 2년 전 외부 컨설턴트가 만든 뒤 한 번도 수정되지 않았다. 그 사이 포스 시스템과 발주 방식, 배송업체, 환불 규정이 모두 바뀌었다.",
+      "신입 직원들은 매뉴얼 대신 선배에게 물어서 일을 배우고, 매장마다 처리 방식이 조금씩 다르다.",
+      "이사장은 “매뉴얼을 전면 개정하자”며 다시 컨설팅을 알아보고 있다."
+    ],
+    subs: [
+      {
+        id: "a", points: 5, guide: "3~6줄",
+        prompt: "전면 개정만으로는 2년 뒤에 같은 상황이 반복될 가능성이 높다. 그 이유를, 매뉴얼을 만드는 사람과 사용하는 사람의 관계로 설명하시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "분리 구조 지적", options: [
+            { p: 3, cond: "만든 사람과 쓰는 사람이 분리되어 있어, 쓰는 사람에게 고칠 권한도 수단도 없음을 지적했다" },
+            { p: 1, cond: "“현장과 안 맞아서”만 쓰고 분리 구조를 언급하지 않았다" },
+            { p: 0, cond: "“오래돼서”, “관리를 안 해서”" }
+          ]},
+          { name: "결과 설명", options: [
+            { p: 2, cond: "그 분리 때문에 문서와 현실이 벌어지고 결국 구전으로 돌아감을 설명했다" },
+            { p: 1, cond: "결과를 언급했으나 연결이 약하다" },
+            { p: 0, cond: "설명이 없다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: [
+            "외부 컨설턴트가 만들고 현장 직원이 쓰므로, 쓰는 사람에게 고칠 권한도 수단도 없다",
+            "만든 사람은 프로젝트가 끝나면 떠나므로 갱신 주체가 사라진다",
+            "결과: 현실이 바뀌어도 고칠 사람이 없어 문서와 현실이 벌어지고, 결국 선배에게 묻는 방식으로 돌아가 매장마다 달라진다"
+          ],
+          no: ["“매뉴얼이 오래돼서”", "“관리를 소홀히 해서”"]
+        }
+      },
+      {
+        id: "b", points: 10, guide: "통로 · 책임자 범위 · 충돌 절차 · 6~10줄",
+        prompt: "현장 직원이 직접 고칠 수 있고 책임자가 관리도 하는 ‘양방향 구조’를 설계하시오. 다음 세 가지를 모두 포함해야 한다. ① 현장 직원이 무엇을, 어디서, 어떻게 고치는가  ② 책임자만 관리하는 범위는 무엇인가  ③ 현장의 수정과 책임자의 규정이 충돌하면 누가 어떻게 정리하는가.",
+        check: { needNum: false, needActor: true },
+        elements: [
+          { name: "① 현장의 수정 통로", options: [
+            { p: 3, cond: "무엇을(수정 가능한 범위) / 어디서(도구·장소) / 어떻게(절차) 세 가지가 모두 있다" },
+            { p: 2, cond: "두 가지가 있다" }, { p: 1, cond: "한 가지가 있다" },
+            { p: 0, cond: "“직원이 자유롭게 수정한다” 수준이다" }
+          ]},
+          { name: "② 책임자 관리 범위", options: [
+            { p: 3, cond: "현장이 손대지 못하는 항목이 구체적으로 열거되어 있다" },
+            { p: 1, cond: "“중요한 것은 책임자가 관리한다” 수준이다" },
+            { p: 0, cond: "없거나, ①과 경계가 겹쳐 구분되지 않는다" }
+          ]},
+          { name: "③ 충돌 정리 절차", options: [
+            { p: 4, cond: "누가 / 어떤 조건에서 / 며칠 안에 / 어떤 결론을 내는지 중 세 가지 이상이 있다" },
+            { p: 2, cond: "두 가지가 있다" }, { p: 1, cond: "정리 주체만 있다" },
+            { p: 0, cond: "없다" }
+          ]}
+        ],
+        penalties: [],
+        key: "①과 ②의 경계가 겹치면 — 즉 현장이 고칠 수 있는 범위와 책임자 전용 범위가 구분되지 않으면 — ②는 0점입니다. 경계가 없으면 ③의 충돌 규칙이 애초에 작동할 수 없기 때문입니다.",
+        model: {
+          ok: [
+            "① 매장 직원은 발주·진열·포스 조작 절차를 공유 문서에서 직접 수정하고, 수정 시 사유를 한 줄 남긴다",
+            "② 환불 한도, 법정 표시사항, 매장 공통 가격 규정은 조합 운영팀장만 수정할 수 있다",
+            "③ 운영팀장이 매주 금요일 수정 이력을 확인해 5영업일 내 승인 또는 반려하고, 반려 시 사유를 남긴다"
+          ],
+          no: ["“직원이 자유롭게 수정하고 책임자가 관리한다”(경계 없음)"]
+        }
+      },
+      {
+        id: "c", points: 5, guide: "장치 1개 + 이유 · 3~6줄",
+        prompt: "매뉴얼을 고치지 않으면 다른 업무가 막히도록, 매뉴얼을 다른 업무와 연결하는 장치를 하나 제시하고 왜 그것이 작동하는지 설명하시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "장치 제시", options: [
+            { p: 3, cond: "매뉴얼을 안 고치면 실제로 다른 업무가 막히는 구조다" },
+            { p: 1, cond: "장치는 있으나 강제력이 없다 (“월 1회 점검하자고 공지한다”)" },
+            { p: 0, cond: "“자주 보도록 독려한다” 수준이다" }
+          ]},
+          { name: "작동 이유", options: [
+            { p: 2, cond: "안 고치면 누구의 어떤 일이 막히는지를 설명했다" },
+            { p: 1, cond: "효과를 원칙으로만 설명했다" },
+            { p: 0, cond: "설명이 없다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: [
+            "신입 교육 자료가 매뉴얼에서 자동 생성되므로, 안 고치면 신입이 틀린 절차를 배운다 → 교육 담당자가 고치게 된다",
+            "월 점검표가 매뉴얼 항목으로 만들어져, 매뉴얼이 낡으면 점검 자체가 성립하지 않는다",
+            "매장 간 발주·정산 양식이 매뉴얼 규정과 연동되어, 불일치하면 처리가 반려된다"
+          ],
+          no: ["“정기적으로 점검한다”", "“자주 보도록 독려한다”"]
+        }
+      }
+    ]
+  },
+
+  /* ========================= 문제 5 ========================= */
+  {
+    id: "q5",
+    no: 5,
+    title: "아끼는 쪽인가, 새로 만드는 쪽인가",
+    org: "대전 중앙시장 상인회",
+    scope: "1주차 — 네 축 진단과 방향 선택",
+    points: 20,
+    intent: "네 축 진단을 상황 속 사실에 근거해 수행하고, 그 진단과 결론을 연결할 수 있는지 봅니다. 진단의 방향 자체에는 정답을 두지 않습니다.",
+    situation: [
+      "대전 중앙시장 상인회는 점포 320개를 두고 있다. 최근 3년간 온라인 플랫폼과의 경쟁으로 방문객이 꾸준히 줄었고 매출도 하락했다. 상인회는 두 가지 안을 놓고 다투고 있다.",
+      "A안 — 공동 배송과 공동 구매로 원가를 낮춰 가격 경쟁력을 확보한다.",
+      "B안 — 시장 전체를 하나의 브랜드로 묶어 온라인 채널과 체험형 매장을 새로 연다.",
+      "상인회의 가용 예산은 많지 않다. 회원의 다수는 60대 이상이고 새로운 방식에 소극적이다. 점포들이 파는 품목과 운영 방식도 제각각이다."
+    ],
+    subs: [
+      {
+        id: "a", points: 8, guide: "네 축 각각 판단 + 근거",
+        prompt: "이 조직의 상황을 목표·프로세스·조직·환경 네 축으로 진단하시오. 각 축마다 ‘기존 방식을 다듬는 쪽’ 또는 ‘새로운 것을 찾는 쪽’ 중 어디에 가까운지 판단하고, 그렇게 판단한 근거를 상황 설명에서 찾아 제시하시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "판단 (네 축)", options: [
+            { p: 4, cond: "네 축 모두 둘 중 한쪽을 명확히 선택했다" },
+            { p: 3, cond: "세 축" }, { p: 2, cond: "두 축" }, { p: 1, cond: "한 축" },
+            { p: 0, cond: "양쪽 다라고 쓰거나 고르지 않았다" }
+          ]},
+          { name: "근거 (네 축)", options: [
+            { p: 4, cond: "네 축 모두 상황 설명에 실제로 있는 사실을 인용했다" },
+            { p: 3, cond: "세 축" }, { p: 2, cond: "두 축" }, { p: 1, cond: "한 축" },
+            { p: 0, cond: "상황에 없는 내용을 지어냈거나 근거가 없다" }
+          ]}
+        ],
+        penalties: [],
+        key: "네 축을 어느 쪽으로 판단했는지로는 점수를 주고 뺏지 않습니다. 상황 속 사실을 근거로 들었는지만 봅니다. 상황에 없는 사실을 지어내면 0점입니다.",
+        model: {
+          ok: [
+            "목표 — 매출 하락, 방문객 감소로 인한 생존 압박 (양쪽 모두 논증 가능)",
+            "프로세스 — 점포마다 품목과 운영 방식이 제각각 → 비표준, 새로운 것을 찾는 쪽",
+            "조직 — 예산 부족, 다수가 60대 이상, 새 방식에 소극적 → 기존 방식을 다듬는 쪽",
+            "환경 — 온라인 플랫폼과의 경쟁, 3년째 하락 → 새로운 것을 찾는 쪽"
+          ],
+          no: ["“상인들이 교육을 못 받아서”처럼 상황에 없는 사실을 근거로 든 경우", "네 축에 모두 “양쪽 다 해당된다”고 쓴 경우"]
+        }
+      },
+      {
+        id: "b", points: 8, guide: "선택 + 근거 3개",
+        prompt: "A안과 B안 중 하나를 고르거나 제3의 안을 제시하고, 그 근거를 세 가지 쓰시오. 근거 중 최소 두 가지는 (1)의 진단에서 끌어와야 한다.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "선택 명시", options: [
+            { p: 2, cond: "A · B · 제3안 중 하나를 분명히 골랐다" },
+            { p: 0, cond: "선택이 모호하거나 양시론으로 끝났다" }
+          ]},
+          { name: "근거 ①", options: [
+            { p: 2, cond: "(1)의 진단과 연결되고 상황 사실에 근거한다" },
+            { p: 1, cond: "상황 사실에는 근거하나 (1)의 진단과 연결되지 않는다" },
+            { p: 0, cond: "구체성 테스트 불통과 또는 일반론" }
+          ]},
+          { name: "근거 ②", options: [
+            { p: 2, cond: "(1)의 진단과 연결되고 상황 사실에 근거한다" },
+            { p: 1, cond: "상황 사실에만 근거한다" }, { p: 0, cond: "일반론" }
+          ]},
+          { name: "근거 ③", options: [
+            { p: 2, cond: "(1)의 진단과 연결되고 상황 사실에 근거한다" },
+            { p: 1, cond: "상황 사실에만 근거한다" }, { p: 0, cond: "일반론" }
+          ]}
+        ],
+        penalties: [
+          { p: -2, cond: "근거 3개 중 (1)의 진단에서 끌어온 것이 2개 미만이다" }
+        ],
+        model: {
+          ok: [
+            "제3안을 골랐다는 이유로 가점도 감점도 없습니다 — A·B와 동일한 기준으로 채점합니다",
+            "예: 조직 축이 ‘다듬는 쪽’이므로 전면 전환인 B안은 실행 주체를 확보하기 어렵다",
+            "예: 프로세스가 제각각이라 공동 배송(A안)도 품목 표준화가 선행되어야 한다"
+          ],
+          no: ["“B안이 요즘 트렌드라서”", "“온라인이 대세라서”(상황 사실 인용 없이)"]
+        }
+      },
+      {
+        id: "c", points: 4, guide: "조치 1개 · 3~5줄",
+        prompt: "여러분이 고른 안을 실행할 때 가장 먼저 저항할 가능성이 높은 것은 조직 문화와 사람이다. 이를 보완할 구체적 조치를 하나 제시하시오.",
+        check: { needNum: false, needActor: true },
+        elements: [
+          { name: "보완 조치", options: [
+            { p: 4, cond: "누가 / 누구에게 / 무엇을 / 어떻게 — 네 가지가 모두 있다" },
+            { p: 3, cond: "세 가지가 있다" }, { p: 2, cond: "두 가지가 있다" },
+            { p: 0, cond: "한 가지 이하이거나 0점 문구다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: ["상인회 집행부가 40~50대 점주 10명을 먼저 뽑아 3개월간 공동 배송을 시범 운영하게 하고, 그 결과를 월례 회의에서 당사자가 직접 발표하게 한다"],
+          no: ["“교육을 강화한다”", "“인식을 개선한다”", "“설득한다”"]
+        }
+      }
+    ]
+  },
+
+  /* ========================= 문제 6 ========================= */
+  {
+    id: "q6",
+    no: 6,
+    title: "이 숫자를 믿어도 되는가",
+    org: "성과 보고서 읽기",
+    scope: "3·4주차 — 지표 설계와 성과 해석",
+    points: 20,
+    intent: "성과 숫자를 그대로 받아들이지 않고, 무엇을 센 숫자인지 되묻는 습관이 생겼는지 봅니다.",
+    situation: [
+      "어느 기업이 고객 불만 처리 프로세스를 재설계한 뒤 다음과 같은 성과를 보고했다. 측정 기간은 적용 전 2개월과 적용 후 2개월이다."
+    ],
+    table: {
+      head: ["지표", "적용 전", "적용 후", "변화"],
+      rows: [
+        ["평균 처리 시간", "12.0일", "4.0일", "−67%"],
+        ["담당자 재배정률", "80%", "25%", "−69%"],
+        ["월 평균 접수 건수", "1,420건", "1,090건", "−23%"],
+        ["투입 인력 시간", "3,100시간", "2,050시간", "−34%"]
+      ]
+    },
+    subs: [
+      {
+        id: "a", points: 8, guide: "지목 + 이유 + 실제 원인 · 5~8줄",
+        prompt: "네 개의 숫자 중 ‘프로세스 재설계의 직접 효과’로 보기 어려운 것이 하나 있다. 무엇이며 왜 그렇게 판단했는지 쓰고, 그 숫자가 실제로는 무엇이 줄어든 결과일 가능성이 높은지 설명하시오.",
+        check: { needNum: false, needActor: false },
+        gate: { elementIndex: 0, failAt: 0, note: "지목이 틀리면 (1) 전체가 0점입니다." },
+        elements: [
+          { name: "지목", options: [
+            { p: 2, cond: "‘월 평균 접수 건수’를 지목했다" },
+            { p: 0, cond: "다른 것을 지목했다 — 이 경우 (1) 전체가 0점" }
+          ]},
+          { name: "왜 그런가", options: [
+            { p: 3, cond: "프로세스를 바꿨다고 불만의 원인 자체가 줄 이유가 없음을 설명했다" },
+            { p: 1, cond: "“이상하다”는 지적만 있고 이유가 없다" },
+            { p: 0, cond: "설명이 없다" }
+          ]},
+          { name: "실제로 무엇이 줄었나", options: [
+            { p: 3, cond: "중복 접수가 줄어든 결과임을 설명했다" },
+            { p: 1, cond: "“다른 이유가 있을 것”이라고만 썼다" },
+            { p: 0, cond: "설명이 없다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: [
+            "프로세스를 바꿨다고 고객이 겪는 문제 자체가 줄 이유가 없다",
+            "재설계는 처리 방식을 바꾼 것이지 불만의 원인을 없앤 것이 아니다",
+            "접수 건수는 계절·제품·고객 수 같은 외부 요인에 좌우되므로 단독으로 귀속시킬 수 없다",
+            "실제로는: 처리가 지연되면 같은 고객이 다시 접수해 한 건이 두세 건으로 기록되던 것이 해소됐다"
+          ],
+          no: ["‘투입 인력 시간’을 지목한 경우 — 그 숫자는 재배정이 줄어든 결과로 설명되므로 직접 효과에 해당한다"]
+        }
+      },
+      {
+        id: "b", points: 6, guide: "조항 2개 · 각 2~4줄",
+        prompt: "이 보고서를 경영진에게 제출하기 전에 반드시 덧붙여야 할 단서 조항을 두 가지 제시하시오. 각 조항이 왜 필요한지도 함께 쓰시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "조항 ①", options: [
+            { p: 3, cond: "무엇이 한계인지 구체적으로 명시하고, 왜 필요한지도 설명했다" },
+            { p: 2, cond: "한계는 구체적이나 이유 설명이 없다" },
+            { p: 1, cond: "“한계가 있다”처럼 무엇이 한계인지 없다" },
+            { p: 0, cond: "성과를 다시 요약했다" }
+          ]},
+          { name: "조항 ②", options: [
+            { p: 3, cond: "무엇이 한계인지 구체적으로 명시하고, 왜 필요한지도 설명했다" },
+            { p: 2, cond: "한계는 구체적이나 이유 설명이 없다" },
+            { p: 1, cond: "“한계가 있다” 수준이다" }, { p: 0, cond: "성과를 다시 요약했다" }
+          ]}
+        ],
+        penalties: [
+          { p: -2, cond: "(1)에서 쓴 내용과 같은 조항을 (2)에서 반복했다" }
+        ],
+        model: {
+          ok: [
+            "측정 기간이 전후 각 2개월에 불과해 장기 지속 여부를 알 수 없다",
+            "같은 기간의 외부 요인(계절성, 제품·정책 변경, 고객 수 변동)을 통제하지 않았다",
+            "접수 건수 감소는 중복 제거일 가능성이 있어 실제 불만 감소로 읽으면 안 된다",
+            "비교 대상이 동일 조건인지 — 같은 유형의 민원인지 — 확인되지 않았다",
+            "측정 방식과 집계 기준이 전후 동일했는지 확인이 필요하다"
+          ],
+          no: ["“한계가 있을 수 있다”", "“더 지켜봐야 한다”"]
+        }
+      },
+      {
+        id: "c", points: 6, guide: "지표 1개 + 측정 방법 · 3~6줄",
+        prompt: "이 프로젝트의 효과가 1년 뒤에도 유지되고 있는지 확인하려면 무엇을 측정해야 하는가. 지표 하나와 그 측정 방법을 제시하시오.",
+        check: { needNum: false, needActor: false },
+        elements: [
+          { name: "지표", options: [
+            { p: 3, cond: "한 시점이 아니라 지속성을 볼 수 있는 지표다" },
+            { p: 1, cond: "지표는 타당하나 한 시점 측정이다 (“1년 뒤 처리 시간을 잰다”)" },
+            { p: 0, cond: "구체성 테스트 불통과" }
+          ]},
+          { name: "측정 방법", options: [
+            { p: 3, cond: "무엇을 자료로 쓰는지 / 얼마나 자주 / 누가 보는지 — 세 가지가 모두 있다" },
+            { p: 2, cond: "두 가지가 있다" }, { p: 1, cond: "한 가지가 있다" },
+            { p: 0, cond: "없다" }
+          ]}
+        ],
+        penalties: [],
+        model: {
+          ok: [
+            "재배정률의 월별 추이",
+            "처리 시간의 월별 중앙값과 상위 10% 값",
+            "규칙에 없는 신규 유형 민원의 월별 비율",
+            "전담 담당자 교체 후 3개월간의 재배정률"
+          ],
+          no: ["“1년 뒤에 다시 측정한다”(한 시점)", "“만족도를 조사한다”(무엇을 세는지 불분명)"]
+        }
+      }
+    ]
+  }
+];
+
+/* 공통 감점 — 모든 문항에 적용 */
+const COMMON_PENALTY = {
+  p: -2,
+  cond: "수업에서 다룬 기업의 고유 수치나 고유명사를 그대로 옮겨 썼다 (원칙 3)"
+};
+
+const PRINCIPLES = [
+  { n: 1, t: "구체성 테스트를 가장 먼저 적용한다", d: "기준은 ‘통과 개수를 셀 수 있는가’, 지표는 ‘무엇을 세고 단위가 무엇인가’, 측정 지점은 ‘어느 단계인가’, 역할·권한은 ‘혼자 결정할 수 있는 범위가 구분되는가’. 통과하지 못하면 내용이 그럴듯해도 0점이다." },
+  { n: 2, t: "그 자체로는 0점인 문구가 있다", d: "“소통을 강화한다”, “체계를 정비한다”, “효율을 높인다”, “적극적으로 관리한다”, “전사적으로 공유한다”, “관련 부서와 협의한다”, “지속적으로 개선한다”, “중요한 것부터 한다”, “책임감을 갖는다”, “문화를 바꾼다”. 뒤에 구체적 내용이 따라붙은 경우에만 그 부분을 채점한다." },
+  { n: 3, t: "사례 복제는 감점한다", d: "수업에서 다룬 기업의 고유 수치·고유명사를 그대로 옮기면 −2점. 개념이나 프레임워크 이름을 쓰는 것 자체는 감점하지 않는다. 주어진 조직의 규모로 환산하면 감점 없음." },
+  { n: 4, t: "모순된 서술은 양쪽 모두 0점", d: "앞뒤가 모순되면 유리한 쪽을 골라주지 않는다. 조건부 서술(“A인 경우에는 ~”)은 모순이 아니다." },
+  { n: 5, t: "분량은 가점도 감점도 아니다", d: "다만 2줄 이하는 대부분 원칙 1을 통과하지 못한다." },
+  { n: 6, t: "개수를 초과하면 앞에서부터만 채점한다", d: "“3개를 쓰라”에 4개를 쓰면 앞 3개만 본다. 뒤에 더 나은 답이 있어도 채점하지 않는다." },
+  { n: 7, t: "사실상 같은 답은 하나로 센다", d: "“비용 1억 이상”, “비용 2억 이상”, “비용이 큰 업무”는 1개다." },
+  { n: 8, t: "점수는 1점 단위로만 준다", d: "판단이 갈리면 ① 구체성 테스트 → ② 요구 요소를 다 갖췄는가 → ③ 상황과 논리적으로 맞는가 → ④ 그래도 갈리면 낮은 쪽." }
+];
+
+</script>
+<script>
+/* ===== 상태 ===== */
+const PROF_EMAILS = ["gt4065b@wsu.ac.kr"];
+let ME = null;            // {uid, email, name, studentNo}
+let STATE = {};           // qid -> {answers:{subId:text}, stage, auto, self:{}, pen:{}, score, done}
+let CUR = 0;              // 현재 문항 index
+let SAVE_TIMER = null;
+
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function blankState() {
+  const o = {};
+  QUESTIONS.forEach(q => {
+    o[q.id] = { answers: {}, stage: 0, auto: null, self: {}, pen: {}, common: false, score: null, done: false };
+    q.subs.forEach(s => o[q.id].answers[s.id] = "");
+  });
+  return o;
+}
+
+/* ===== 화면 전환 ===== */
+function show(id) {
+  $$(".screen").forEach(s => s.classList.remove("on"));
+  $("#" + id).classList.add("on");
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function toast(msg, kind) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.className = "toast on" + (kind ? " " + kind : "");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.className = "toast", 2600);
+}
+
+/* ===== 로그인 ===== */
+function authError(e) {
+  const m = {
+    "auth/invalid-email": "이메일 형식이 올바르지 않습니다.",
+    "auth/user-not-found": "가입되지 않은 이메일입니다. 먼저 회원가입을 해주세요.",
+    "auth/wrong-password": "비밀번호가 맞지 않습니다.",
+    "auth/invalid-credential": "이메일 또는 비밀번호가 맞지 않습니다.",
+    "auth/email-already-in-use": "이미 가입된 이메일입니다. 로그인을 눌러주세요.",
+    "auth/weak-password": "비밀번호는 6자 이상이어야 합니다.",
+    "auth/popup-closed-by-user": "구글 로그인 창이 닫혔습니다.",
+    "auth/popup-blocked": "팝업이 차단되었습니다. 주소창의 팝업 차단을 해제해주세요.",
+    "auth/network-request-failed": "네트워크 연결을 확인해주세요.",
+    "auth/too-many-requests": "시도가 많았습니다. 잠시 후 다시 해주세요."
+  };
+  return m[e && e.code] || (e && e.message) || "잠시 후 다시 시도해주세요.";
+}
+
+function setAuthTab(mode) {
+  $("#tabLogin").classList.toggle("act", mode === "login");
+  $("#tabJoin").classList.toggle("act", mode === "join");
+  $("#joinFields").style.display = mode === "join" ? "block" : "none";
+  $("#btnEmail").textContent = mode === "join" ? "가입하고 시작하기" : "로그인";
+  $("#btnEmail").dataset.mode = mode;
+  $("#authMsg").textContent = "";
+}
+
+async function doEmailAuth() {
+  const mode = $("#btnEmail").dataset.mode;
+  const email = $("#inEmail").value.trim();
+  const pw = $("#inPw").value;
+  if (!email || !pw) return ($("#authMsg").textContent = "이메일과 비밀번호를 입력해주세요.");
+  const btn = $("#btnEmail"); btn.disabled = true; btn.textContent = "처리 중…";
+  try {
+    if (mode === "join") {
+      const name = $("#inName").value.trim(), sno = $("#inSno").value.trim();
+      if (!name || !sno) throw { message: "이름과 학번을 입력해주세요." };
+      const cred = await auth.createUserWithEmailAndPassword(email, pw);
+      await cred.user.updateProfile({ displayName: name });
+      await db.ref("mockexam/users/" + cred.user.uid).update({
+        name, studentNo: sno, email, joinedAt: Date.now()
+      });
+    } else {
+      await auth.signInWithEmailAndPassword(email, pw);
+    }
+  } catch (e) {
+    $("#authMsg").textContent = authError(e);
+  } finally {
+    btn.disabled = false; setAuthTab($("#btnEmail").dataset.mode);
+  }
+}
+
+async function doGoogle() {
+  try {
+    const p = new firebase.auth.GoogleAuthProvider();
+    p.setCustomParameters({ prompt: "select_account" });
+    await auth.signInWithPopup(p);
+  } catch (e) { $("#authMsg").textContent = authError(e); }
+}
+
+/* ===== 프로필 보완 (구글 최초 로그인 시 학번 수집) ===== */
+async function ensureProfile(user) {
+  const snap = await db.ref("mockexam/users/" + user.uid).get();
+  let v = snap.val() || {};
+  if (!v.studentNo) {
+    show("scProfile");
+    $("#pfName").value = v.name || user.displayName || "";
+    return new Promise(res => {
+      $("#btnProfile").onclick = async () => {
+        const name = $("#pfName").value.trim(), sno = $("#pfSno").value.trim();
+        if (!name || !sno) return ($("#pfMsg").textContent = "이름과 학번을 모두 입력해주세요.");
+        await db.ref("mockexam/users/" + user.uid).update({ name, studentNo: sno, email: user.email, joinedAt: v.joinedAt || Date.now() });
+        res({ name, studentNo: sno });
+      };
+    });
+  }
+  return { name: v.name || user.displayName || "", studentNo: v.studentNo };
+}
+
+/* ===== 진행상황 불러오기/저장 ===== */
+async function loadProgress() {
+  const snap = await db.ref("mockexam/attempts/" + ME.uid).get();
+  const v = snap.val();
+  STATE = blankState();
+  if (v && v.state) {
+    QUESTIONS.forEach(q => {
+      const s = v.state[q.id];
+      if (!s) return;
+      const t = STATE[q.id];
+      t.stage = s.stage || 0;
+      t.done = !!s.done;
+      t.score = (s.score === undefined ? null : s.score);
+      t.common = !!s.common;
+      t.self = s.self || {};
+      t.pen = s.pen || {};
+      t.auto = s.auto || null;
+      q.subs.forEach(sub => t.answers[sub.id] = (s.answers && s.answers[sub.id]) || "");
+    });
+  }
+}
+
+function queueSave() {
+  clearTimeout(SAVE_TIMER);
+  $("#saveTag").textContent = "저장 중…";
+  SAVE_TIMER = setTimeout(saveNow, 900);
+}
+
+async function saveNow() {
+  if (!ME) return;
+  try {
+    await db.ref("mockexam/attempts/" + ME.uid).update({
+      name: ME.name, studentNo: ME.studentNo, email: ME.email,
+      updatedAt: Date.now(), state: STATE, total: totalScore(), doneCount: doneCount()
+    });
+    $("#saveTag").textContent = "저장됨 · " + new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+  } catch (e) {
+    $("#saveTag").textContent = "저장 실패 — 연결을 확인해주세요";
+  }
+}
+
+const doneCount = () => QUESTIONS.filter(q => STATE[q.id].done).length;
+const totalScore = () => QUESTIONS.reduce((a, q) => a + (STATE[q.id].score || 0), 0);
+
+/* ===== 자동 1차 점검 ===== */
+function runAuto(q) {
+  const found = { ban: [], cases: [], vague: [] };
+  let chars = 0, hasNum = false, hasActor = false, hasCond = false;
+  let perSub = [];
+
+  q.subs.forEach(sub => {
+    const t = STATE[q.id].answers[sub.id] || "";
+    chars += t.replace(/\s/g, "").length;
+    BAN_PHRASES.forEach(p => { if (t.includes(p) && !found.ban.includes(p)) found.ban.push(p); });
+    CASE_TERMS.forEach(p => { if (t.includes(p) && !found.cases.includes(p)) found.cases.push(p); });
+    if (sub.check && sub.check.warnVaguePoint) {
+      const m = t.match(VAGUE_POINT);
+      if (m && !found.vague.includes(m[0])) found.vague.push(m[0]);
+    }
+    if (NUM_UNIT.test(t)) hasNum = true;
+    if (ACTOR.test(t)) hasActor = true;
+    if (CONDITION.test(t)) hasCond = true;
+    perSub.push({ id: sub.id, len: t.replace(/\s/g, "").length, need: sub.check || {} });
+  });
+
+  const items = [];
+  const emptySubs = perSub.filter(s => s.len < 20);
+  if (emptySubs.length) items.push({ lv: "bad", t: "분량이 매우 짧은 소문항", d: "(" + emptySubs.map(s => s.id.toUpperCase()).join(", ") + ") — 원칙 5: 분량 자체는 감점이 아니지만, 2줄 이하는 대부분 구체성 테스트를 통과하지 못합니다." });
+
+  if (found.ban.length) items.push({ lv: "bad", t: "0점 처리 문구가 발견됨", d: "“" + found.ban.join("”, “") + "” — 원칙 2에 해당합니다. 뒤에 구체적 내용이 따라붙지 않았다면 그 요소는 0점입니다." });
+  else items.push({ lv: "good", t: "0점 처리 문구 없음", d: "원칙 2의 관용구 목록에 걸리는 표현이 없습니다." });
+
+  if (found.cases.length) items.push({ lv: "warn", t: "수업 사례의 고유명사·수치가 그대로 등장", d: "“" + found.cases.join("”, “") + "” — 원칙 3: 그대로 옮겨 썼다면 −2점. 주어진 조직의 규모로 환산했다면 감점 없습니다." });
+
+  if (found.vague.length) items.push({ lv: "bad", t: "측정 지점이 특정되지 않은 표현", d: "“" + found.vague.join("”, “") + "” — 원칙 1: 측정 지점은 프로세스의 어느 단계인지 특정되어야 합니다." });
+
+  const needNum = q.subs.some(s => s.check && s.check.needNum);
+  if (needNum) items.push(hasNum
+    ? { lv: "good", t: "측정 가능한 수치·단위 발견", d: "조건을 숫자와 단위로 쓴 흔적이 있습니다. 실제 판정은 2단계에서 직접 하십시오." }
+    : { lv: "bad", t: "수치나 단위가 하나도 없음", d: "이 문항은 ‘통과 개수를 셀 수 있는 조건’을 요구합니다. 수치·단위 없이 통과하기 어렵습니다." });
+
+  const needActor = q.subs.some(s => s.check && s.check.needActor);
+  if (needActor) items.push(hasActor
+    ? { lv: "good", t: "주체(직책·부서) 표현 발견", d: "누가 하는지 밝힌 흔적이 있습니다." }
+    : { lv: "warn", t: "주체를 밝힌 표현이 보이지 않음", d: "이 문항은 ‘누가’를 요구합니다. 직책과 소속이 없으면 해당 요소가 감점됩니다." });
+
+  if (q.id === "q1" || q.id === "q3" || q.id === "q4") {
+    items.push(hasCond
+      ? { lv: "good", t: "조건·범위 표현 발견", d: "‘이상/이내/경우에는’ 같은 판정 가능한 조건 표현이 있습니다." }
+      : { lv: "warn", t: "조건·범위 표현이 보이지 않음", d: "판정 기준이 되려면 범위나 조건이 드러나야 합니다." });
+  }
+
+  return { items, chars, caseHit: found.cases.length > 0, at: Date.now() };
+}
+
+/* ===== 렌더: 홈 ===== */
+function renderHome() {
+  $("#meName").textContent = ME.name;
+  $("#meSub").textContent = ME.studentNo + " · " + ME.email;
+  const dc = doneCount();
+  $("#homeProgress").style.width = (dc / QUESTIONS.length * 100) + "%";
+  $("#homeProgressTxt").textContent = dc + " / " + QUESTIONS.length + " 문항 완료";
+  $("#homeScore").textContent = dc ? totalScore() + "점" : "—";
+  $("#homeScoreSub").textContent = dc ? "완료한 " + dc + "문항 합계 (문항당 20점)" : "아직 채점한 문항이 없습니다";
+
+  $("#qGrid").innerHTML = QUESTIONS.map((q, i) => {
+    const s = STATE[q.id];
+    const written = q.subs.filter(sub => (s.answers[sub.id] || "").trim().length > 10).length;
+    const badge = s.done
+      ? '<span class="pill ok">' + s.score + ' / 20점</span>'
+      : (written ? '<span class="pill mid">작성 중 ' + written + '/' + q.subs.length + '</span>' : '<span class="pill">시작 전</span>');
+    return '<button class="qcard" data-i="' + i + '">'
+      + '<div class="qcard-n">문제 ' + q.no + '</div>'
+      + '<div class="qcard-t">' + esc(q.title) + '</div>'
+      + '<div class="qcard-o">' + esc(q.org) + '</div>'
+      + '<div class="qcard-b">' + badge + '</div>'
+      + '<div class="qcard-s">' + esc(q.scope) + '</div></button>';
+  }).join("");
+  $$("#qGrid .qcard").forEach(b => b.onclick = () => openQuestion(+b.dataset.i));
+
+  $("#btnReport").style.display = dc ? "inline-flex" : "none";
+  $("#profLink").style.display = PROF_EMAILS.includes((ME.email || "").toLowerCase()) ? "inline-flex" : "none";
+}
+
+/* ===== 렌더: 문항 ===== */
+function openQuestion(i) {
+  CUR = i;
+  renderQuestion();
+  show("scExam");
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[CUR], s = STATE[q.id];
+
+  $("#exNav").innerHTML = QUESTIONS.map((x, i) =>
+    '<button class="navdot' + (i === CUR ? " cur" : "") + (STATE[x.id].done ? " fin" : "") + '" data-i="' + i + '">' + x.no + '</button>'
+  ).join("");
+  $$("#exNav .navdot").forEach(b => b.onclick = () => openQuestion(+b.dataset.i));
+
+  $("#exStage").innerHTML = ["답안 작성", "1단계 · 자동 점검", "2단계 · 기준표로 채점", "3단계 · 해설"]
+    .map((t, i) => '<span class="stp' + (i === s.stage ? " cur" : (i < s.stage ? " done" : "")) + '">' + t + '</span>').join('<span class="stp-sep"></span>');
+
+  $("#exTitle").textContent = "문제 " + q.no + ". " + q.title;
+  $("#exMeta").textContent = q.org + " · " + q.scope + " · 20점";
+
+  const body = $("#exBody");
+  if (s.stage === 0) body.innerHTML = viewWrite(q, s);
+  else if (s.stage === 1) body.innerHTML = viewAuto(q, s);
+  else if (s.stage === 2) body.innerHTML = viewSelf(q, s);
+  else body.innerHTML = viewExplain(q, s);
+
+  bindStage(q, s);
+}
+
+/* --- 0단계: 작성 --- */
+function viewWrite(q, s) {
+  let h = '<div class="sitbox"><div class="sitlab">상황</div>'
+    + q.situation.map(p => "<p>" + esc(p) + "</p>").join("");
+  if (q.table) {
+    h += '<table class="dt"><thead><tr>' + q.table.head.map(c => "<th>" + esc(c) + "</th>").join("") + "</tr></thead><tbody>"
+      + q.table.rows.map(r => "<tr>" + r.map((c, i) => "<td" + (i ? ' class="num"' : "") + ">" + esc(c) + "</td>").join("") + "</tr>").join("")
+      + "</tbody></table>";
+  }
+  h += "</div>";
+
+  q.subs.forEach((sub, i) => {
+    const v = s.answers[sub.id] || "";
+    h += '<div class="sub">'
+      + '<div class="sub-h"><span class="sub-n">(' + (i + 1) + ')</span>'
+      + '<span class="sub-q">' + esc(sub.prompt) + '</span>'
+      + '<span class="sub-p">' + sub.points + '점</span></div>'
+      + '<div class="sub-g">권장 분량 · ' + esc(sub.guide) + '</div>'
+      + '<textarea class="ta" data-sub="' + sub.id + '" rows="7" placeholder="여기에 답안을 작성하십시오.">' + esc(v) + '</textarea>'
+      + '<div class="ta-c" data-cnt="' + sub.id + '"></div></div>';
+  });
+
+  h += '<div class="actions"><button class="btn ghost" id="btnHome2">홈으로</button>'
+    + '<button class="btn primary" id="btnSubmit">답안 제출하고 채점 시작</button></div>'
+    + '<p class="fine">제출한 뒤에도 답안은 그대로 보관됩니다. 채점 단계에서 자기 답안을 다시 읽으며 기준에 맞춰 판정하게 됩니다.</p>';
+  return h;
+}
+
+/* --- 1단계: 자동 점검 --- */
+function viewAuto(q, s) {
+  const a = s.auto || runAuto(q);
+  let h = '<div class="note amber"><strong>이것은 점수가 아닙니다.</strong> 채점 기준표의 원칙 1·2·3을 기계적으로 훑은 1차 점검입니다. '
+    + '실제 점수는 다음 단계에서 기준표를 보고 직접 판정합니다. 사람 채점자도 이 순서로 봅니다 — 형식을 먼저 걸러내고, 그다음 내용을 봅니다.</div>';
+  h += '<div class="autolist">' + a.items.map(it =>
+    '<div class="auto ' + it.lv + '"><div class="auto-i">' + (it.lv === "good" ? "통과" : it.lv === "warn" ? "주의" : "확인") + '</div>'
+    + '<div><div class="auto-t">' + esc(it.t) + '</div><div class="auto-d">' + esc(it.d) + '</div></div></div>'
+  ).join("") + "</div>";
+  h += '<div class="actions"><button class="btn ghost" id="btnBack0">답안 고치기</button>'
+    + '<button class="btn primary" id="btnTo2">기준표로 채점하기</button></div>';
+  return h;
+}
+
+/* --- 2단계: 자가 채점 --- */
+function viewSelf(q, s) {
+  let h = '<div class="note teal"><strong>자기 답안을 다시 읽으면서</strong> 각 요소마다 해당되는 줄을 고르십시오. '
+    + '교수자가 쓰는 기준표와 같은 표입니다. 후하게 고르면 실제 시험에서 그만큼 손해를 봅니다 — 애매하면 원칙 8에 따라 낮은 쪽을 고르십시오.</div>';
+
+  q.subs.forEach((sub, si) => {
+    h += '<div class="gsub"><div class="gsub-h"><span>(' + (si + 1) + ') ' + esc(sub.prompt) + '</span>'
+      + '<span class="sub-p">' + sub.points + '점</span></div>';
+    h += '<details class="myans"><summary>내 답안 보기</summary><pre>' + esc(s.answers[sub.id] || "(작성하지 않음)") + '</pre></details>';
+    if (sub.gate) h += '<div class="gate">' + esc(sub.gate.note) + '</div>';
+    if (sub.key) h += '<div class="note red small"><strong>변별 기준</strong> ' + esc(sub.key) + '</div>';
+
+    sub.elements.forEach((el, ei) => {
+      const key = sub.id + ":" + ei;
+      const cur = s.self[key];
+      h += '<div class="el"><div class="el-n">' + esc(el.name) + '</div>'
+        + el.options.map((o, oi) =>
+          '<label class="opt' + (cur === oi ? " sel" : "") + '">'
+          + '<input type="radio" name="' + q.id + "_" + key + '" data-key="' + key + '" value="' + oi + '"' + (cur === oi ? " checked" : "") + '>'
+          + '<span class="opt-p">' + o.p + '점</span><span class="opt-c">' + esc(o.cond) + '</span></label>'
+        ).join("") + "</div>";
+    });
+
+    if (sub.penalties && sub.penalties.length) {
+      sub.penalties.forEach((pn, pi) => {
+        const key = sub.id + ":p" + pi;
+        h += '<label class="pen' + (s.pen[key] ? " sel" : "") + '">'
+          + '<input type="checkbox" data-pen="' + key + '"' + (s.pen[key] ? " checked" : "") + '>'
+          + '<span class="opt-p neg">' + pn.p + '점</span><span class="opt-c">' + esc(pn.cond) + '</span></label>';
+      });
+    }
+    h += "</div>";
+  });
+
+  h += '<label class="pen big' + (s.common ? " sel" : "") + '"><input type="checkbox" id="cmPen"' + (s.common ? " checked" : "") + '>'
+    + '<span class="opt-p neg">' + COMMON_PENALTY.p + '점</span><span class="opt-c">' + esc(COMMON_PENALTY.cond) + '</span></label>';
+
+  h += '<div class="livebox"><div class="live-l">현재 채점 합계</div><div class="live-v" id="liveScore">—</div>'
+    + '<div class="live-s" id="liveMiss"></div></div>';
+  h += '<div class="actions"><button class="btn ghost" id="btnBack1">1단계로</button>'
+    + '<button class="btn primary" id="btnTo3">채점 확정하고 해설 보기</button></div>';
+  return h;
+}
+
+function computeSelf(q, s) {
+  let total = 0, missing = 0;
+  q.subs.forEach(sub => {
+    let sum = 0, gateFail = false;
+    sub.elements.forEach((el, ei) => {
+      const key = sub.id + ":" + ei;
+      const idx = s.self[key];
+      if (idx === undefined) { missing++; return; }
+      sum += el.options[idx].p;
+      if (sub.gate && sub.gate.elementIndex === ei && el.options[idx].p === sub.gate.failAt) gateFail = true;
+    });
+    if (gateFail) sum = 0;
+    if (sub.penalties) sub.penalties.forEach((pn, pi) => { if (s.pen[sub.id + ":p" + pi]) sum += pn.p; });
+    total += Math.max(0, sum);
+  });
+  if (s.common) total += COMMON_PENALTY.p;
+  return { score: Math.max(0, Math.min(20, total)), missing };
+}
+
+function refreshLive(q, s) {
+  const r = computeSelf(q, s);
+  const el = $("#liveScore"); if (!el) return;
+  el.textContent = r.score + " / 20점";
+  $("#liveMiss").textContent = r.missing ? "아직 고르지 않은 항목 " + r.missing + "개" : "모든 항목을 판정했습니다";
+  $("#liveMiss").className = "live-s" + (r.missing ? " warn" : " ok");
+}
+
+/* --- 3단계: 해설 --- */
+function viewExplain(q, s) {
+  let h = '<div class="scorehero"><div class="sh-l">문제 ' + q.no + ' 자가 채점 결과</div>'
+    + '<div class="sh-v">' + s.score + '<span>/ 20점</span></div>'
+    + '<div class="sh-b"><i style="width:' + (s.score / 20 * 100) + '%"></i></div>'
+    + '<div class="sh-s">' + esc(verdict(s.score)) + '</div></div>';
+
+  h += '<div class="note ink"><strong>출제 의도</strong> ' + esc(q.intent) + '</div>';
+
+  q.subs.forEach((sub, si) => {
+    const r = subScore(sub, s);
+    h += '<div class="gsub"><div class="gsub-h"><span>(' + (si + 1) + ') ' + esc(sub.prompt) + '</span>'
+      + '<span class="sub-p">' + r + ' / ' + sub.points + '점</span></div>';
+    h += '<div class="twocol">'
+      + '<div class="col ok"><div class="col-h">점수가 인정되는 답</div><ul>' + sub.model.ok.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul></div>"
+      + '<div class="col no"><div class="col-h">0점이거나 깎이는 답</div><ul>' + sub.model.no.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul></div>"
+      + "</div>";
+    h += '<details class="myans"><summary>내가 쓴 답안과 비교하기</summary><pre>' + esc(s.answers[sub.id] || "(작성하지 않음)") + '</pre></details>';
+    h += "</div>";
+  });
+
+  const nxt = QUESTIONS.findIndex((x, i) => i > CUR && !STATE[x.id].done);
+  h += '<div class="actions"><button class="btn ghost" id="btnBack2">채점 다시하기</button>'
+    + '<button class="btn ghost" id="btnRetry">답안 고쳐 다시 풀기</button>'
+    + (nxt >= 0 ? '<button class="btn primary" id="btnNextQ" data-i="' + nxt + '">다음 문항으로</button>'
+      : '<button class="btn primary" id="btnReport2">전체 결과 보기</button>') + "</div>";
+  return h;
+}
+
+function subScore(sub, s) {
+  let sum = 0, gateFail = false;
+  sub.elements.forEach((el, ei) => {
+    const idx = s.self[sub.id + ":" + ei];
+    if (idx === undefined) return;
+    sum += el.options[idx].p;
+    if (sub.gate && sub.gate.elementIndex === ei && el.options[idx].p === sub.gate.failAt) gateFail = true;
+  });
+  if (gateFail) sum = 0;
+  if (sub.penalties) sub.penalties.forEach((pn, pi) => { if (s.pen[sub.id + ":p" + pi]) sum += pn.p; });
+  return Math.max(0, sum);
+}
+
+function verdict(sc) {
+  if (sc >= 18) return "기준표의 요소를 거의 모두 갖췄습니다. 실제 시험에서도 이 수준을 유지하면 됩니다.";
+  if (sc >= 14) return "방향은 맞습니다. 빠진 요소가 무엇이었는지 아래 해설에서 확인하십시오.";
+  if (sc >= 9) return "내용은 있으나 구체성이 부족합니다. ‘셀 수 있는가 / 단계가 특정되는가 / 누가 결정하는가’를 다시 보십시오.";
+  if (sc >= 4) return "원칙 1의 구체성 테스트에서 대부분 걸렸습니다. 해설의 ‘인정되는 답’을 문장 단위로 비교해보십시오.";
+  return "다시 한 번 풀어보기를 권합니다. 해설을 먼저 읽고 답안을 고쳐 재도전할 수 있습니다.";
+}
+
+/* ===== 단계 이벤트 ===== */
+function bindStage(q, s) {
+  const go = (st) => { s.stage = st; queueSave(); renderQuestion(); };
+
+  $$(".ta", $("#exBody")).forEach(ta => {
+    const cnt = $('[data-cnt="' + ta.dataset.sub + '"]', $("#exBody"));
+    const upd = () => {
+      const n = ta.value.replace(/\s/g, "").length;
+      const lines = ta.value.split("\n").filter(x => x.trim()).length;
+      cnt.textContent = n + "자 · " + lines + "줄";
+      cnt.className = "ta-c" + (n < 20 ? " low" : "");
+    };
+    upd();
+    ta.oninput = () => { s.answers[ta.dataset.sub] = ta.value; upd(); queueSave(); };
+  });
+
+  const b = (id, fn) => { const e = $("#" + id); if (e) e.onclick = fn; };
+
+  b("btnHome2", () => { saveNow(); renderHome(); show("scHome"); });
+  b("btnSubmit", () => {
+    const empty = q.subs.filter(sub => (s.answers[sub.id] || "").replace(/\s/g, "").length < 10);
+    if (empty.length === q.subs.length) return toast("답안을 먼저 작성해주세요.", "bad");
+    if (empty.length) {
+      if (!confirm("아직 비어 있는 소문항이 " + empty.length + "개 있습니다. 그대로 제출하면 그 항목은 0점으로 채점됩니다. 계속할까요?")) return;
+    }
+    s.auto = runAuto(q); go(1);
+  });
+  b("btnBack0", () => go(0));
+  b("btnTo2", () => go(2));
+  b("btnBack1", () => go(1));
+  b("btnBack2", () => go(2));
+  b("btnRetry", () => { s.done = false; s.score = null; go(0); });
+  b("btnReport2", () => { saveNow(); renderReport(); show("scReport"); });
+  const nq = $("#btnNextQ"); if (nq) nq.onclick = () => { saveNow(); openQuestion(+nq.dataset.i); };
+
+  $$('input[type=radio][data-key]', $("#exBody")).forEach(r => {
+    r.onchange = () => {
+      s.self[r.dataset.key] = +r.value;
+      $$('input[name="' + r.name + '"]').forEach(x => x.closest(".opt").classList.toggle("sel", x.checked));
+      refreshLive(q, s); queueSave();
+    };
+  });
+  $$("input[data-pen]", $("#exBody")).forEach(c => {
+    c.onchange = () => { s.pen[c.dataset.pen] = c.checked; c.closest(".pen").classList.toggle("sel", c.checked); refreshLive(q, s); queueSave(); };
+  });
+  const cm = $("#cmPen");
+  if (cm) cm.onchange = () => { s.common = cm.checked; cm.closest(".pen").classList.toggle("sel", cm.checked); refreshLive(q, s); queueSave(); };
+
+  if (s.stage === 2) refreshLive(q, s);
+
+  b("btnTo3", () => {
+    const r = computeSelf(q, s);
+    if (r.missing) return toast("아직 판정하지 않은 항목이 " + r.missing + "개 있습니다.", "bad");
+    s.score = r.score; s.done = true; s.stage = 3;
+    saveNow(); renderQuestion();
+  });
+}
+
+/* ===== 전체 결과 ===== */
+function renderReport() {
+  const dc = doneCount(), tot = totalScore();
+  const maxed = dc * 20;
+  $("#rpTotal").textContent = tot + (maxed ? " / " + maxed + "점" : "점");
+  $("#rpSub").textContent = dc + "문항 채점 완료" + (dc < 6 ? " · 남은 " + (6 - dc) + "문항은 아직 반영되지 않았습니다" : "");
+  $("#rpPct").textContent = maxed ? Math.round(tot / maxed * 100) + "%" : "—";
+
+  $("#rpBars").innerHTML = QUESTIONS.map(q => {
+    const s = STATE[q.id];
+    const w = s.done ? s.score / 20 * 100 : 0;
+    return '<div class="bar"><div class="bar-l">문제 ' + q.no + ' · ' + esc(q.title) + '</div>'
+      + '<div class="bar-t"><i style="width:' + w + '%" class="' + (s.score >= 14 ? "hi" : s.score >= 9 ? "mid" : "lo") + '"></i></div>'
+      + '<div class="bar-v">' + (s.done ? s.score + "점" : "미채점") + '</div></div>';
+  }).join("");
+
+  const weak = [];
+  QUESTIONS.forEach(q => {
+    const s = STATE[q.id];
+    if (!s.done) return;
+    q.subs.forEach((sub, si) => {
+      const r = subScore(sub, s);
+      if (r < sub.points * 0.6) weak.push("문제 " + q.no + "-(" + (si + 1) + ") " + sub.guide.split("·")[0].trim() + " — " + r + "/" + sub.points + "점");
+    });
+  });
+  $("#rpWeak").innerHTML = weak.length
+    ? "<ul>" + weak.map(w => "<li>" + esc(w) + "</li>").join("") + "</ul>"
+    : '<p class="fine">60% 미만으로 떨어진 소문항이 없습니다.</p>';
+
+  $("#rpPrin").innerHTML = PRINCIPLES.map(p =>
+    '<div class="prin"><div class="prin-n">원칙 ' + p.n + '</div><div><div class="prin-t">' + esc(p.t) + '</div><div class="prin-d">' + esc(p.d) + '</div></div></div>'
+  ).join("");
+}
+
+/* ===== 교수자 보기 ===== */
+async function renderProf() {
+  $("#pfList").innerHTML = '<p class="fine">불러오는 중…</p>';
+  show("scProf");
+  try {
+    const snap = await db.ref("mockexam/attempts").get();
+    const v = snap.val() || {};
+    const rows = Object.keys(v).map(k => v[k]).filter(Boolean)
+      .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    if (!rows.length) return ($("#pfList").innerHTML = '<p class="fine">아직 제출된 기록이 없습니다.</p>');
+
+    const avg = {};
+    QUESTIONS.forEach(q => {
+      const ss = rows.map(r => r.state && r.state[q.id]).filter(x => x && x.done).map(x => x.score || 0);
+      avg[q.id] = ss.length ? (ss.reduce((a, b) => a + b, 0) / ss.length).toFixed(1) + "점 (" + ss.length + "명)" : "—";
+    });
+
+    $("#pfList").innerHTML =
+      '<div class="pfstat"><div><b>' + rows.length + '</b>명 응시</div>'
+      + QUESTIONS.map(q => '<div>문제 ' + q.no + ' 평균 <b>' + avg[q.id] + '</b></div>').join("") + "</div>"
+      + '<table class="dt wide"><thead><tr><th>학번</th><th>이름</th><th>완료</th>'
+      + QUESTIONS.map(q => "<th>" + q.no + "</th>").join("") + "<th>합계</th><th>최종 활동</th></tr></thead><tbody>"
+      + rows.map(r => "<tr><td>" + esc(r.studentNo || "—") + "</td><td>" + esc(r.name || "—") + "</td>"
+        + "<td class='num'>" + (r.doneCount || 0) + "</td>"
+        + QUESTIONS.map(q => {
+          const s = r.state && r.state[q.id];
+          return "<td class='num'>" + (s && s.done ? s.score : "·") + "</td>";
+        }).join("")
+        + "<td class='num'><b>" + (r.total || 0) + "</b></td>"
+        + "<td>" + (r.updatedAt ? new Date(r.updatedAt).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "—") + "</td></tr>").join("")
+      + "</tbody></table>";
+  } catch (e) {
+    $("#pfList").innerHTML = '<p class="fine">기록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</p>';
+  }
+}
+
+/* ===== 부팅 ===== */
+function boot() {
+  $("#tabLogin").onclick = () => setAuthTab("login");
+  $("#tabJoin").onclick = () => setAuthTab("join");
+  $("#btnEmail").onclick = doEmailAuth;
+  $("#btnGoogle").onclick = doGoogle;
+  $("#inPw").onkeydown = e => { if (e.key === "Enter") doEmailAuth(); };
+  setAuthTab("login");
+
+  $("#btnStart").onclick = () => {
+    const nxt = QUESTIONS.findIndex(q => !STATE[q.id].done);
+    openQuestion(nxt < 0 ? 0 : nxt);
+  };
+  $("#btnReport").onclick = () => { renderReport(); show("scReport"); };
+  $("#rpHome").onclick = () => { renderHome(); show("scHome"); };
+  $("#topHome").onclick = () => { saveNow(); renderHome(); show("scHome"); };
+  $("#profLink").onclick = renderProf;
+  $("#pfHome").onclick = () => { renderHome(); show("scHome"); };
+  $$(".btnOut").forEach(b => b.onclick = () => auth.signOut());
+  $("#btnPrin").onclick = () => { $("#prinModal").classList.add("on"); $("#prinBody").innerHTML = $("#rpPrin").innerHTML || PRINCIPLES.map(p => '<div class="prin"><div class="prin-n">원칙 ' + p.n + '</div><div><div class="prin-t">' + esc(p.t) + '</div><div class="prin-d">' + esc(p.d) + '</div></div></div>').join(""); };
+  $("#prinClose").onclick = () => $("#prinModal").classList.remove("on");
+
+  auth.onAuthStateChanged(async user => {
+    if (!user) { ME = null; show("scAuth"); return; }
+    show("scLoad");
+    try {
+      const p = await ensureProfile(user);
+      ME = { uid: user.uid, email: user.email, name: p.name, studentNo: p.studentNo };
+      await db.ref("mockexam/users/" + user.uid).update({ lastSeen: Date.now() });
+      await loadProgress();
+      renderHome(); show("scHome");
+    } catch (e) {
+      show("scAuth");
+      $("#authMsg").textContent = "기록을 불러오지 못했습니다. 다시 로그인해주세요.";
+    }
+  });
+}
+document.addEventListener("DOMContentLoaded", boot);
+
+</script>
+</body>
+</html>
